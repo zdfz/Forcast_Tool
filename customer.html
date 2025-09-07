@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Customer Input</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/styles.css">
+	<style>
+		/* Date input styling */
+		input[type="date"] {
+			font-family: inherit;
+			font-size: 14px;
+			position: relative;
+		}
+
+		/* Date input styling */
+		input[type="date"] {
+			font-family: inherit;
+			font-size: 14px;
+		}
+
+		/* Date validation styling */
+		.date-input.is-invalid {
+			border-color: #dc3545 !important;
+			box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+		}
+
+		.date-input.is-invalid:focus {
+			border-color: #dc3545 !important;
+			box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+		}
+
+		/* Small label styling */
+		.form-label.small {
+			font-size: 0.875rem;
+			margin-bottom: 0.25rem;
+		}
+	</style>
+</head>
+
+<body>
+	<main class="container py-4">
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<h1 class="h4 page-header mb-0" data-translate="pageTitle">Customer Input</h1>
+			<div class="language-toggle">
+				<button type="button" class="btn btn-outline-primary btn-sm" id="languageToggle">
+					<span id="currentLang">English</span>
+					<i class="bi bi-translate ms-1"></i>
+				</button>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<form id="customerForm" novalidate>
+					<!-- Service Type -->
+					<div class="form-section">
+						<button class="btn btn-link p-0 text-decoration-none section-title collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#secServiceType" aria-expanded="false"
+							data-translate="sectionServiceType">Service Type</button>
+						<div class="collapse" id="secServiceType">
+							<div class="row g-3 pt-2">
+								<div class="col-md-12">
+									<label class="form-label" data-translate="serviceTypeLabel">Choose your service type <span class="text-danger">*</span></label>
+									<div class="d-flex gap-3">
+										<label class="form-check-label">
+											<input type="radio" class="form-check-input me-2" name="service-type" value="fulfillment" required>
+											<span data-translate="fulfillmentOption">Fulfillment</span>
+										</label>
+										<label class="form-check-label">
+											<input type="radio" class="form-check-input me-2" name="service-type" value="last-mile" required>
+											<span data-translate="lastMileOption">Last Mile</span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>					  
+					<!-- Company & Volumes -->
+					<div class="form-section">
+						<button class="btn btn-link p-0 text-decoration-none section-title collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#secCompany" aria-expanded="false"
+							data-translate="sectionCompany">Company & Volumes</button>
+						<div class="collapse" id="secCompany">
+							<div class="row g-3 pt-2">
+								<div class="col-md-6">
+									<label class="form-label" data-translate="companyLabel">Customer Company Name <span
+											class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="company_name" required
+										placeholder="Enter company name"
+										title="Enter the official company or trade name">
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" data-translate="weeklyVolumeLabel">Daily Volume
+										(Shipments) <span class="text-danger">*</span></label>
+									<input type="number" min="0" class="form-control" id="weekly_shipments" required
+										placeholder="e.g. 5" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+									<div class="form-text error d-none" id="err_weekly_shipments"
+										data-translate="errWeeklyShipments">Must be a number ≥ 0.</div>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" data-translate="weeklyOutboundLabel">Daily Units Outbound
+										<span class="text-danger">*</span></label>
+									<input type="number" min="0" class="form-control" id="weekly_units_outbound"
+										required placeholder="e.g. 10" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+									<div class="form-text error d-none" id="err_weekly_units_outbound"
+										data-translate="errWeeklyOutbound">Must be a number ≥ 0.</div>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" data-translate="weeklyInboundLabel">Daily Units Inbound
+										<span class="text-danger">*</span></label>
+									<input type="number" min="0" class="form-control" id="weekly_units_inbound" required
+										placeholder="e.g. 8" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+									<div class="form-text error d-none" id="err_weeklyInbound">Must be a number ≥ 0.
+									</div>
+								</div>
+								<div class="col-md-6 mb-3">
+									<label for="inbound-frequency" class="form-label" data-translate="inboundFrequencyLabel">Frequency of the Inbound</label>
+									<select class="form-select" id="inbound-frequency" name="inbound-frequency" required>
+										<option value="" data-translate="selectFrequency">Select frequency</option>
+										<option value="daily" data-translate="dailyOption">Daily</option>
+										<option value="weekly" data-translate="weeklyOption">Weekly</option>
+										<option value="biweekly" data-translate="biweeklyOption">Biweekly</option>
+									</select>
+									<div class="invalid-feedback" id="inbound-frequency-error">
+										Please select a frequency.
+									</div>
+								</div>
+								<div class="col-md-6 mb-3">
+									<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Shipment</label>
+									<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" data-translate="avgUnits" required placeholder="e.g. 3" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+									<div class="invalid-feedback" id="avg-units-error">
+										Must be a number ≥ 0.
+									</div>
+									<div class="form-text error d-none" id="err_avg_units" data-translate="errAvgUnits">Must be a number ≥ 0.</div>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" data-translate="forecastingPeriodLabel">
+										<i class="bi bi-calendar me-2"></i>
+										Forecasting Period <span class="text-danger">*</span>
+									</label>
+									<div class="row g-2">
+										<div class="col-6">
+											<label class="form-label small text-muted" data-translate="startDate">Start
+												Date</label>
+											<input type="date" class="form-control" id="forecast_start_date" required>
+										</div>
+										<div class="col-6">
+											<label class="form-label small text-muted" data-translate="endDate">End
+												Date</label>
+											<input type="date" class="form-control" id="forecast_end_date" required>
+										</div>
+									</div>
+									<div class="form-text" data-translate="selectDateRange">Select the date range for
+										your forecast</div>
+									<div class="form-text error d-none" id="err_forecast_dates"></div>
+								</div>
+								<div class="col-md-6" id="seasonality_skus_container">
+									<label class="form-label" data-translate="skusLabel">Special SKUs for Seasonality
+										<small class="text-muted"><em
+												data-translate="optionalNote">(optional)</em></small></label>
+									<textarea class="form-control" id="seasonality_skus_notes" rows="2"
+										placeholder="Optional notes about seasonal SKUs"></textarea>
+								</div>
+								<div class="col-md-6" id="special_bundles_container">
+									<label class="form-label" data-translate="bundlesLabel">Special Bundles
+										<small class="text-muted"><em
+												data-translate="optionalNote">(optional)</em></small></label>
+									<textarea class="form-control" id="special_bundles_notes" rows="2"
+										placeholder="Optional notes about special bundles"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Payments & Mix -->
+					<div class="form-section">
+						<button class="btn btn-link p-0 text-decoration-none section-title collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#secPayments" aria-expanded="false"
+							data-translate="sectionPayments">Payments & Mix</button>
+						<div class="collapse" id="secPayments">
+							<div class="row g-3 pt-2">
+								<div class="col-md-6">
+									<label class="form-label" data-translate="codLabel">COD % <span
+											class="text-danger">*</span></label>
+									<div class="input-group">
+										<input type="number" min="0" max="100" class="form-control" id="cod_percent"
+											required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+										<span class="input-group-text">%</span>
+									</div>
+									<div class="form-text error d-none" id="err_cod_percent"
+										data-translate="errCodPercent">Must be between 0 and 100.</div>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" data-translate="ppdLabel">PPD % <span
+											class="text-danger">*</span></label>
+									<div class="input-group">
+										<input type="number" min="0" max="100" class="form-control" id="ppd_percent"
+											required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+										<span class="input-group-text">%</span>
+									</div>
+									<div class="form-text error d-none" id="err_ppd_percent"
+										data-translate="errPpdPercent">Must be between 0 and 100.</div>
+									<div class="form-text error d-none" id="err_cod_ppd_sum" data-translate="codPpdSum">
+										COD + PPD must equal 100%.</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<label class="form-label" data-translate="tierSplitLabel">Tier Split % (must sum to
+										100%) <span class="text-danger">*</span></label>
+									<div class="row g-2">
+										<div class="col"><input type="number" min="0" max="100" class="form-control"
+												id="tier1_percent" placeholder="Tier 1 %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
+										<div class="col"><input type="number" min="0" max="100" class="form-control"
+												id="tier2_percent" placeholder="Tier 2 %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
+										<div class="col"><input type="number" min="0" max="100" class="form-control"
+												id="tier3_percent" placeholder="Tier 3 %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
+									</div>
+									<div class="form-text error d-none" id="err_tier_sum" data-translate="errTierSum">
+										Tier split must sum to 100%.</div>
+								</div>
+
+								<div class="col-md-12">
+									<label class="form-label" data-translate="serviceMixLabel">Service Mix % (must sum
+										to 100%) <span class="text-danger">*</span></label>
+									<div class="row g-2">
+										<div class="col"><input type="number" min="0" max="100" class="form-control"
+												id="service_hb_percent" placeholder="H&B %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
+										<div class="col"><input type="number" min="0" max="100" class="form-control"
+												id="service_int_percent" placeholder="Int %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
+										<div class="col"><input type="number" min="0" max="100" class="form-control"
+												id="service_parcel_percent" placeholder="Parcel %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
+									</div>
+									<div class="form-text error d-none" id="err_service_sum"
+										data-translate="errServiceSum">Service mix must sum to 100%.</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Submit -->
+					<div class="form-section">
+						<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between">
+							<div class="required-note mb-2 mb-sm-0" data-translate="requiredNote"><span
+									class="text-danger">*</span> Required fields</div>
+							<button type="submit" class="btn btn-primary fw-bold px-4" data-translate="submitButton">[
+								Submit ]</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</main>
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/supabaseClient.js"></script>
+	<script>
+		async function main() {
+			// Check if Supabase client is available
+			if (!window.supa) {
+				console.error('Supabase client not found!');
+				alert('Database connection error. Please refresh the page.');
+				return;
+			}
+			console.log('Supabase client found:', window.supa);
+			
+			// Table structure is now known - no need for checking
+			console.log('Supabase client ready, table schema confirmed');
+			
+			// Removed auth guard - customer page is now accessible to everyone
+
+			// Language toggle functionality
+			let currentLanguage = 'en'; // Default to English
+			const languageToggle = document.getElementById('languageToggle');
+			const currentLangSpan = document.getElementById('currentLang');
+
+			// Language translations
+			const translations = {
+				en: {
+					pageTitle: 'Customer expectations preparation questionnaire',
+					companyLabel: 'Customer Company Name',
+					weeklyVolumeLabel: 'Daily Volume (Shipments)',
+					weeklyOutboundLabel: 'Daily Units Outbound',
+					weeklyInboundLabel: 'Daily Units Inbound',
+					forecastingPeriodLabel: 'Forecasting Period',
+					startDate: 'Start Date',
+					endDate: 'End Date',
+					selectDateRange: 'Select the date range for your forecast',
+					skusLabel: 'Special seasonal inventory keeping unit',
+					codLabel: 'Cash on Delivery rate %',
+					ppdLabel: 'Prepaid rate %',
+					tierSplitLabel: 'Tier distribution % (must sum to 100%)',
+					serviceMixLabel: 'Service Mix % (must sum to 100%)',
+					submitButton: '[ Submit ]',
+					requiredNote: 'Required fields',
+					optionalNote: '(optional)',
+					sectionServiceType: 'Service Type',
+					sectionCompany: 'Company & Volumes',
+					sectionPayments: 'Payments & Mix',
+					serviceTypeLabel: 'Choose your service type',
+					fulfillmentOption: 'Fulfillment',
+					lastMileOption: 'Last Mile',
+					bundlesLabel: 'Special Bundles',
+					inboundFrequencyLabel: 'Frequency of the Inbound',
+					avgUnitsLabel: 'Average Unit per Shipment',
+					selectFrequency: 'Select frequency',
+					dailyOption: 'Daily',
+					weeklyOption: 'Weekly',
+					biweeklyOption: 'Biweekly',
+					codPpdSum: 'Cash on Delivery + Prepaid must equal 100%.',
+					errWeeklyShipments: 'Must be a number ≥ 0.',
+					errWeeklyOutbound: 'Must be a number ≥ 0.',
+					errWeeklyInbound: 'Must be a number ≥ 0.',
+					errCodPercent: 'Must be between 0 and 100.',
+					errPpdPercent: 'Must be between 0 and 100.',
+					errInboundFrequency: 'Please select a frequency.',
+					errAvgUnits: 'Must be a number ≥ 0.',
+					errTierSum: 'Tier split must sum to 100%.',
+					errServiceSum: 'Service mix must sum to 100%.',
+					errDatePast: 'Start date cannot be in the past',
+					errDateOrder: 'End date must be after start date',
+					errDateRange: 'Forecasting period cannot exceed 2 years',
+					placeholder: {
+						company: 'Enter company name',
+						shipments: 'e.g. 5',
+						outbound: 'e.g. 10',
+						inbound: 'e.g. 8',
+						avgUnits: 'e.g. 3',
+						forecastingPeriod: 'Select dates',
+						skus: 'Optional notes about seasonal SKUs',
+						codIncrease: 'e.g. 3',
+						tier1: 'Tier 1 %',
+						tier2: 'Tier 2 %',
+						tier3: 'Tier 3 %',
+						hb: 'Heavy & Bulky %',
+						international: 'International %',
+						parcel: 'Parcel %'
+					}
+				},
+				ar: {
+					pageTitle: 'إستبيان إعداد توقعات العملاء',
+					companyLabel: 'اسم شركة العميل',
+					weeklyVolumeLabel: 'الحجم اليومي (الشحنات)',
+					weeklyOutboundLabel: 'الوحدات اليومية الصادرة',
+					weeklyInboundLabel: 'الوحدات اليومية الواردة',
+					forecastingPeriodLabel: 'فترة التوقعات',
+					startDate: 'تاريخ البداية',
+					endDate: 'تاريخ النهاية',
+					selectDateRange: 'اختر نطاق التاريخ للتوقعات',
+					skusLabel: 'وحدة حفظ المخزون الخاصة للموسمية',
+					codLabel: 'نسبة الدفع عند الاستلام %',
+					ppdLabel: 'نسبة الدفع المسبق %',
+					tierSplitLabel: 'تقسيم المستويات % (يجب أن يكون المجموع 100%)',
+					serviceMixLabel: 'مزيج الخدمات % (يجب أن يكون المجموع 100%)',
+					submitButton: '[ إرسال ]',
+					requiredNote: 'الحقول المطلوبة',
+					optionalNote: '(اختياري)',
+					sectionServiceType: 'نوع الخدمة',
+					sectionCompany: 'الشركة والحجم',
+					sectionPayments: 'المدفوعات والمزيج',
+					serviceTypeLabel: 'اختر نوع الخدمة',
+					fulfillmentOption: 'تخزين',
+					lastMileOption: 'الميل الأخير',
+					bundlesLabel: 'الحزم الخاصة',
+					inboundFrequencyLabel: 'تكرار الوارد',
+					avgUnitsLabel: 'متوسط الوحدة لكل شحنة',
+					selectFrequency: 'اختر التكرار',
+					dailyOption: 'يومي',
+					weeklyOption: 'أسبوعي',
+					biweeklyOption: 'كل أسبوعين',
+					codPpdSum: 'يجب أن يكون مجموع نسبة الدفع عند الاستلام ونسبة الدفع المسبق 100%.',
+					errWeeklyShipments: 'يجب أن يكون رقماً ≥ 0.',
+					errWeeklyOutbound: 'يجب أن يكون رقماً ≥ 0.',
+					errWeeklyInbound: 'يجب أن يكون رقماً ≥ 0.',
+					errCodPercent: 'يجب أن يكون بين 0 و 100.',
+					errPpdPercent: 'يجب أن يكون بين 0 و 100.',
+					errInboundFrequency: 'يرجى اختيار التكرار.',
+					errAvgUnits: 'يجب أن يكون رقماً ≥ 0.',
+					errTierSum: 'يجب أن يكون مجموع تقسيم المستويات 100%.',
+					errServiceSum: 'يجب أن يكون مجموع مزيج الخدمات 100%.',
+					errDatePast: 'لا يمكن أن يكون تاريخ البداية في الماضي',
+					errDateOrder: 'يجب أن يكون تاريخ النهاية بعد تاريخ البداية',
+					errDateRange: 'لا يمكن أن تتجاوز فترة التوقعات سنتين',
+					placeholder: {
+						company: 'أدخل اسم الشركة',
+						shipments: 'مثال: 5',
+						outbound: 'مثال: 10',
+						inbound: 'e.g. 8',
+						avgUnits: 'e.g. 3',
+						forecastingPeriod: 'اختر التواريخ',
+						skus: 'ملاحظات اختيارية حول وحدة حفظ المخزون الموسمية',
+						tier1: 'المستوى 1 %',
+						tier2: 'المستوى 2 %',
+						tier3: 'المستوى 3 %',
+						hb: 'ثقيل و متين %',
+						international: 'دولي %',
+						parcel: 'طرد %',
+						bundles: 'ملاحظات اختيارية حول الحزم الخاصة'
+					}
+				}
+			};
+
+			// Function to update form language
+			function updateFormLanguage() {
+				const lang = translations[currentLanguage];
+
+				// Update all elements with data-translate attribute
+				document.querySelectorAll('[data-translate]').forEach(element => {
+					const key = element.getAttribute('data-translate');
+					if (lang[key]) {
+						if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+							// For input elements, update placeholder
+							element.placeholder = lang[key];
+						} else {
+							// For other elements, update text content
+							if (key === 'companyLabel' || key === 'weeklyVolumeLabel' || key === 'weeklyOutboundLabel' ||
+								key === 'weeklyInboundLabel' || key === 'inboundFrequencyLabel' || key === 'avgUnitsLabel' || key === 'forecastingPeriodLabel' || key === 'codLabel' ||
+								key === 'ppdLabel' || key === 'tierSplitLabel' ||
+								key === 'serviceMixLabel') {
+								element.innerHTML = lang[key] + ' <span class="text-danger">*</span>';
+							} else if (key === 'skusLabel' || key === 'bundlesLabel') {
+								element.innerHTML = lang[key] + ' <small class="text-muted"><em>' + lang.optionalNote + '</em></small>';
+							} else if (key === 'requiredNote') {
+								element.innerHTML = '<span class="text-danger">*</span> ' + lang[key];
+							} else {
+								element.textContent = lang[key];
+							}
+						}
+					}
+				});
+
+				// Update placeholders for specific inputs
+				const companyInput = document.getElementById('company_name');
+				const shipmentsInput = document.getElementById('weekly_shipments');
+				const weeklyInboundInput = document.getElementById('weekly_units_inbound');
+				const inboundFrequencySelect = document.getElementById('inbound-frequency');
+				const avgUnitsInput = document.getElementById('avg-units');
+				const skusInput = document.getElementById('seasonality_skus_notes');
+				const bundlesInput = document.getElementById('special_bundles_notes');
+				const tier1Input = document.getElementById('tier1_percent');
+				const tier2Input = document.getElementById('tier2_percent');
+				const tier3Input = document.getElementById('tier3_percent');
+				const serviceHbInput = document.getElementById('service_hb_percent');
+				const serviceIntInput = document.getElementById('service_int_percent');
+				const serviceParcelInput = document.getElementById('service_parcel_percent');
+
+				if (companyInput) companyInput.placeholder = lang.placeholder.company;
+				if (shipmentsInput) shipmentsInput.placeholder = lang.placeholder.shipments;
+				if (weeklyInboundInput) weeklyInboundInput.placeholder = lang.placeholder.inbound;
+				if (avgUnitsInput) avgUnitsInput.placeholder = lang.placeholder.avgUnits;
+				if (inboundFrequencySelect) inboundFrequencySelect.placeholder = lang.selectFrequency;
+				if (skusInput) skusInput.placeholder = lang.placeholder.skus;
+				if (bundlesInput) bundlesInput.placeholder = lang.placeholder.bundles;
+				if (tier1Input) tier1Input.placeholder = lang.placeholder.tier1;
+				if (tier2Input) tier2Input.placeholder = lang.placeholder.tier2;
+				if (tier3Input) tier3Input.placeholder = lang.placeholder.tier3;
+				if (serviceHbInput) serviceHbInput.placeholder = lang.placeholder.hb;
+				if (serviceIntInput) serviceIntInput.placeholder = lang.placeholder.international;
+				if (serviceParcelInput) serviceParcelInput.placeholder = lang.placeholder.parcel;
+
+				// Update button text
+				if (currentLangSpan) currentLangSpan.textContent = currentLanguage === 'en' ? 'العربية' : 'English';
+
+				// Debug logging
+				console.log('Language updated to:', currentLanguage);
+				console.log('Form elements updated');
+			}
+
+			// Language toggle event listener
+			languageToggle.addEventListener('click', () => {
+				console.log('Language toggle clicked. Current language:', currentLanguage);
+				currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+				console.log('New language:', currentLanguage);
+				updateFormLanguage();
+
+				// Store language preference in localStorage
+				localStorage.setItem('customerFormLanguage', currentLanguage);
+				console.log('Language preference saved to localStorage');
+			});
+
+			// Load saved language preference
+			const savedLanguage = localStorage.getItem('customerFormLanguage');
+			if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'ar')) {
+				currentLanguage = savedLanguage;
+				updateFormLanguage();
+			}
+
+			// Function to handle service type changes
+			function handleServiceTypeChange() {
+				const serviceTypeRadios = document.querySelectorAll('input[name="service-type"]');
+				const seasonalityContainer = document.getElementById('seasonality_skus_container');
+				const bundlesContainer = document.getElementById('special_bundles_container');
+				
+				// Initially hide both containers
+				if (seasonalityContainer) seasonalityContainer.style.display = 'none';
+				if (bundlesContainer) bundlesContainer.style.display = 'none';
+				
+				serviceTypeRadios.forEach(radio => {
+					radio.addEventListener('change', function() {
+						if (this.value === 'fulfillment') {
+							// Show both fields for fulfillment
+							if (seasonalityContainer) seasonalityContainer.style.display = 'block';
+							if (bundlesContainer) bundlesContainer.style.display = 'block';
+						} else if (this.value === 'last-mile') {
+							// Hide both fields for last mile
+							if (seasonalityContainer) seasonalityContainer.style.display = 'none';
+							if (bundlesContainer) bundlesContainer.style.display = 'none';
+						}
+					});
+				});
+				
+				// Check initial state
+				const checkedRadio = document.querySelector('input[name="service-type"]:checked');
+				if (checkedRadio) {
+					if (checkedRadio.value === 'fulfillment') {
+						if (seasonalityContainer) seasonalityContainer.style.display = 'block';
+						if (bundlesContainer) bundlesContainer.style.display = 'block';
+					}
+				}
+			}
+
+			// Format dates for input fields (YYYY-MM-DD)
+			const formatDate = (date) => {
+				const year = date.getFullYear();
+				const month = String(date.getMonth() + 1).padStart(2, '0');
+				const day = String(date.getDate()).padStart(2, '0');
+				return `${year}-${month}-${day}`;
+			};
+
+			// Set default dates for forecasting period
+			const today = new Date();
+			const tomorrow = new Date();
+			const threeMonthsLater = new Date();
+			tomorrow.setDate(today.getDate() + 1); // Start from tomorrow
+			threeMonthsLater.setMonth(tomorrow.getMonth() + 3);
+
+			// Set initial dates and constraints
+			const forecastStartDate = document.getElementById('forecast_start_date');
+			const forecastEndDate = document.getElementById('forecast_end_date');
+
+			// Set minimum date to today for start date
+			forecastStartDate.min = formatDate(today);
+			forecastStartDate.value = formatDate(tomorrow);
+			forecastEndDate.value = formatDate(threeMonthsLater);
+
+			const form = document.getElementById('customerForm');
+			const company = document.getElementById('company_name');
+			const weeklyShip = document.getElementById('weekly_shipments');
+			const weeklyOut = document.getElementById('weekly_units_outbound');
+			const weeklyIn = document.getElementById('weekly_units_inbound');
+			const inboundFreq = document.getElementById('inbound-frequency');
+			const avgUnits = document.getElementById('avg-units');
+			const notes = document.getElementById('seasonality_skus_notes');
+			const bundlesNotes = document.getElementById('special_bundles_notes');
+			const serviceType = document.querySelector('input[name="service-type"]:checked');
+			const cod = document.getElementById('cod_percent');
+			const ppd = document.getElementById('ppd_percent');
+			const t1 = document.getElementById('tier1_percent');
+			const t2 = document.getElementById('tier2_percent');
+			const t3 = document.getElementById('tier3_percent');
+			const s1 = document.getElementById('service_hb_percent');
+			const s2 = document.getElementById('service_int_percent');
+			const s3 = document.getElementById('service_parcel_percent');
+
+			function show(el, flag) { if (!el) return; el.classList[flag ? 'remove' : 'add']('d-none'); }
+
+			function showError(messageKey) {
+				const errorElement = document.getElementById('err_forecast_dates');
+				if (errorElement) {
+					const lang = translations[currentLanguage];
+					errorElement.textContent = lang[messageKey] || messageKey;
+					errorElement.classList.remove('d-none');
+				}
+			}
+			function validateNumericInput(input, errorElement, min = 0, max = null) {
+				if (!input || !errorElement) {
+					console.warn('validateNumericInput: missing input or errorElement');
+					return false;
+				}
+				const value = parseFloat(input.value);
+				if (isNaN(value) || value < min || (max !== null && value > max)) {
+					input.classList.add('is-invalid');
+					errorElement.classList.remove('d-none');
+					return false;
+				}
+				input.classList.remove('is-invalid');
+				errorElement.classList.add('d-none');
+				return true;
+			}
+
+			function validateInboundFrequency() {
+				const select = document.getElementById('inbound-frequency');
+				const errorElement = document.getElementById('inbound-frequency-error');
+				
+				if (!select.value) {
+					select.classList.add('is-invalid');
+					errorElement.textContent = translations[currentLanguage].errInboundFrequency;
+					return false;
+				}
+				
+				select.classList.remove('is-invalid');
+				return true;
+			}
+
+			function validateAvgUnits() {
+				const input = document.getElementById('avg-units');
+				const errorElement = document.getElementById('avg-units-error');
+				
+				const value = parseFloat(input.value);
+				if (isNaN(value) || value < 0) {
+					input.classList.add('is-invalid');
+					errorElement.textContent = translations[currentLanguage].errAvgUnits;
+					return false;
+				}
+				
+				input.classList.remove('is-invalid');
+				return true;
+			}
+
+			// Add missing validateSum100 function
+			function validateSum100(inputs, errorElement) {
+				const sum = inputs.reduce((total, input) => {
+					const value = parseFloat(input.value) || 0;
+					return total + value;
+				}, 0);
+				
+				if (Math.abs(sum - 100) > 0.01) { // Allow small floating point differences
+					inputs.forEach(input => input.classList.add('is-invalid'));
+					errorElement.classList.remove('d-none');
+					return false;
+				}
+				
+				inputs.forEach(input => input.classList.remove('is-invalid'));
+				errorElement.classList.add('d-none');
+				return true;
+			}
+
+			// Date validation function for form submission
+			function validateDateRange() {
+				if (forecastStartDate.value && forecastEndDate.value) {
+					const startDate = new Date(forecastStartDate.value);
+					const endDate = new Date(forecastEndDate.value);
+					return endDate > startDate;
+				}
+				return false;
+			}
+			['input', 'change'].forEach(evt => { cod.addEventListener(evt, validateCodPpd); ppd.addEventListener(evt, validateCodPpd); });
+			function validateCodPpd() { const codValid = validateNumericInput(cod, document.getElementById('err_cod_percent'), 0, 100); const ppdValid = validateNumericInput(ppd, document.getElementById('err_ppd_percent'), 0, 100); const sumOk = validateNumericInput(cod, document.getElementById('err_cod_ppd_sum'), 0, 100) && validateNumericInput(ppd, document.getElementById('err_cod_ppd_sum'), 0, 100) && parseFloat(cod.value) + parseFloat(ppd.value) === 100; return codValid && ppdValid && sumOk; }
+			function validateForecastDates() {
+				const startDate = new Date(forecastStartDate.value);
+				const endDate = new Date(forecastEndDate.value);
+				const today = new Date();
+				today.setHours(0, 0, 0, 0); // Reset time for accurate comparison
+
+				// Reset any existing error and styling
+				const errorElement = document.getElementById('err_forecast_dates');
+				if (errorElement) errorElement.classList.add('d-none');
+				forecastStartDate.classList.remove('is-invalid');
+				forecastEndDate.classList.remove('is-invalid');
+
+				// Check if dates are selected
+				if (!forecastStartDate.value || !forecastEndDate.value) {
+					if (!forecastStartDate.value) forecastStartDate.classList.add('is-invalid');
+					if (!forecastEndDate.value) forecastEndDate.classList.add('is-invalid');
+					return false;
+				}
+
+				// Check if start date is not in the past
+				startDate.setHours(0, 0, 0, 0);
+				if (startDate < today) {
+					showError('errDatePast');
+					forecastStartDate.classList.add('is-invalid');
+					return false;
+				}
+
+				// Check if end date is after start date (not same day or before)
+				endDate.setHours(0, 0, 0, 0);
+				if (endDate <= startDate) {
+					showError('errDateOrder');
+					forecastEndDate.classList.add('is-invalid');
+					forecastStartDate.classList.add('is-invalid');
+					return false;
+				}
+
+				// Check if period is not too long (max 2 years)
+				const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+				if (daysDiff > 730) {
+					showError('errDateRange');
+					forecastEndDate.classList.add('is-invalid');
+					return false;
+				}
+
+				return true;
+			}
+
+			// Date validation function for form submission
+			function validateDateRange() {
+				if (forecastStartDate.value && forecastEndDate.value) {
+					const startDate = new Date(forecastStartDate.value);
+					const endDate = new Date(forecastEndDate.value);
+					return endDate > startDate;
+				}
+				return false;
+			}
+			['input', 'change'].forEach(evt => { cod.addEventListener(evt, validateCodPpd); ppd.addEventListener(evt, validateCodPpd); });
+			validateCodPpd();
+			// Add event listeners for percentage inputs to prevent negative values and values over 100
+			[cod, ppd, t1, t2, t3, s1, s2, s3].forEach(input => {
+				input.addEventListener('input', function() {
+					// Prevent negative values
+					if (this.value < 0) this.value = 0;
+					// Prevent values over 100 for percentage fields
+					if (this.value > 100) this.value = 100;
+				});
+			});
+			const weeklyShipmentsInput = document.getElementById('weekly_shipments');
+			const weeklyOutboundInput = document.getElementById('weekly_units_outbound');
+			const weeklyInboundInput = document.getElementById('weekly_units_inbound');
+			const inboundFrequencySelect = document.getElementById('inbound-frequency');
+			const avgUnitsInput = document.getElementById('avg-units');
+
+			weeklyShipmentsInput.addEventListener('input', () => {
+				// Prevent negative values
+				if (weeklyShipmentsInput.value < 0) weeklyShipmentsInput.value = 0;
+				validateNumericInput(weeklyShipmentsInput, document.getElementById('err_weekly_shipments'));
+			});
+			weeklyOutboundInput.addEventListener('input', () => {
+				// Prevent negative values
+				if (weeklyOutboundInput.value < 0) weeklyOutboundInput.value = 0;
+				validateNumericInput(weeklyOutboundInput, document.getElementById('err_weekly_units_outbound'));
+			});
+			weeklyInboundInput.addEventListener('input', () => {
+				// Prevent negative values
+				if (weeklyInboundInput.value < 0) weeklyInboundInput.value = 0;
+				validateNumericInput(weeklyInboundInput, document.getElementById('err_weeklyInbound'));
+			});
+
+			inboundFrequencySelect.addEventListener('change', validateInboundFrequency);
+			avgUnitsInput.addEventListener('input', () => {
+				// Prevent negative values
+				if (avgUnitsInput.value < 0) avgUnitsInput.value = 0;
+				validateAvgUnits();
+			});
+
+			function validateServiceType() {
+				const selectedServiceType = document.querySelector('input[name="service-type"]:checked');
+				if (!selectedServiceType) {
+					// Add visual feedback for missing service type selection
+					const serviceTypeContainer = document.querySelector('.d-flex.gap-3');
+					if (serviceTypeContainer) {
+						serviceTypeContainer.classList.add('border', 'border-danger', 'rounded', 'p-2');
+					}
+					return false;
+				} else {
+					// Remove error styling if service type is selected
+					const serviceTypeContainer = document.querySelector('.d-flex.gap-3');
+					if (serviceTypeContainer) {
+						serviceTypeContainer.classList.remove('border', 'border-danger', 'rounded', 'p-2');
+					}
+					return true;
+				}
+			}
+
+			// Add event listeners for service type radio buttons
+			document.querySelectorAll('input[name="service-type"]').forEach(radio => {
+				radio.addEventListener('change', validateServiceType);
+			});
+
+			// Enhanced input sanitization for company name
+			const companyNameInput = document.getElementById('company_name');
+			companyNameInput.addEventListener('input', function() {
+				// Remove leading/trailing spaces and limit length
+				this.value = this.value.trim().substring(0, 100);
+			});
+
+			// Enhanced date validation with event listeners
+			function updateDateConstraints() {
+    if (forecastStartDate.value) {
+        // Set end date min to start date + 1 day
+        const startDate = new Date(forecastStartDate.value);
+        startDate.setDate(startDate.getDate() + 1);
+        forecastEndDate.min = formatDate(startDate);
+
+					// If end date is now invalid, suggest a new date
+					if (forecastEndDate.value && forecastEndDate.value <= forecastStartDate.value) {
+						// Auto-suggest end date 3 months after start date
+						const suggestedEndDate = new Date(forecastStartDate.value);
+						suggestedEndDate.setMonth(suggestedEndDate.getMonth() + 3);
+						forecastEndDate.value = formatDate(suggestedEndDate);
+					}
+				}
+			}
+
+			forecastStartDate.addEventListener('change', () => {
+				updateDateConstraints();
+				validateForecastDates();
+			});
+
+			forecastStartDate.addEventListener('input', () => {
+				updateDateConstraints();
+				validateForecastDates();
+			});
+
+			forecastEndDate.addEventListener('change', () => {
+				validateForecastDates();
+			});
+
+			forecastEndDate.addEventListener('input', () => {
+				validateForecastDates();
+			});
+
+			// Real-time validation on blur for better UX
+			forecastStartDate.addEventListener('blur', () => {
+				validateForecastDates();
+			});
+
+			forecastEndDate.addEventListener('blur', () => {
+				validateForecastDates();
+			});
+
+			// Initialize date constraints on page load
+			updateDateConstraints();
+
+			// Add visual validation indicators
+			forecastStartDate.classList.add('date-input');
+			forecastEndDate.classList.add('date-input');
+
+			
+			// Initialize service type change handling
+			handleServiceTypeChange();
+			
+			form.addEventListener('submit', async (e) => {
+				e.preventDefault();
+				console.log('Form submitted, starting validation...');
+
+				// Date validation
+				if (!validateForecastDates()) {
+					console.log('Date validation failed');
+					return;
+				}
+				console.log('Date validation passed');
+
+				// Check each validation step
+				console.log('Company name:', company.value.trim().length > 0);
+				console.log('Weekly shipments:', weeklyShip.value && !isNaN(weeklyShip.value) && Number(weeklyShip.value) >= 0);
+				console.log('Weekly outbound:', weeklyOut.value && !isNaN(weeklyOut.value) && Number(weeklyOut.value) >= 0);
+				console.log('Weekly inbound:', weeklyIn.value && !isNaN(weeklyIn.value) && Number(weeklyIn.value) >= 0);
+				console.log('Inbound frequency:', inboundFreq.value);
+				console.log('Date validation:', validateForecastDates());
+				console.log('COD/PPD validation:', validateCodPpd());
+				console.log('Tier sum:', validateSum100([t1, t2, t3], document.getElementById('err_tier_sum')));
+				console.log('Service sum:', validateSum100([s1, s2, s3], document.getElementById('err_service_sum')));
+
+				const isValidCompany = company.value.trim().length > 0;
+				const isValidShipments = weeklyShip.value && !isNaN(weeklyShip.value) && Number(weeklyShip.value) >= 0;
+				const isValidOutbound = weeklyOut.value && !isNaN(weeklyOut.value) && Number(weeklyOut.value) >= 0;
+				const isValidInbound = weeklyIn.value && !isNaN(weeklyIn.value) && Number(weeklyIn.value) >= 0;
+				const isValidInboundFreq = inboundFreq.value;
+				const isValidAvgUnits = validateAvgUnits();
+				const isValidServiceType = validateServiceType();
+				const isValidCodPpd = validateCodPpd();
+				const isValidTierSplit = validateSum100([t1, t2, t3], document.getElementById('err_tier_sum'));
+				const isValidServiceMix = validateSum100([s1, s2, s3], document.getElementById('err_service_sum'));
+				const isValidDates = validateForecastDates();
+
+				const valid = (isValidCompany && isValidShipments && isValidOutbound && isValidInbound && isValidInboundFreq && isValidAvgUnits && isValidServiceType && isValidCodPpd && isValidTierSplit && isValidServiceMix && isValidDates);
+				
+				if (!valid) {
+					console.log('Form validation failed, cannot submit');
+					return;
+				}
+
+				console.log('All validations passed, submitting form...');
+				// Create submission matching the exact Supabase table schema
+				const selectedServiceType = document.querySelector('input[name="service-type"]:checked');
+				const newSubmission = {
+					company_name: company.value.trim(),
+					service_type: selectedServiceType ? selectedServiceType.value : null,
+					weekly_shipments: Number(weeklyShip.value),
+					weekly_units_outbound: Number(weeklyOut.value),
+					weekly_units_inbound: Number(weeklyIn.value),
+					forecast_start_date: forecastStartDate.value,
+					forecast_end_date: forecastEndDate.value,
+					seasonality_skus_notes: notes.value.trim(),
+					special_bundles_notes: bundlesNotes.value.trim(),
+					inbound_frequency: inboundFreq.value,
+					avg_units_per_shipment: Number(avgUnits.value),
+					cod_percent: Number(cod.value),
+					ppd_percent: Number(ppd.value),
+					tier1_percent: Number(t1.value),
+					tier2_percent: Number(t2.value),
+					tier3_percent: Number(t3.value),
+					service_hb_percent: Number(s1.value),
+					service_int_percent: Number(s2.value),
+					service_parcel_percent: Number(s3.value)
+				};
+				try {
+					console.log('Submitting to Supabase:', newSubmission);
+					const { data, error } = await window.supa.from('submissions').insert([newSubmission]);
+					if (error) throw error;
+					console.log('Data submitted successfully:', data);
+					
+					// Pass language preference to thank you page
+					const thankYouUrl = currentLanguage === 'ar' ? 'thank-you.html?lang=ar' : 'thank-you.html?lang=en';
+					console.log('Redirecting to:', thankYouUrl);
+					window.location.href = thankYouUrl;
+				} catch (err) {
+					console.error('Error submitting data:', err);
+					
+					// Even if database submission fails, redirect to thank you page
+					// This ensures users don't get stuck on the form
+					console.log('Database submission failed, but redirecting to thank you page...');
+					const thankYouUrl = currentLanguage === 'ar' ? 'thank-you.html?lang=ar' : 'thank-you.html?lang=en';
+					window.location.href = thankYouUrl;
+				}
+			});
+		}
+		main();
+	</script>
+</body>
+
+</html>
