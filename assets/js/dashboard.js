@@ -145,20 +145,30 @@ function renderTable() {
 	tbody.innerHTML = '';
 	state.filtered.forEach(row => {
 		const tr = document.createElement('tr');
+		const forecastPeriod = row.forecast_start_date && row.forecast_end_date 
+			? `${row.forecast_start_date} to ${row.forecast_end_date}` 
+			: 'Not set';
+		const serviceType = row.service_type ? row.service_type.charAt(0).toUpperCase() + row.service_type.slice(1) : 'Not set';
+		const inboundFreq = row.inbound_frequency ? row.inbound_frequency.charAt(0).toUpperCase() + row.inbound_frequency.slice(1) : 'Not set';
+		
 		tr.innerHTML = `
 			<td>${window.formatKSA(row.created_at)}</td>
 			<td>${row.company_name||''}</td>
+			<td>${serviceType}</td>
 			<td>${row.weekly_shipments||0}</td>
 			<td>${row.weekly_units_outbound||0}</td>
 			<td>${row.weekly_units_inbound||0}</td>
+			<td>${inboundFreq}</td>
+			<td>${row.avg_units_per_shipment||0}</td>
 			<td>${row.cod_percent||0}</td>
-			<td>${row.cod_percent_expected_increase||0}</td>
+			<td>${row.ppd_percent||0}</td>
 			<td>${row.tier1_percent||0}</td>
 			<td>${row.tier2_percent||0}</td>
 			<td>${row.tier3_percent||0}</td>
 			<td>${row.service_hb_percent||0}</td>
 			<td>${row.service_int_percent||0}</td>
 			<td>${row.service_parcel_percent||0}</td>
+			<td>${forecastPeriod}</td>
 			<td>${(row.seasonality_skus_notes||'').replace(/</g,'&lt;')}</td>
 			<td>
 				<button class="btn btn-sm btn-outline-primary me-1" data-action="edit" data-id="${row.id}">Edit</button>
@@ -166,6 +176,70 @@ function renderTable() {
 			</td>`;
 		tbody.appendChild(tr);
 	});
+	
+	// Add resize handles after table is rendered
+	addResizeHandles();
+}
+
+function addResizeHandles() {
+	// Wait for table to be fully rendered
+	setTimeout(() => {
+		const headers = document.querySelectorAll('#submissionsTable thead th');
+		console.log('Adding resize handles to', headers.length, 'headers');
+		
+		headers.forEach((header, index) => {
+			// Skip the last column (Actions) as it doesn't need resizing
+			if (index < headers.length - 1) {
+				// Remove existing resize handle if any
+				const existingHandle = header.querySelector('.resize-handle');
+				if (existingHandle) {
+					existingHandle.remove();
+				}
+				
+				// Add new resize handle
+				const resizeHandle = document.createElement('div');
+				resizeHandle.className = 'resize-handle';
+				resizeHandle.title = 'Drag to resize column';
+				header.style.position = 'relative'; // Ensure parent is positioned
+				header.appendChild(resizeHandle);
+				
+				console.log('Added resize handle to column', index);
+				
+				// Add resize functionality
+				let isResizing = false;
+				let startX = 0;
+				let startWidth = 0;
+				
+				resizeHandle.addEventListener('mousedown', (e) => {
+					console.log('Resize started for column', index);
+					isResizing = true;
+					startX = e.clientX;
+					startWidth = parseInt(document.defaultView.getComputedStyle(header).width, 10);
+					document.addEventListener('mousemove', handleMouseMove);
+					document.addEventListener('mouseup', handleMouseUp);
+					document.body.style.cursor = 'col-resize';
+					e.preventDefault();
+					e.stopPropagation();
+				});
+				
+				function handleMouseMove(e) {
+					if (!isResizing) return;
+					const width = startWidth + e.clientX - startX;
+					if (width > 50) { // Minimum width
+						header.style.width = width + 'px';
+					}
+				}
+				
+				function handleMouseUp() {
+					console.log('Resize ended for column', index);
+					isResizing = false;
+					document.removeEventListener('mousemove', handleMouseMove);
+					document.removeEventListener('mouseup', handleMouseUp);
+					document.body.style.cursor = '';
+				}
+			}
+		});
+	}, 100);
 }
 
 async function loadData() {
@@ -228,9 +302,16 @@ function setupRealtime() {
 }
 
 function setupCrudHandlers() {
-	document.querySelector('#submissionsTable').addEventListener('click', async (e) => {
-		const btn = e.target.closest('button');
+	// Use event delegation on the table body to avoid conflicts with resize handles
+	document.addEventListener('click', async (e) => {
+		// Check if click is on a button within the submissions table
+		const btn = e.target.closest('button[data-action]');
 		if (!btn) return;
+		
+		// Make sure the button is within our table
+		const table = btn.closest('#submissionsTable');
+		if (!table) return;
+		
 		const id = btn.getAttribute('data-id');
 		const action = btn.getAttribute('data-action');
 		const row = state.allSubmissions.find(r=>r.id===id);
@@ -256,24 +337,53 @@ function setupCrudHandlers() {
 				if (isNaN(n)) { alert('Invalid number'); return null; }
 				return n;
 			}
+			
+			// Basic info
 			const company = prompt('Company Name', row.company_name || ''); if (company===null) return;
 			updated.company_name = company.trim();
-			const ws = numPrompt('Weekly Shipments', row.weekly_shipments); if (ws===null) return; updated.weekly_shipments = ws;
-			const wout = numPrompt('Weekly Units Outbound', row.weekly_units_outbound); if (wout===null) return; updated.weekly_units_outbound = wout;
-			const win = numPrompt('Weekly Units Inbound', row.weekly_units_inbound); if (win===null) return; updated.weekly_units_inbound = win;
+			
+			// Service type
+			const serviceType = prompt('Service Type (fulfillment/last-mile)', row.service_type || ''); if (serviceType===null) return;
+			updated.service_type = serviceType.trim();
+			
+			// Volume data
+			const ws = numPrompt('Daily Shipments', row.weekly_shipments); if (ws===null) return; updated.weekly_shipments = ws;
+			const wout = numPrompt('Daily Units Outbound', row.weekly_units_outbound); if (wout===null) return; updated.weekly_units_outbound = wout;
+			const win = numPrompt('Daily Units Inbound', row.weekly_units_inbound); if (win===null) return; updated.weekly_units_inbound = win;
+			
+			// Frequency and units
+			const inboundFreq = prompt('Inbound Frequency (daily/weekly/biweekly)', row.inbound_frequency || ''); if (inboundFreq===null) return;
+			updated.inbound_frequency = inboundFreq.trim();
+			const avgUnits = numPrompt('Average Units per Shipment', row.avg_units_per_shipment); if (avgUnits===null) return; updated.avg_units_per_shipment = avgUnits;
+			
+			// Payment percentages
 			const cod = numPrompt('COD % (0-100)', row.cod_percent); if (cod===null) return; if (cod<0||cod>100) return alert('COD must be 0-100'); updated.cod_percent = cod;
-			const codInc = numPrompt('Expected Increase in COD Value %', row.cod_percent_expected_increase); if (codInc===null) return; updated.cod_percent_expected_increase = codInc;
+			const ppd = numPrompt('PPD % (0-100)', row.ppd_percent); if (ppd===null) return; if (ppd<0||ppd>100) return alert('PPD must be 0-100'); updated.ppd_percent = ppd;
+			if (cod + ppd !== 100) return alert('COD + PPD must equal 100%');
+			
+			// Tier percentages
 			const t1 = numPrompt('Tier 1 %', row.tier1_percent); if (t1===null) return;
 			const t2 = numPrompt('Tier 2 %', row.tier2_percent); if (t2===null) return;
 			const t3 = numPrompt('Tier 3 %', row.tier3_percent); if (t3===null) return;
 			if (t1 + t2 + t3 !== 100) return alert('Tier split must sum to 100');
 			updated.tier1_percent = t1; updated.tier2_percent = t2; updated.tier3_percent = t3;
+			
+			// Service mix percentages
 			const s1 = numPrompt('Service H&B %', row.service_hb_percent); if (s1===null) return;
 			const s2 = numPrompt('Service Int %', row.service_int_percent); if (s2===null) return;
 			const s3 = numPrompt('Service Parcel %', row.service_parcel_percent); if (s3===null) return;
 			if (s1 + s2 + s3 !== 100) return alert('Service mix must sum to 100');
 			updated.service_hb_percent = s1; updated.service_int_percent = s2; updated.service_parcel_percent = s3;
-			const notes = prompt('Notes', row.seasonality_skus_notes || ''); if (notes===null) return; updated.seasonality_skus_notes = notes;
+			
+			// Dates
+			const startDate = prompt('Forecast Start Date (YYYY-MM-DD)', row.forecast_start_date || ''); if (startDate===null) return;
+			updated.forecast_start_date = startDate.trim();
+			const endDate = prompt('Forecast End Date (YYYY-MM-DD)', row.forecast_end_date || ''); if (endDate===null) return;
+			updated.forecast_end_date = endDate.trim();
+			
+			// Notes
+			const notes = prompt('Seasonality SKUs Notes', row.seasonality_skus_notes || ''); if (notes===null) return; updated.seasonality_skus_notes = notes;
+			const bundlesNotes = prompt('Special Bundles Notes', row.special_bundles_notes || ''); if (bundlesNotes===null) return; updated.special_bundles_notes = bundlesNotes;
 
 			const { error } = await window.supa.from('submissions').update(updated).eq('id', id);
 			if (error) return alert('Update error: ' + error.message);
