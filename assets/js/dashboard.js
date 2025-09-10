@@ -234,7 +234,7 @@ function renderTable() {
 		}
 		
 		tr.innerHTML = `
-			<td>${new Date(row.created_at).toLocaleDateString()}</td>
+			<td>${window.formatKSA ? window.formatKSA(row.created_at) : new Date(row.created_at).toLocaleDateString()}</td>
 			<td>${getWeekInfo(row.created_at)}</td>
 			<td>${row.company_name || ''}</td>
 			<td>${serviceType}</td>
@@ -245,6 +245,12 @@ function renderTable() {
 			<td>${row.avg_units_per_shipment||0}</td>
 			<td>${row.cod_percent||0}</td>
 			<td>${row.ppd_percent||0}</td>
+			<td>${row.tier1_percent||0}</td>
+			<td>${row.tier2_percent||0}</td>
+			<td>${row.tier3_percent||0}</td>
+			<td>${row.service_hb_percent||0}</td>
+			<td>${row.service_int_percent||0}</td>
+			<td>${row.service_parcel_percent||0}</td>
 			<td>${row.service_mix||''}</td>
 			<td>${forecastPeriod}</td>
 			<td title="${skuNotes}">${skuNotes}</td>
@@ -470,7 +476,7 @@ function setupCrudHandlers() {
 			const action = btn.getAttribute('data-action');
 			const row = state.allSubmissions.find(r => r.id === id);
 			if (!row) return;
-
+			
 			if (action === 'delete') {
 				if (!confirm('Delete this submission?')) return;
 				const { error } = await window.supa.from('submissions').delete().eq('id', id);
@@ -479,7 +485,7 @@ function setupCrudHandlers() {
 				applyFilter(); buildCharts(); renderTable();
 				return;
 			}
-
+			
 			if (action === 'edit') {
 				openEditModal(row);
 			}
@@ -734,7 +740,6 @@ function validateForm() {
 		errors.push('COD + PPD must equal 100%');
 		isValid = false;
 	}
-	
 	
 	// Validate Service Mix - at least one option selected
 	const serviceMixChecked = document.querySelectorAll('input[name="edit_service_mix"]:checked');
