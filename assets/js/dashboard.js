@@ -38,6 +38,51 @@ function average(arr) {
 	return arr.reduce((a,b)=>a+b,0)/arr.length;
 }
 
+function getWeekInfo(dateString) {
+	if (!dateString) return 'N/A';
+	
+	const date = new Date(dateString);
+	if (isNaN(date.getTime())) return 'N/A';
+	
+	// ISO 8601 week calculation
+	const year = date.getFullYear();
+	const month = date.getMonth();
+	const day = date.getDate();
+	
+	// Create date object for calculation
+	const targetDate = new Date(year, month, day);
+	
+	// Find Thursday of this week (ISO week belongs to year of Thursday)
+	const dayOfWeek = (targetDate.getDay() + 6) % 7; // Monday = 0, Sunday = 6
+	const thursday = new Date(targetDate);
+	thursday.setDate(targetDate.getDate() - dayOfWeek + 3);
+	
+	// Find first Thursday of the year
+	const yearStart = new Date(thursday.getFullYear(), 0, 1);
+	const firstThursday = new Date(yearStart);
+	const firstThursdayDay = (yearStart.getDay() + 6) % 7;
+	firstThursday.setDate(1 + (3 - firstThursdayDay + 7) % 7);
+	
+	// Calculate week number
+	const weekNumber = Math.floor((thursday - firstThursday) / (7 * 24 * 60 * 60 * 1000)) + 1;
+	
+	// Get Monday of the week
+	const monday = new Date(targetDate);
+	monday.setDate(targetDate.getDate() - dayOfWeek);
+	
+	// Get Sunday of the week
+	const sunday = new Date(monday);
+	sunday.setDate(monday.getDate() + 6);
+	
+	// Format dates
+	const formatDate = (d) => {
+		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		return `${months[d.getMonth()]} ${d.getDate()}`;
+	};
+	
+	return `Week ${weekNumber}<br><small>${formatDate(monday)} - ${formatDate(sunday)}</small>`;
+}
+
 function applyFilter() {
 	if (state.filterCompany === 'ALL') {
 		state.filtered = [...state.allSubmissions];
@@ -109,9 +154,22 @@ function buildCharts() {
 	});
 
 	// Chart 3: Average Service Mix (doughnut)
-	const avgHB = average(items.map(s=>Number(s.service_hb_percent)||0));
-	const avgInt = average(items.map(s=>Number(s.service_int_percent)||0));
-	const avgPar = average(items.map(s=>Number(s.service_parcel_percent)||0));
+	let hbCount = 0, intCount = 0, parCount = 0;
+	const totalItems = items.length;
+	
+	items.forEach(item => {
+		if (item.service_mix) {
+			const services = item.service_mix.split(',').map(s => s.trim());
+			if (services.includes('hb')) hbCount++;
+			if (services.includes('international')) intCount++;
+			if (services.includes('parcel')) parCount++;
+		}
+	});
+	
+	const avgHB = totalItems > 0 ? (hbCount / totalItems) * 100 : 0;
+	const avgInt = totalItems > 0 ? (intCount / totalItems) * 100 : 0;
+	const avgPar = totalItems > 0 ? (parCount / totalItems) * 100 : 0;
+	
 	console.log('Service mix averages:', { avgHB, avgInt, avgPar });
 	state.charts.service = new Chart(ctxSvc, {
 		type: 'doughnut',
@@ -145,27 +203,122 @@ function renderTable() {
 	tbody.innerHTML = '';
 	state.filtered.forEach(row => {
 		const tr = document.createElement('tr');
+		const forecastPeriod = row.forecast_start_date && row.forecast_end_date 
+			? `${row.forecast_start_date} to ${row.forecast_end_date}` 
+			: 'Not set';
+		const serviceType = row.service_type ? row.service_type.charAt(0).toUpperCase() + row.service_type.slice(1) : 'Not set';
+		const inboundFreq = row.inbound_frequency ? row.inbound_frequency.charAt(0).toUpperCase() + row.inbound_frequency.slice(1) : 'Not set';
+		
+		// Format SKU notes to be more descriptive
+		const skuNotes = row.seasonality_skus_notes ? 
+			row.seasonality_skus_notes.replace(/</g,'&lt;') : 
+			'No SKU notes provided';
+		
+		// Format bundles information
+		let bundlesDisplay = 'No bundles';
+		console.log('Bundle data for row:', row.id, 'special_bundles:', row.special_bundles);
+		
+		if (row.special_bundles && row.special_bundles !== 'null' && row.special_bundles !== '') {
+			try {
+				const bundles = JSON.parse(row.special_bundles);
+				console.log('Parsed bundles:', bundles);
+				if (Array.isArray(bundles) && bundles.length > 0) {
+					bundlesDisplay = bundles.map(bundle => 
+						`${bundle.name || 'Unnamed'}${bundle.details ? ': ' + bundle.details : ''}`
+					).join('; ');
+				}
+			} catch (e) {
+				console.error('Error parsing bundles:', e);
+				bundlesDisplay = 'Invalid bundle data';
+			}
+		}
+		
 		tr.innerHTML = `
-			<td>${window.formatKSA(row.created_at)}</td>
-			<td>${row.company_name||''}</td>
+			<td>${new Date(row.created_at).toLocaleDateString()}</td>
+			<td>${getWeekInfo(row.created_at)}</td>
+			<td>${row.company_name || ''}</td>
+			<td>${serviceType}</td>
 			<td>${row.weekly_shipments||0}</td>
 			<td>${row.weekly_units_outbound||0}</td>
 			<td>${row.weekly_units_inbound||0}</td>
+			<td>${inboundFreq}</td>
+			<td>${row.avg_units_per_shipment||0}</td>
 			<td>${row.cod_percent||0}</td>
-			<td>${row.cod_percent_expected_increase||0}</td>
-			<td>${row.tier1_percent||0}</td>
-			<td>${row.tier2_percent||0}</td>
-			<td>${row.tier3_percent||0}</td>
-			<td>${row.service_hb_percent||0}</td>
-			<td>${row.service_int_percent||0}</td>
-			<td>${row.service_parcel_percent||0}</td>
-			<td>${(row.seasonality_skus_notes||'').replace(/</g,'&lt;')}</td>
+			<td>${row.ppd_percent||0}</td>
+			<td>${row.service_mix||''}</td>
+			<td>${forecastPeriod}</td>
+			<td title="${skuNotes}">${skuNotes}</td>
+			<td>${bundlesDisplay}</td>
 			<td>
 				<button class="btn btn-sm btn-outline-primary me-1" data-action="edit" data-id="${row.id}">Edit</button>
 				<button class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${row.id}">Delete</button>
 			</td>`;
 		tbody.appendChild(tr);
 	});
+	
+	// Add resize handles after table is rendered
+	addResizeHandles();
+}
+
+function addResizeHandles() {
+	// Wait for table to be fully rendered
+	setTimeout(() => {
+		const headers = document.querySelectorAll('#submissionsTable thead th');
+		console.log('Adding resize handles to', headers.length, 'headers');
+		
+		headers.forEach((header, index) => {
+			// Skip the last column (Actions) as it doesn't need resizing
+			if (index < headers.length - 1) {
+				// Remove existing resize handle if any
+				const existingHandle = header.querySelector('.resize-handle');
+				if (existingHandle) {
+					existingHandle.remove();
+				}
+				
+				// Add new resize handle
+				const resizeHandle = document.createElement('div');
+				resizeHandle.className = 'resize-handle';
+				resizeHandle.title = 'Drag to resize column';
+				header.style.position = 'relative'; // Ensure parent is positioned
+				header.appendChild(resizeHandle);
+				
+				console.log('Added resize handle to column', index);
+				
+				// Add resize functionality
+				let isResizing = false;
+				let startX = 0;
+				let startWidth = 0;
+				
+				resizeHandle.addEventListener('mousedown', (e) => {
+					console.log('Resize started for column', index);
+					isResizing = true;
+					startX = e.clientX;
+					startWidth = parseInt(document.defaultView.getComputedStyle(header).width, 10);
+					document.addEventListener('mousemove', handleMouseMove);
+					document.addEventListener('mouseup', handleMouseUp);
+					document.body.style.cursor = 'col-resize';
+					e.preventDefault();
+					e.stopPropagation();
+				});
+				
+				function handleMouseMove(e) {
+					if (!isResizing) return;
+					const width = startWidth + e.clientX - startX;
+					if (width > 50) { // Minimum width
+						header.style.width = width + 'px';
+					}
+				}
+				
+				function handleMouseUp() {
+					console.log('Resize ended for column', index);
+					isResizing = false;
+					document.removeEventListener('mousemove', handleMouseMove);
+					document.removeEventListener('mouseup', handleMouseUp);
+					document.body.style.cursor = '';
+				}
+			}
+		});
+	}, 100);
 }
 
 async function loadData() {
@@ -227,64 +380,377 @@ function setupRealtime() {
 	}
 }
 
+function setupFilters() {
+	populateFilterOptions();
+	handleFilterChange();
+}
+
+function setupActions() {
+	setupCrudHandlers();
+}
+
+function updateBundlesEmptyState() {
+	const bundlesList = document.getElementById('edit_bundles_list');
+	const noBundlesMessage = document.getElementById('no_bundles_message');
+	if (bundlesList && noBundlesMessage) {
+		const hasBundles = bundlesList.children.length > 0;
+		noBundlesMessage.classList.toggle('d-none', hasBundles);
+	}
+}
+
+function addBundleItem(name = '', details = '') {
+	const bundleId = 'bundle-' + Math.random().toString(36).substr(2, 9);
+	const bundleItem = document.createElement('div');
+	bundleItem.className = 'bundle-item';
+	bundleItem.id = bundleId;
+	
+	bundleItem.innerHTML = `
+		<div class="row g-2 align-items-center">
+			<div class="col-md-5">
+				<div class="input-group input-group-sm">
+					<span class="input-group-text"><i class="bi bi-tag"></i></span>
+					<input type="text" class="form-control form-control-sm bundle-name" 
+						   value="${name.replace(/"/g, '&quot;')}" 
+						   placeholder="Bundle name"
+						   data-bs-toggle="tooltip" 
+						   title="Enter bundle name">
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div class="input-group input-group-sm">
+					<span class="input-group-text"><i class="bi bi-card-text"></i></span>
+					<input type="text" class="form-control form-control-sm bundle-details" 
+						   value="${details.replace(/"/g, '&quot;')}" 
+						   placeholder="Description or SKUs"
+						   data-bs-toggle="tooltip" 
+						   title="Enter bundle description or SKU list">
+				</div>
+			</div>
+			<div class="col-md-2 d-flex justify-content-end">
+				<button type="button" class="btn btn-sm btn-outline-danger remove-bundle" 
+						data-bs-toggle="tooltip" 
+						title="Remove bundle">
+					<i class="bi bi-trash"></i>
+				</button>
+			</div>
+		</div>
+	`;
+	
+	const bundlesList = document.getElementById('edit_bundles_list');
+	if (bundlesList) {
+		bundlesList.appendChild(bundleItem);
+		
+		// Initialize tooltips for the new elements
+		const tooltipTriggerList = [].slice.call(bundleItem.querySelectorAll('[data-bs-toggle="tooltip"]'));
+		tooltipTriggerList.map(function (tooltipTriggerEl) {
+			return new bootstrap.Tooltip(tooltipTriggerEl);
+		});
+		
+		// Set focus to the name field
+		const nameInput = bundleItem.querySelector('.bundle-name');
+		if (nameInput) nameInput.focus();
+		
+		updateBundlesEmptyState();
+	}
+	
+	return bundleItem;
+}
+
 function setupCrudHandlers() {
-	document.querySelector('#submissionsTable').addEventListener('click', async (e) => {
-		const btn = e.target.closest('button');
-		if (!btn) return;
-		const id = btn.getAttribute('data-id');
-		const action = btn.getAttribute('data-action');
-		const row = state.allSubmissions.find(r=>r.id===id);
-		if (!row) return;
+	// Use event delegation on the table body to avoid conflicts with resize handles
+	document.addEventListener('click', async (e) => {
+		// Check if click is on a button within the submissions table
+		const btn = e.target.closest('button[data-action]');
+		if (btn) {
+			// Handle table actions (existing code)
+			const table = btn.closest('#submissionsTable');
+			if (!table) return;
+			
+			const id = btn.getAttribute('data-id');
+			const action = btn.getAttribute('data-action');
+			const row = state.allSubmissions.find(r => r.id === id);
+			if (!row) return;
 
-		if (action === 'delete') {
-			if (!confirm('Delete this submission?')) return;
-			const { error } = await window.supa.from('submissions').delete().eq('id', id);
-			if (error) return alert('Delete error: ' + error.message);
-			// local state updated by realtime handler too, but ensure immediate feedback
-			state.allSubmissions = state.allSubmissions.filter(s=>s.id!==id);
-			applyFilter(); buildCharts(); renderTable();
-			return;
-		}
-
-		if (action === 'edit') {
-			// Simple prompt-based editing
-			const updated = { ...row };
-			function numPrompt(label, cur) {
-				const v = prompt(label, String(cur ?? ''));
-				if (v===null) return null; // cancel
-				const n = Number(v);
-				if (isNaN(n)) { alert('Invalid number'); return null; }
-				return n;
+			if (action === 'delete') {
+				if (!confirm('Delete this submission?')) return;
+				const { error } = await window.supa.from('submissions').delete().eq('id', id);
+				if (error) return alert('Delete error: ' + error.message);
+				state.allSubmissions = state.allSubmissions.filter(s => s.id !== id);
+				applyFilter(); buildCharts(); renderTable();
+				return;
 			}
-			const company = prompt('Company Name', row.company_name || ''); if (company===null) return;
-			updated.company_name = company.trim();
-			const ws = numPrompt('Weekly Shipments', row.weekly_shipments); if (ws===null) return; updated.weekly_shipments = ws;
-			const wout = numPrompt('Weekly Units Outbound', row.weekly_units_outbound); if (wout===null) return; updated.weekly_units_outbound = wout;
-			const win = numPrompt('Weekly Units Inbound', row.weekly_units_inbound); if (win===null) return; updated.weekly_units_inbound = win;
-			const cod = numPrompt('COD % (0-100)', row.cod_percent); if (cod===null) return; if (cod<0||cod>100) return alert('COD must be 0-100'); updated.cod_percent = cod;
-			const codInc = numPrompt('Expected Increase in COD Value %', row.cod_percent_expected_increase); if (codInc===null) return; updated.cod_percent_expected_increase = codInc;
-			const t1 = numPrompt('Tier 1 %', row.tier1_percent); if (t1===null) return;
-			const t2 = numPrompt('Tier 2 %', row.tier2_percent); if (t2===null) return;
-			const t3 = numPrompt('Tier 3 %', row.tier3_percent); if (t3===null) return;
-			if (t1 + t2 + t3 !== 100) return alert('Tier split must sum to 100');
-			updated.tier1_percent = t1; updated.tier2_percent = t2; updated.tier3_percent = t3;
-			const s1 = numPrompt('Service H&B %', row.service_hb_percent); if (s1===null) return;
-			const s2 = numPrompt('Service Int %', row.service_int_percent); if (s2===null) return;
-			const s3 = numPrompt('Service Parcel %', row.service_parcel_percent); if (s3===null) return;
-			if (s1 + s2 + s3 !== 100) return alert('Service mix must sum to 100');
-			updated.service_hb_percent = s1; updated.service_int_percent = s2; updated.service_parcel_percent = s3;
-			const notes = prompt('Notes', row.seasonality_skus_notes || ''); if (notes===null) return; updated.seasonality_skus_notes = notes;
 
-			const { error } = await window.supa.from('submissions').update(updated).eq('id', id);
-			if (error) return alert('Update error: ' + error.message);
-			const idx = state.allSubmissions.findIndex(s=>s.id===id);
-			if (idx>=0) state.allSubmissions[idx] = { ...state.allSubmissions[idx], ...updated };
-			applyFilter(); buildCharts(); renderTable();
+			if (action === 'edit') {
+				openEditModal(row);
+			}
+		}
+		
+		// Handle Save Changes button
+		if (e.target.id === 'saveCustomerChanges') {
+			e.preventDefault();
+			await saveCustomerChanges();
+		}
+		
+		// Handle Add Bundle button
+		if (e.target.id === 'add_bundle_btn' || e.target.closest('#add_bundle_btn')) {
+			e.preventDefault();
+			addBundleItem();
+		}
+		
+		// Handle Remove Bundle button
+		if (e.target.classList.contains('remove-bundle') || e.target.closest('.remove-bundle')) {
+			e.preventDefault();
+			const removeBtn = e.target.classList.contains('remove-bundle') ? e.target : e.target.closest('.remove-bundle');
+			const bundleItem = removeBtn.closest('.bundle-item');
+			if (bundleItem) {
+				bundleItem.style.opacity = '0';
+				bundleItem.style.transition = 'opacity 0.2s ease-in-out';
+				setTimeout(() => {
+					bundleItem.remove();
+					updateBundlesEmptyState();
+				}, 200);
+			}
+		}
+	});
+	
+	// Handle service type change to show/hide SKU and Bundles sections
+	document.addEventListener('change', (e) => {
+		if (e.target.id === 'edit_service_type') {
+			const skuContainer = document.getElementById('edit_skus_container');
+			const bundlesContainer = document.getElementById('edit_bundles_container');
+			const isFulfillment = e.target.value === 'fulfillment';
+			
+			if (skuContainer) skuContainer.style.display = isFulfillment ? 'block' : 'none';
+			if (bundlesContainer) bundlesContainer.style.display = isFulfillment ? 'block' : 'none';
+			
+			// Update empty state when toggling visibility
+			if (isFulfillment) {
+				updateBundlesEmptyState();
+			}
 		}
 	});
 }
 
-function setupExport() {
+function handleServiceTypeChange() {
+	document.addEventListener('change', (e) => {
+		if (e.target.id === 'edit_service_type') {
+			const skuContainer = document.getElementById('edit_skus_container');
+			const bundlesContainer = document.getElementById('edit_bundles_container');
+			const isFulfillment = e.target.value === 'fulfillment';
+			
+			if (skuContainer) skuContainer.style.display = isFulfillment ? 'block' : 'none';
+			if (bundlesContainer) bundlesContainer.style.display = isFulfillment ? 'block' : 'none';
+			
+			// Update empty state when toggling visibility
+			if (isFulfillment) {
+				updateBundlesEmptyState();
+			}
+		}
+	});
+}
+
+let currentEditingRow = null;
+
+function openEditModal(row) {
+	currentEditingRow = row;
+	
+	// Helper function to safely set value
+	const setValue = (id, value) => {
+		const element = document.getElementById(id);
+		if (element) element.value = value || '';
+	};
+
+	// Helper function to safely set checked state
+	const setChecked = (id, isChecked) => {
+		const element = document.getElementById(id);
+		if (element) element.checked = isChecked;
+	};
+
+	// Set form field values
+	setValue('edit_company_name', row.company_name);
+	setValue('edit_service_type', row.service_type);
+	setValue('edit_weekly_shipments', row.weekly_shipments);
+	setValue('edit_weekly_units_outbound', row.weekly_units_outbound);
+	setValue('edit_weekly_units_inbound', row.weekly_units_inbound);
+	setValue('edit_inbound_frequency', row.inbound_frequency);
+	setValue('edit_avg_units_per_shipment', row.avg_units_per_shipment);
+	setValue('edit_cod_percent', row.cod_percent);
+	setValue('edit_ppd_percent', row.ppd_percent);
+	setValue('edit_forecast_start_date', row.forecast_start_date);
+	setValue('edit_forecast_end_date', row.forecast_end_date);
+
+	// Set notes fields if they exist
+	setValue('edit_seasonality_skus_notes', row.seasonality_skus_notes || '');
+	
+	// Set service mix checkboxes
+	const serviceMix = (row.service_mix || '').split(',');
+	setChecked('edit_service_hb', serviceMix.includes('hb'));
+	setChecked('edit_service_int', serviceMix.includes('international'));
+	setChecked('edit_service_parcel', serviceMix.includes('parcel'));
+
+	// Clear existing bundles
+	const bundlesList = document.getElementById('edit_bundles_list');
+	if (bundlesList) {
+		bundlesList.innerHTML = '';
+	}
+	
+	// Load existing bundles if any
+	if (row.special_bundles && row.special_bundles !== 'null' && row.special_bundles !== '') {
+		try {
+			const bundles = JSON.parse(row.special_bundles);
+			if (Array.isArray(bundles)) {
+				bundles.forEach(bundle => {
+					addBundleItem(bundle.name || '', bundle.details || '');
+				});
+			}
+		} catch (e) {
+			console.error('Error parsing bundles:', e);
+		}
+	} else {
+		updateBundlesEmptyState();
+	}
+	
+	// Show modal
+	const modalElement = document.getElementById('editCustomerModal');
+	if (modalElement) {
+		const modal = new bootstrap.Modal(modalElement);
+		modal.show();
+	}
+}
+
+async function saveCustomerChanges() {
+	console.log('saveCustomerChanges called');
+	
+	if (!currentEditingRow) {
+		console.log('No currentEditingRow found');
+		return;
+	}
+	
+	console.log('Current editing row:', currentEditingRow);
+	
+	if (!validateForm()) {
+		console.log('Form validation failed');
+		return;
+	}
+	
+	console.log('Form validation passed');
+	
+	// Helper function to safely get element value
+	const getElementValue = (id, defaultValue = '') => {
+		const element = document.getElementById(id);
+		if (!element) {
+			console.warn(`Element with id '${id}' not found`);
+			return defaultValue;
+		}
+		return element.value || defaultValue;
+	};
+	
+	// Collect bundle data from the form
+	const collectBundleData = () => {
+		const bundlesList = document.getElementById('edit_bundles_list');
+		if (!bundlesList) return [];
+		
+		const bundles = [];
+		const bundleItems = bundlesList.querySelectorAll('.bundle-item');
+		console.log('Found bundle items:', bundleItems.length);
+		bundleItems.forEach(item => {
+			const nameInput = item.querySelector('.bundle-name');
+			const detailsInput = item.querySelector('.bundle-details');
+			if (nameInput && detailsInput) {
+				const name = nameInput.value.trim();
+				const details = detailsInput.value.trim();
+				console.log('Bundle item:', { name, details });
+				if (name || details) { // Only add if there's some content
+					bundles.push({ name, details });
+				}
+			}
+		});
+		console.log('Collected bundles:', bundles);
+		return bundles;
+	};
+	
+	const updated = {
+		company_name: getElementValue('edit_company_name').trim(),
+		service_type: getElementValue('edit_service_type'),
+		weekly_shipments: parseFloat(getElementValue('edit_weekly_shipments')) || 0,
+		weekly_units_outbound: parseFloat(getElementValue('edit_weekly_units_outbound')) || 0,
+		weekly_units_inbound: parseFloat(getElementValue('edit_weekly_units_inbound')) || 0,
+		inbound_frequency: getElementValue('edit_inbound_frequency'),
+		avg_units_per_shipment: parseFloat(getElementValue('edit_avg_units_per_shipment')) || 0,
+		cod_percent: parseFloat(getElementValue('edit_cod_percent')) || 0,
+		ppd_percent: parseFloat(getElementValue('edit_ppd_percent')) || 0,
+		service_mix: Array.from(document.querySelectorAll('input[name="edit_service_mix"]:checked')).map(cb => cb.value).join(','),
+		forecast_start_date: getElementValue('edit_forecast_start_date'),
+		forecast_end_date: getElementValue('edit_forecast_end_date'),
+		seasonality_skus_notes: getElementValue('edit_seasonality_skus_notes').trim(),
+		special_bundles: JSON.stringify(collectBundleData()),
+		special_bundles_notes: ''
+	};
+	
+	console.log('Update data:', updated);
+	
+	try {
+		console.log('Attempting to update record with ID:', currentEditingRow.id);
+		const { error } = await window.supa.from('submissions').update(updated).eq('id', currentEditingRow.id);
+		if (error) {
+			console.error('Supabase error:', error);
+			throw error;
+		}
+		
+		console.log('Database update successful');
+		
+		// Update local state
+		const idx = state.allSubmissions.findIndex(s => s.id === currentEditingRow.id);
+		if (idx >= 0) {
+			state.allSubmissions[idx] = { ...state.allSubmissions[idx], ...updated };
+			console.log('Local state updated');
+		}
+		
+		// Refresh UI
+		applyFilter();
+		buildCharts();
+		renderTable();
+		console.log('UI refreshed');
+		
+		// Close modal
+		bootstrap.Modal.getInstance(document.getElementById('editCustomerModal')).hide();
+		currentEditingRow = null;
+		
+		alert('Customer record updated successfully!');
+	} catch (error) {
+		console.error('Error in saveCustomerChanges:', error);
+		alert('Error updating record: ' + error.message);
+	}
+}
+
+function validateForm() {
+	let isValid = true;
+	const errors = [];
+	
+	// Validate COD + PPD = 100%
+	const cod = parseFloat(document.getElementById('edit_cod_percent').value) || 0;
+	const ppd = parseFloat(document.getElementById('edit_ppd_percent').value) || 0;
+	if (Math.abs(cod + ppd - 100) > 0.01) {
+		errors.push('COD + PPD must equal 100%');
+		isValid = false;
+	}
+	
+	
+	// Validate Service Mix - at least one option selected
+	const serviceMixChecked = document.querySelectorAll('input[name="edit_service_mix"]:checked');
+	if (serviceMixChecked.length === 0) {
+		errors.push('Please select at least one service mix option');
+		isValid = false;
+	}
+	
+	if (!isValid) {
+		alert('Validation errors:\n' + errors.join('\n'));
+	}
+	
+	return isValid;
+}
+
+async function setupExport() {
 	document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
 		const name = state.filterCompany === 'ALL' ? 'All' : state.filterCompany.replace(/[^a-z0-9_-]/gi,'_');
 		
@@ -476,10 +942,9 @@ function setupExport() {
 }
 
 // Initialize
-(async function init() {
+window.addEventListener('DOMContentLoaded', async () => {
 	await loadData();
-	handleFilterChange();
-	setupRealtime();
-	setupCrudHandlers();
+	setupFilters();
+	setupActions();
 	setupExport();
-})();
+});

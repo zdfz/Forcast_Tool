@@ -33,6 +33,199 @@
 			box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
 		}
 
+		.date-input {
+			border: 2px solid #e0e0e0;
+			transition: border-color 0.3s ease;
+		}
+
+		.date-input:focus {
+			border-color: #007bff;
+			box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+		}
+
+		/* Service Mix Styles */
+		.service-mix-container {
+			display: flex;
+			gap: 1rem;
+			flex-wrap: wrap;
+			margin-top: 0.5rem;
+		}
+		
+		.service-option {
+			position: relative;
+			flex: 1;
+			min-width: 150px;
+		}
+		
+		.service-option input[type="checkbox"] {
+			position: absolute;
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+		
+		.service-option-label {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 1.5rem 1rem;
+			border: 2px solid #e9ecef;
+			border-radius: 12px;
+			background: #fff;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			text-align: center;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+		}
+		
+		.service-option-label:hover {
+			border-color: #007bff;
+			box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+			transform: translateY(-2px);
+		}
+		
+		.service-option input:checked + .service-option-label {
+			border-color: #007bff;
+			background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+			color: white;
+			box-shadow: 0 6px 20px rgba(0,123,255,0.3);
+			transform: translateY(-3px);
+		}
+		
+		.service-icon {
+			font-size: 2rem;
+			margin-bottom: 0.5rem;
+			opacity: 0.8;
+		}
+		
+		.service-option input:checked + .service-option-label .service-icon {
+			opacity: 1;
+			transform: scale(1.1);
+		}
+		
+		.service-text {
+			font-weight: 500;
+			font-size: 0.95rem;
+			line-height: 1.3;
+		}
+		
+		@media (max-width: 768px) {
+			.service-mix-container {
+				flex-direction: column;
+			}
+			
+			.service-option {
+				min-width: 100%;
+			}
+			
+			.service-option-label {
+				flex-direction: row;
+				text-align: left;
+				padding: 1rem;
+			}
+			
+			.service-icon {
+				margin-bottom: 0;
+				margin-right: 0.75rem;
+				font-size: 1.5rem;
+			}
+		}
+
+		/* Custom Toast Styles */
+		.custom-toast {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			min-width: 300px;
+			max-width: 400px;
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+			z-index: 9999;
+			transform: translateX(100%);
+			transition: transform 0.3s ease, opacity 0.3s ease;
+			opacity: 0;
+			border-left: 4px solid #6c757d;
+		}
+
+		.custom-toast.show {
+			transform: translateX(0);
+			opacity: 1;
+		}
+
+		.custom-toast.toast-success {
+			border-left-color: #28a745;
+		}
+
+		.custom-toast.toast-warning {
+			border-left-color: #ffc107;
+		}
+
+		.custom-toast.toast-error {
+			border-left-color: #dc3545;
+		}
+
+		.custom-toast.toast-info {
+			border-left-color: #17a2b8;
+		}
+
+		.toast-content {
+			display: flex;
+			align-items: flex-start;
+			padding: 16px;
+			gap: 12px;
+		}
+
+		.toast-icon {
+			font-size: 20px;
+			margin-top: 2px;
+		}
+
+		.toast-success .toast-icon {
+			color: #28a745;
+		}
+
+		.toast-warning .toast-icon {
+			color: #ffc107;
+		}
+
+		.toast-error .toast-icon {
+			color: #dc3545;
+		}
+
+		.toast-info .toast-icon {
+			color: #17a2b8;
+		}
+
+		.toast-message {
+			flex: 1;
+			font-size: 14px;
+			line-height: 1.4;
+			color: #333;
+			font-weight: 500;
+		}
+
+		.toast-close {
+			background: none;
+			border: none;
+			font-size: 16px;
+			color: #6c757d;
+			cursor: pointer;
+			padding: 0;
+			width: 20px;
+			height: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			transition: background-color 0.2s ease;
+		}
+
+		.toast-close:hover {
+			background-color: #f8f9fa;
+			color: #495057;
+		}
+
 		/* Small label styling */
 		.form-label.small {
 			font-size: 0.875rem;
@@ -57,10 +250,10 @@
 				<form id="customerForm" novalidate>
 					<!-- Service Type -->
 					<div class="form-section">
-						<button class="btn btn-link p-0 text-decoration-none section-title collapsed" type="button"
-							data-bs-toggle="collapse" data-bs-target="#secServiceType" aria-expanded="false"
+						<button class="btn btn-link p-0 text-decoration-none section-title" type="button"
+							data-bs-toggle="collapse" data-bs-target="#secServiceType" aria-expanded="true"
 							data-translate="sectionServiceType">Service Type</button>
-						<div class="collapse" id="secServiceType">
+						<div class="collapse show" id="secServiceType">
 							<div class="row g-3 pt-2">
 								<div class="col-md-12">
 									<label class="form-label" data-translate="serviceTypeLabel">Choose your service type <span class="text-danger">*</span></label>
@@ -93,24 +286,23 @@
 										title="Enter the official company or trade name">
 								</div>
 								<div class="col-md-6">
-									<label class="form-label" data-translate="weeklyVolumeLabel">Daily Volume
-										(Shipments) <span class="text-danger">*</span></label>
+									<label class="form-label" data-translate="weeklyVolumeLabel">Weekly Orders <span class="text-danger">*</span></label>
 									<input type="number" min="0" class="form-control" id="weekly_shipments" required
 										placeholder="e.g. 5" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
 									<div class="form-text error d-none" id="err_weekly_shipments"
 										data-translate="errWeeklyShipments">Must be a number ≥ 0.</div>
 								</div>
 								<div class="col-md-6">
-									<label class="form-label" data-translate="weeklyOutboundLabel">Daily Units Outbound
-										<span class="text-danger">*</span></label>
+									<label class="form-label" data-translate="weeklyOutboundLabel">Fulfilment Outbound (Unit of Measure: Units)
+									<span class="text-danger">*</span></label>
 									<input type="number" min="0" class="form-control" id="weekly_units_outbound"
 										required placeholder="e.g. 10" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
 									<div class="form-text error d-none" id="err_weekly_units_outbound"
 										data-translate="errWeeklyOutbound">Must be a number ≥ 0.</div>
 								</div>
 								<div class="col-md-6">
-									<label class="form-label" data-translate="weeklyInboundLabel">Daily Units Inbound
-										<span class="text-danger">*</span></label>
+									<label class="form-label" data-translate="weeklyInboundLabel">Fulfilment Inbound (Unit of Measure: Units)
+									<span class="text-danger">*</span></label>
 									<input type="number" min="0" class="form-control" id="weekly_units_inbound" required
 										placeholder="e.g. 8" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
 									<div class="form-text error d-none" id="err_weeklyInbound">Must be a number ≥ 0.
@@ -129,7 +321,7 @@
 									</div>
 								</div>
 								<div class="col-md-6 mb-3">
-									<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Shipment</label>
+									<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
 									<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" data-translate="avgUnits" required placeholder="e.g. 3" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
 									<div class="invalid-feedback" id="avg-units-error">
 										Must be a number ≥ 0.
@@ -168,8 +360,26 @@
 									<label class="form-label" data-translate="bundlesLabel">Special Bundles
 										<small class="text-muted"><em
 												data-translate="optionalNote">(optional)</em></small></label>
-									<textarea class="form-control" id="special_bundles_notes" rows="2"
-										placeholder="Optional notes about special bundles"></textarea>
+									<div id="bundles-container">
+										<div class="bundle-item mb-2">
+											<div class="row g-2">
+												<div class="col-5">
+													<input type="text" class="form-control bundle-name" data-translate-placeholder="bundleName" placeholder="Bundle Name">
+												</div>
+												<div class="col-5">
+													<input type="text" class="form-control bundle-details" data-translate-placeholder="bundleDetails" placeholder="Bundle Details">
+												</div>
+												<div class="col-2 d-flex">
+													<button type="button" class="btn btn-outline-danger btn-sm remove-bundle" onclick="removeBundle(this)" style="display: none;">
+														<i class="bi bi-trash"></i>
+													</button>
+													<button type="button" class="btn btn-outline-success btn-sm add-bundle" onclick="addBundle()">
+														<i class="bi bi-plus"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -208,34 +418,34 @@
 								</div>
 
 
-								<div class="col-md-12">
-									<label class="form-label" data-translate="tierSplitLabel">Tier Split % (must sum to
-										100%) <span class="text-danger">*</span></label>
-									<div class="row g-2">
-										<div class="col"><input type="number" min="0" max="100" class="form-control"
-												id="tier1_percent" placeholder="Tier 1 %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
-										<div class="col"><input type="number" min="0" max="100" class="form-control"
-												id="tier2_percent" placeholder="Tier 2 %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
-										<div class="col"><input type="number" min="0" max="100" class="form-control"
-												id="tier3_percent" placeholder="Tier 3 %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
-									</div>
-									<div class="form-text error d-none" id="err_tier_sum" data-translate="errTierSum">
-										Tier split must sum to 100%.</div>
-								</div>
 
 								<div class="col-md-12">
-									<label class="form-label" data-translate="serviceMixLabel">Service Mix % (must sum
-										to 100%) <span class="text-danger">*</span></label>
-									<div class="row g-2">
-										<div class="col"><input type="number" min="0" max="100" class="form-control"
-												id="service_hb_percent" placeholder="H&B %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
-										<div class="col"><input type="number" min="0" max="100" class="form-control"
-												id="service_int_percent" placeholder="Int %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
-										<div class="col"><input type="number" min="0" max="100" class="form-control"
-												id="service_parcel_percent" placeholder="Parcel %" required onkeydown="return event.keyCode !== 189 && event.keyCode !== 109"></div>
+									<label class="form-label" data-translate="serviceMixLabel">Service Mix <span class="text-danger">*</span></label>
+									<div class="service-mix-container">
+										<div class="service-option">
+											<input class="form-check-input" type="checkbox" value="hb" id="service_hb" name="service_mix">
+											<label class="service-option-label" for="service_hb">
+												<div class="service-icon">📦</div>
+												<div class="service-text" data-translate="hbOption">Heavy & Bulky</div>
+											</label>
+										</div>
+										<div class="service-option">
+											<input class="form-check-input" type="checkbox" value="international" id="service_int" name="service_mix">
+											<label class="service-option-label" for="service_int">
+												<div class="service-icon">🌍</div>
+												<div class="service-text" data-translate="intOption">International</div>
+											</label>
+										</div>
+										<div class="service-option">
+											<input class="form-check-input" type="checkbox" value="parcel" id="service_parcel" name="service_mix">
+											<label class="service-option-label" for="service_parcel">
+												<div class="service-icon">📮</div>
+												<div class="service-text" data-translate="parcelOption">Parcel</div>
+											</label>
+										</div>
 									</div>
-									<div class="form-text error d-none" id="err_service_sum"
-										data-translate="errServiceSum">Service mix must sum to 100%.</div>
+									<div class="form-text error d-none" id="err_service_mix"
+										data-translate="errServiceMix">Please select at least one service mix option.</div>
 								</div>
 							</div>
 						</div>
@@ -263,7 +473,8 @@
 			// Check if Supabase client is available
 			if (!window.supa) {
 				console.error('Supabase client not found!');
-				alert('Database connection error. Please refresh the page.');
+				const lang = translations[currentLanguage];
+				showToast(lang.toastDatabaseError, 'error');
 				return;
 			}
 			console.log('Supabase client found:', window.supa);
@@ -281,37 +492,37 @@
 			// Language translations
 			const translations = {
 				en: {
-					pageTitle: 'Customer expectations preparation questionnaire',
+					pageTitle: 'Customer\'s forecast questionnaire',
 					companyLabel: 'Customer Company Name',
-					weeklyVolumeLabel: 'Daily Volume (Shipments)',
-					weeklyOutboundLabel: 'Daily Units Outbound',
-					weeklyInboundLabel: 'Daily Units Inbound',
+					weeklyVolumeLabel: 'Weekly Orders',
+					weeklyOutboundLabel: 'Fulfillment Outbound (Unit of Measure: Units)',
+					weeklyInboundLabel: 'Fulfillment Inbound (Unit of Measure: Units)',
 					forecastingPeriodLabel: 'Forecasting Period',
 					startDate: 'Start Date',
 					endDate: 'End Date',
 					selectDateRange: 'Select the date range for your forecast',
-					skusLabel: 'Special seasonal inventory keeping unit',
-					codLabel: 'Cash on Delivery rate %',
-					ppdLabel: 'Prepaid rate %',
-					tierSplitLabel: 'Tier distribution % (must sum to 100%)',
-					serviceMixLabel: 'Service Mix % (must sum to 100%)',
+					skusLabel: 'Special SKUs for Seasonality',
+					codLabel: 'COD %',
+					ppdLabel: 'PPD %',
+					tierSplitLabel: 'Tier Split % (Must sum to 100%)',
+					serviceMixLabel: 'Service Mix',
 					submitButton: '[ Submit ]',
 					requiredNote: 'Required fields',
 					optionalNote: '(optional)',
 					sectionServiceType: 'Service Type',
-					sectionCompany: 'Company & Volumes',
+					sectionCompany: 'Company & Volume',
 					sectionPayments: 'Payments & Mix',
-					serviceTypeLabel: 'Choose your service type',
+					serviceTypeLabel: 'Select Service Type',
 					fulfillmentOption: 'Fulfillment',
 					lastMileOption: 'Last Mile',
 					bundlesLabel: 'Special Bundles',
-					inboundFrequencyLabel: 'Frequency of the Inbound',
-					avgUnitsLabel: 'Average Unit per Shipment',
+					inboundFrequencyLabel: 'Inbound Frequency',
+					avgUnitsLabel: 'Average Unit per Order',
 					selectFrequency: 'Select frequency',
 					dailyOption: 'Daily',
 					weeklyOption: 'Weekly',
-					biweeklyOption: 'Biweekly',
-					codPpdSum: 'Cash on Delivery + Prepaid must equal 100%.',
+					biweeklyOption: 'Bi-weekly',
+					codPpdSum: 'COD and PPD percentages must sum to 100%.',
 					errWeeklyShipments: 'Must be a number ≥ 0.',
 					errWeeklyOutbound: 'Must be a number ≥ 0.',
 					errWeeklyInbound: 'Must be a number ≥ 0.',
@@ -319,11 +530,18 @@
 					errPpdPercent: 'Must be between 0 and 100.',
 					errInboundFrequency: 'Please select a frequency.',
 					errAvgUnits: 'Must be a number ≥ 0.',
-					errTierSum: 'Tier split must sum to 100%.',
-					errServiceSum: 'Service mix must sum to 100%.',
+					errTierSum: 'Tier split percentages must sum to 100%.',
+					errServiceMix: 'Please select at least one service mix option.',
 					errDatePast: 'Start date cannot be in the past',
 					errDateOrder: 'End date must be after start date',
 					errDateRange: 'Forecasting period cannot exceed 2 years',
+					// Toast notification messages
+					toastBundleValidation: 'Please fill in both Bundle Name and Bundle Details before adding a new bundle.',
+					toastServiceTypeRequired: 'Please select a service type before submitting the form.',
+					toastFormValidation: 'Please fill in all required fields correctly.',
+					toastFormSuccess: 'Form submitted successfully! Redirecting...',
+					toastFormError: 'Error submitting form: ',
+					toastDatabaseError: 'Database connection error. Please refresh the page.',
 					placeholder: {
 						company: 'Enter company name',
 						shipments: 'e.g. 5',
@@ -332,7 +550,10 @@
 						avgUnits: 'e.g. 3',
 						forecastingPeriod: 'Select dates',
 						skus: 'Optional notes about seasonal SKUs',
-						codIncrease: 'e.g. 3',
+						bundles: 'Optional notes about special bundles',
+						bundleName: 'Bundle Name',
+						bundleDetails: 'Bundle Details',
+						tier0: 'Tier 0 %',
 						tier1: 'Tier 1 %',
 						tier2: 'Tier 2 %',
 						tier3: 'Tier 3 %',
@@ -342,11 +563,11 @@
 					}
 				},
 				ar: {
-					pageTitle: 'إستبيان إعداد توقعات العملاء',
+					pageTitle: 'استبيان توقعات العملاء',
 					companyLabel: 'اسم شركة العميل',
-					weeklyVolumeLabel: 'الحجم اليومي (الشحنات)',
-					weeklyOutboundLabel: 'الوحدات اليومية الصادرة',
-					weeklyInboundLabel: 'الوحدات اليومية الواردة',
+					weeklyVolumeLabel: 'الطلبات الأسبوعية',
+					weeklyOutboundLabel: 'الوفاء الصادر (وحدة القياس: وحدات)',
+					weeklyInboundLabel: 'الوفاء الوارد (وحدة القياس: وحدات)',
 					forecastingPeriodLabel: 'فترة التوقعات',
 					startDate: 'تاريخ البداية',
 					endDate: 'تاريخ النهاية',
@@ -355,7 +576,7 @@
 					codLabel: 'نسبة الدفع عند الاستلام %',
 					ppdLabel: 'نسبة الدفع المسبق %',
 					tierSplitLabel: 'تقسيم المستويات % (يجب أن يكون المجموع 100%)',
-					serviceMixLabel: 'مزيج الخدمات % (يجب أن يكون المجموع 100%)',
+					serviceMixLabel: 'مزيج الخدمات',
 					submitButton: '[ إرسال ]',
 					requiredNote: 'الحقول المطلوبة',
 					optionalNote: '(اختياري)',
@@ -366,8 +587,8 @@
 					fulfillmentOption: 'تخزين',
 					lastMileOption: 'الميل الأخير',
 					bundlesLabel: 'الحزم الخاصة',
-					inboundFrequencyLabel: 'تكرار الوارد',
-					avgUnitsLabel: 'متوسط الوحدة لكل شحنة',
+					inboundFrequencyLabel: 'تكرار الواردات',
+					avgUnitsLabel: 'متوسط الوحدات لكل طلب',
 					selectFrequency: 'اختر التكرار',
 					dailyOption: 'يومي',
 					weeklyOption: 'أسبوعي',
@@ -381,10 +602,17 @@
 					errInboundFrequency: 'يرجى اختيار التكرار.',
 					errAvgUnits: 'يجب أن يكون رقماً ≥ 0.',
 					errTierSum: 'يجب أن يكون مجموع تقسيم المستويات 100%.',
-					errServiceSum: 'يجب أن يكون مجموع مزيج الخدمات 100%.',
+					errServiceMix: 'يرجى اختيار خيار واحد على الأقل من مزيج الخدمات.',
 					errDatePast: 'لا يمكن أن يكون تاريخ البداية في الماضي',
 					errDateOrder: 'يجب أن يكون تاريخ النهاية بعد تاريخ البداية',
 					errDateRange: 'لا يمكن أن تتجاوز فترة التوقعات سنتين',
+					// Toast notification messages
+					toastBundleValidation: 'يرجى ملء اسم الحزمة وتفاصيل الحزمة قبل إضافة حزمة جديدة.',
+					toastServiceTypeRequired: 'يرجى اختيار نوع الخدمة قبل إرسال النموذج.',
+					toastFormValidation: 'يرجى ملء جميع الحقول المطلوبة بشكل صحيح.',
+					toastFormSuccess: 'تم إرسال النموذج بنجاح! جاري إعادة التوجيه...',
+					toastFormError: 'خطأ في إرسال النموذج: ',
+					toastDatabaseError: 'خطأ في الاتصال بقاعدة البيانات. يرجى تحديث الصفحة.',
 					placeholder: {
 						company: 'أدخل اسم الشركة',
 						shipments: 'مثال: 5',
@@ -393,14 +621,20 @@
 						avgUnits: 'e.g. 3',
 						forecastingPeriod: 'اختر التواريخ',
 						skus: 'ملاحظات اختيارية حول وحدة حفظ المخزون الموسمية',
+						bundles: 'ملاحظات اختيارية حول الحزم الخاصة',
+						bundleName: 'اسم الحزمة',
+						bundleDetails: 'تفاصيل الحزمة',
+						tier0: 'المستوى 0 %',
 						tier1: 'المستوى 1 %',
 						tier2: 'المستوى 2 %',
 						tier3: 'المستوى 3 %',
 						hb: 'ثقيل و متين %',
 						international: 'دولي %',
-						parcel: 'طرد %',
-						bundles: 'ملاحظات اختيارية حول الحزم الخاصة'
-					}
+						parcel: 'طرد %'
+					},
+					hbOption: 'ثقيل و متين',
+					intOption: 'دولي',
+					parcelOption: 'طرد'
 				}
 			};
 
@@ -419,7 +653,7 @@
 							// For other elements, update text content
 							if (key === 'companyLabel' || key === 'weeklyVolumeLabel' || key === 'weeklyOutboundLabel' ||
 								key === 'weeklyInboundLabel' || key === 'inboundFrequencyLabel' || key === 'avgUnitsLabel' || key === 'forecastingPeriodLabel' || key === 'codLabel' ||
-								key === 'ppdLabel' || key === 'tierSplitLabel' ||
+								key === 'ppdLabel' ||
 								key === 'serviceMixLabel') {
 								element.innerHTML = lang[key] + ' <span class="text-danger">*</span>';
 							} else if (key === 'skusLabel' || key === 'bundlesLabel') {
@@ -433,54 +667,14 @@
 					}
 				});
 
-				// Update placeholders for specific inputs
-				const companyInput = document.getElementById('company_name');
-				const shipmentsInput = document.getElementById('weekly_shipments');
-				const weeklyInboundInput = document.getElementById('weekly_units_inbound');
-				const inboundFrequencySelect = document.getElementById('inbound-frequency');
-				const avgUnitsInput = document.getElementById('avg-units');
-				const skusInput = document.getElementById('seasonality_skus_notes');
-				const bundlesInput = document.getElementById('special_bundles_notes');
-				const tier1Input = document.getElementById('tier1_percent');
-				const tier2Input = document.getElementById('tier2_percent');
-				const tier3Input = document.getElementById('tier3_percent');
-				const serviceHbInput = document.getElementById('service_hb_percent');
-				const serviceIntInput = document.getElementById('service_int_percent');
-				const serviceParcelInput = document.getElementById('service_parcel_percent');
-
-				if (companyInput) companyInput.placeholder = lang.placeholder.company;
-				if (shipmentsInput) shipmentsInput.placeholder = lang.placeholder.shipments;
-				if (weeklyInboundInput) weeklyInboundInput.placeholder = lang.placeholder.inbound;
-				if (avgUnitsInput) avgUnitsInput.placeholder = lang.placeholder.avgUnits;
-				if (inboundFrequencySelect) inboundFrequencySelect.placeholder = lang.selectFrequency;
-				if (skusInput) skusInput.placeholder = lang.placeholder.skus;
-				if (bundlesInput) bundlesInput.placeholder = lang.placeholder.bundles;
-				if (tier1Input) tier1Input.placeholder = lang.placeholder.tier1;
-				if (tier2Input) tier2Input.placeholder = lang.placeholder.tier2;
-				if (tier3Input) tier3Input.placeholder = lang.placeholder.tier3;
-				if (serviceHbInput) serviceHbInput.placeholder = lang.placeholder.hb;
-				if (serviceIntInput) serviceIntInput.placeholder = lang.placeholder.international;
-				if (serviceParcelInput) serviceParcelInput.placeholder = lang.placeholder.parcel;
-
-				// Update button text
-				if (currentLangSpan) currentLangSpan.textContent = currentLanguage === 'en' ? 'العربية' : 'English';
-
-				// Debug logging
-				console.log('Language updated to:', currentLanguage);
-				console.log('Form elements updated');
+				// Update placeholders using data-translate-placeholder attribute
+				document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+					const key = element.getAttribute('data-translate-placeholder');
+					if (lang.placeholder && lang.placeholder[key]) {
+						element.placeholder = lang.placeholder[key];
+					}
+				});
 			}
-
-			// Language toggle event listener
-			languageToggle.addEventListener('click', () => {
-				console.log('Language toggle clicked. Current language:', currentLanguage);
-				currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
-				console.log('New language:', currentLanguage);
-				updateFormLanguage();
-
-				// Store language preference in localStorage
-				localStorage.setItem('customerFormLanguage', currentLanguage);
-				console.log('Language preference saved to localStorage');
-			});
 
 			// Load saved language preference
 			const savedLanguage = localStorage.getItem('customerFormLanguage');
@@ -488,6 +682,21 @@
 				currentLanguage = savedLanguage;
 				updateFormLanguage();
 			}
+
+			// Add event listener for language toggle button
+			languageToggle.addEventListener('click', function() {
+				// Toggle between English and Arabic
+				currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+				
+				// Save language preference
+				localStorage.setItem('customerFormLanguage', currentLanguage);
+				
+				// Update form language
+				updateFormLanguage();
+				
+				// Update button text
+				currentLangSpan.textContent = currentLanguage === 'en' ? 'English' : 'العربية';
+			});
 
 			// Function to handle service type changes
 			function handleServiceTypeChange() {
@@ -559,12 +768,6 @@
 			const serviceType = document.querySelector('input[name="service-type"]:checked');
 			const cod = document.getElementById('cod_percent');
 			const ppd = document.getElementById('ppd_percent');
-			const t1 = document.getElementById('tier1_percent');
-			const t2 = document.getElementById('tier2_percent');
-			const t3 = document.getElementById('tier3_percent');
-			const s1 = document.getElementById('service_hb_percent');
-			const s2 = document.getElementById('service_int_percent');
-			const s3 = document.getElementById('service_parcel_percent');
 
 			function show(el, flag) { if (!el) return; el.classList[flag ? 'remove' : 'add']('d-none'); }
 
@@ -709,7 +912,7 @@
 			['input', 'change'].forEach(evt => { cod.addEventListener(evt, validateCodPpd); ppd.addEventListener(evt, validateCodPpd); });
 			validateCodPpd();
 			// Add event listeners for percentage inputs to prevent negative values and values over 100
-			[cod, ppd, t1, t2, t3, s1, s2, s3].forEach(input => {
+			[cod, ppd].forEach(input => {
 				input.addEventListener('input', function() {
 					// Prevent negative values
 					if (this.value < 0) this.value = 0;
@@ -829,6 +1032,145 @@
 			forecastStartDate.classList.add('date-input');
 			forecastEndDate.classList.add('date-input');
 
+			// Service Mix validation and helper functions
+			function validateServiceMix() {
+				const serviceMixCheckboxes = document.querySelectorAll('input[name="service_mix"]:checked');
+				const errorElement = document.getElementById('err_service_mix');
+				
+				if (serviceMixCheckboxes.length === 0) {
+					// Show error if no service mix is selected
+					if (errorElement) errorElement.classList.remove('d-none');
+					serviceMixCheckboxes.forEach(cb => cb.closest('.service-option').classList.add('border-danger'));
+					return false;
+				} else {
+					// Hide error if at least one service mix is selected
+					if (errorElement) errorElement.classList.add('d-none');
+					document.querySelectorAll('.service-option').forEach(option => option.classList.remove('border-danger'));
+					return true;
+				}
+			}
+
+			function getSelectedServiceMix() {
+				const serviceMixCheckboxes = document.querySelectorAll('input[name="service_mix"]:checked');
+				return Array.from(serviceMixCheckboxes).map(cb => cb.value).join(',');
+			}
+
+			// Bundle management functions (global scope)
+			function addBundle() {
+				// Check if the last bundle has both fields filled
+				const bundleItems = document.querySelectorAll('.bundle-item');
+				if (bundleItems.length > 0) {
+					const lastBundle = bundleItems[bundleItems.length - 1];
+					const lastBundleName = lastBundle.querySelector('.bundle-name').value.trim();
+					const lastBundleDetails = lastBundle.querySelector('.bundle-details').value.trim();
+					
+					if (lastBundleName === '' || lastBundleDetails === '') {
+						const lang = translations[currentLanguage];
+						showToast(lang.toastBundleValidation, 'warning');
+						return;
+					}
+				}
+				
+				const container = document.getElementById('bundles-container');
+				const bundleItem = document.createElement('div');
+				bundleItem.className = 'bundle-item mb-2';
+				bundleItem.innerHTML = `
+					<div class="row g-2">
+						<div class="col-5">
+							<input type="text" class="form-control bundle-name" data-translate-placeholder="bundleName" placeholder="${translations[currentLanguage].placeholder.bundleName}">
+						</div>
+						<div class="col-5">
+							<input type="text" class="form-control bundle-details" data-translate-placeholder="bundleDetails" placeholder="${translations[currentLanguage].placeholder.bundleDetails}">
+						</div>
+						<div class="col-2 d-flex">
+							<button type="button" class="btn btn-outline-danger btn-sm remove-bundle" onclick="removeBundle(this)">
+								<i class="bi bi-trash"></i>
+							</button>
+							<button type="button" class="btn btn-outline-success btn-sm add-bundle" onclick="addBundle()">
+								<i class="bi bi-plus"></i>
+							</button>
+						</div>
+					</div>
+				`;
+				container.appendChild(bundleItem);
+				updateBundleButtons();
+			}
+			
+			function removeBundle(button) {
+				const bundleItem = button.closest('.bundle-item');
+				bundleItem.remove();
+				updateBundleButtons();
+			}
+			
+			function updateBundleButtons() {
+				const bundleItems = document.querySelectorAll('.bundle-item');
+				const addButtons = document.querySelectorAll('.add-bundle');
+				const removeButtons = document.querySelectorAll('.remove-bundle');
+				
+				// Hide all add buttons except the last one
+				addButtons.forEach((btn, index) => {
+					btn.style.display = index === bundleItems.length - 1 ? 'block' : 'none';
+				});
+				
+				// Show remove buttons only if there's more than one bundle
+				removeButtons.forEach(btn => {
+					btn.style.display = bundleItems.length > 1 ? 'block' : 'none';
+				});
+			}
+			
+			// Toast notification function
+			function showToast(message, type = 'info') {
+				// Remove existing toast if any
+				const existingToast = document.querySelector('.custom-toast');
+				if (existingToast) {
+					existingToast.remove();
+				}
+				
+				// Create toast element
+				const toast = document.createElement('div');
+				toast.className = `custom-toast toast-${type}`;
+				
+				// Set icon based on type
+				let icon = '';
+				switch(type) {
+					case 'success': icon = '<i class="bi bi-check-circle-fill"></i>'; break;
+					case 'warning': icon = '<i class="bi bi-exclamation-triangle-fill"></i>'; break;
+					case 'error': icon = '<i class="bi bi-x-circle-fill"></i>'; break;
+					default: icon = '<i class="bi bi-info-circle-fill"></i>'; break;
+				}
+				
+				toast.innerHTML = `
+					<div class="toast-content">
+						<div class="toast-icon">${icon}</div>
+						<div class="toast-message">${message}</div>
+						<button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+							<i class="bi bi-x"></i>
+						</button>
+					</div>
+				`;
+				
+				// Add to page
+				document.body.appendChild(toast);
+				
+				// Show with animation
+				setTimeout(() => toast.classList.add('show'), 100);
+				
+				// Auto remove after 5 seconds
+				setTimeout(() => {
+					if (toast.parentElement) {
+						toast.classList.remove('show');
+						setTimeout(() => toast.remove(), 300);
+					}
+				}, 5000);
+			}
+			
+			// Make functions global
+			window.addBundle = addBundle;
+			window.removeBundle = removeBundle;
+			window.showToast = showToast;
+			
+			// Initialize bundle buttons
+			updateBundleButtons();
 			
 			// Initialize service type change handling
 			handleServiceTypeChange();
@@ -837,6 +1179,7 @@
 				e.preventDefault();
 				console.log('Form submitted, starting validation...');
 
+			
 				// Date validation
 				if (!validateForecastDates()) {
 					console.log('Date validation failed');
@@ -852,8 +1195,6 @@
 				console.log('Inbound frequency:', inboundFreq.value);
 				console.log('Date validation:', validateForecastDates());
 				console.log('COD/PPD validation:', validateCodPpd());
-				console.log('Tier sum:', validateSum100([t1, t2, t3], document.getElementById('err_tier_sum')));
-				console.log('Service sum:', validateSum100([s1, s2, s3], document.getElementById('err_service_sum')));
 
 				const isValidCompany = company.value.trim().length > 0;
 				const isValidShipments = weeklyShip.value && !isNaN(weeklyShip.value) && Number(weeklyShip.value) >= 0;
@@ -863,11 +1204,11 @@
 				const isValidAvgUnits = validateAvgUnits();
 				const isValidServiceType = validateServiceType();
 				const isValidCodPpd = validateCodPpd();
-				const isValidTierSplit = validateSum100([t1, t2, t3], document.getElementById('err_tier_sum'));
-				const isValidServiceMix = validateSum100([s1, s2, s3], document.getElementById('err_service_sum'));
+				const isValidTierSplit = true; // Tier split removed
+				const isValidServiceMix = validateServiceMix();
 				const isValidDates = validateForecastDates();
 
-				const valid = (isValidCompany && isValidShipments && isValidOutbound && isValidInbound && isValidInboundFreq && isValidAvgUnits && isValidServiceType && isValidCodPpd && isValidTierSplit && isValidServiceMix && isValidDates);
+				const valid = (isValidCompany && isValidShipments && isValidOutbound && isValidInbound && isValidInboundFreq && isValidAvgUnits && isValidServiceType && isValidCodPpd && isValidServiceMix && isValidDates);
 				
 				if (!valid) {
 					console.log('Form validation failed, cannot submit');
@@ -877,6 +1218,25 @@
 				console.log('All validations passed, submitting form...');
 				// Create submission matching the exact Supabase table schema
 				const selectedServiceType = document.querySelector('input[name="service-type"]:checked');
+				
+				// Collect bundle data from the form
+				const collectBundleData = () => {
+					const bundleItems = document.querySelectorAll('.bundle-item');
+					const bundles = [];
+					bundleItems.forEach(item => {
+						const nameInput = item.querySelector('.bundle-name');
+						const detailsInput = item.querySelector('.bundle-details');
+						if (nameInput && detailsInput) {
+							const name = nameInput.value.trim();
+							const details = detailsInput.value.trim();
+							if (name || details) { // Only add if there's some content
+								bundles.push({ name, details });
+							}
+						}
+					});
+					return bundles;
+				};
+				
 				const newSubmission = {
 					company_name: company.value.trim(),
 					service_type: selectedServiceType ? selectedServiceType.value : null,
@@ -886,17 +1246,13 @@
 					forecast_start_date: forecastStartDate.value,
 					forecast_end_date: forecastEndDate.value,
 					seasonality_skus_notes: notes.value.trim(),
-					special_bundles_notes: bundlesNotes.value.trim(),
+					special_bundles: JSON.stringify(collectBundleData()),
+					special_bundles_notes: bundlesNotes ? bundlesNotes.value.trim() : '',
 					inbound_frequency: inboundFreq.value,
 					avg_units_per_shipment: Number(avgUnits.value),
 					cod_percent: Number(cod.value),
 					ppd_percent: Number(ppd.value),
-					tier1_percent: Number(t1.value),
-					tier2_percent: Number(t2.value),
-					tier3_percent: Number(t3.value),
-					service_hb_percent: Number(s1.value),
-					service_int_percent: Number(s2.value),
-					service_parcel_percent: Number(s3.value)
+					service_mix: getSelectedServiceMix()
 				};
 				try {
 					console.log('Submitting to Supabase:', newSubmission);
@@ -906,15 +1262,22 @@
 					
 					// Pass language preference to thank you page
 					const thankYouUrl = currentLanguage === 'ar' ? 'thank-you.html?lang=ar' : 'thank-you.html?lang=en';
-					console.log('Redirecting to:', thankYouUrl);
-					window.location.href = thankYouUrl;
+					const lang = translations[currentLanguage];
+					showToast(lang.toastFormSuccess, 'success');
+					setTimeout(() => {
+						window.location.href = 'thank-you.html';
+					}, 2000);
 				} catch (err) {
 					console.error('Error submitting data:', err);
+					const lang = translations[currentLanguage];
+					showToast(lang.toastFormError + err.message, 'error');
 					
 					// Even if database submission fails, redirect to thank you page
 					// This ensures users don't get stuck on the form
 					console.log('Database submission failed, but redirecting to thank you page...');
-					const thankYouUrl = currentLanguage === 'ar' ? 'thank-you.html?lang=ar' : 'thank-you.html?lang=en';
+					setTimeout(() => {
+						window.location.href = 'thank-you.html';
+					}, 2000);
 					window.location.href = thankYouUrl;
 				}
 			});
