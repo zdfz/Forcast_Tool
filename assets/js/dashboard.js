@@ -245,12 +245,6 @@ function renderTable() {
 			<td>${row.avg_units_per_shipment||0}</td>
 			<td>${row.cod_percent||0}</td>
 			<td>${row.ppd_percent||0}</td>
-			<td>${row.tier1_percent||0}</td>
-			<td>${row.tier2_percent||0}</td>
-			<td>${row.tier3_percent||0}</td>
-			<td>${row.service_hb_percent||0}</td>
-			<td>${row.service_int_percent||0}</td>
-			<td>${row.service_parcel_percent||0}</td>
 			<td>${row.service_mix||''}</td>
 			<td>${forecastPeriod}</td>
 			<td title="${skuNotes}">${skuNotes}</td>
