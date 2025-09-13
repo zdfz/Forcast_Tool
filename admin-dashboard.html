@@ -54,30 +54,235 @@
 			
 			/* Improved cell styling */
 			#submissionsTable td {
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				overflow: hidden;
+				white-space: normal !important;
+				overflow: visible !important;
+				text-overflow: clip !important;
+				vertical-align: top;
 				padding: 8px 12px;
 			}
 			
-			/* Specific column widths */
-			#submissionsTable th:nth-child(1) { width: 150px; } /* Forecast Logged Date */
-			#submissionsTable th:nth-child(2) { width: 180px; } /* Week Calendar */
-			#submissionsTable th:nth-child(3) { width: 120px; } /* Company */
-			#submissionsTable th:nth-child(4) { width: 120px; } /* Service Type */
-			#submissionsTable th:nth-child(5) { width: 120px; } /* Weekly Ship */
-			#submissionsTable th:nth-child(6) { width: 180px; } /* Fulfilment Outbound (Units) */
-			#submissionsTable th:nth-child(7) { width: 180px; } /* Fulfilment Inbound (Units) */
-			#submissionsTable th:nth-child(8) { width: 120px; } /* Inbound Freq */
-			#submissionsTable th:nth-child(9) { width: 140px; } /* Avg Units/Ship */
-			#submissionsTable th:nth-child(10) { width: 100px; } /* COD % */
-			#submissionsTable th:nth-child(11) { width: 100px; } /* PPD % */
-			#submissionsTable th:nth-child(12) { width: 120px; } /* Service Mix */
-			#submissionsTable th:nth-child(13) { width: 150px; } /* Forecast Period */
-			#submissionsTable th:nth-child(14) { width: 200px; } /* SKU Notes */
-			#submissionsTable th:nth-child(15) { width: 200px; } /* Bundles */
-			#submissionsTable th:nth-child(16) { width: 160px; } /* Actions */
+			/* Service mix cell styling */
+			.service-mix-cell {
+				position: relative;
+				min-width: 200px;
+			}
 			
+			.service-details-inline {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				background: white;
+				border: 2px solid #1f6a4a;
+				border-radius: 12px;
+				box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+				z-index: 1000;
+				margin-top: 8px;
+				padding: 24px;
+				min-width: 800px;
+				width: max-content;
+				max-width: calc(100vw - 100px);
+				transform: translateY(0);
+			}
+			
+			.service-details-inline .card {
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+				border: 1px solid #e9ecef;
+				border-radius: 12px;
+				margin-bottom: 20px;
+				margin-right: 20px;
+				transition: all 0.3s ease;
+				min-width: 320px;
+				flex: 1;
+				max-width: 400px;
+			}
+			
+			.service-details-inline .card:hover {
+				box-shadow: 0 8px 25px rgba(0, 123, 255, 0.2);
+				transform: translateY(-2px);
+				border-color: #1f6a4a;
+			}
+			
+			.service-details-inline .card-header {
+				background: #1f6a4a;
+				color: white;
+				border-bottom: none;
+				font-weight: 700;
+				font-size: 1.1rem;
+				padding: 20px 24px;
+				border-radius: 12px 12px 0 0;
+				text-align: center;
+				letter-spacing: 0.5px;
+			}
+			
+			.service-details-inline .card-body {
+				padding: 24px;
+				background: #ffffff;
+			}
+			
+			.service-details-inline .table {
+				margin-bottom: 0;
+				background: white;
+				border-radius: 8px;
+				overflow: hidden;
+				border: 1px solid #e9ecef;
+			}
+			
+			.service-details-inline .table td {
+				padding: 16px 20px;
+				font-size: 0.95rem;
+				border: 1px solid #e9ecef;
+				vertical-align: middle;
+			}
+			
+			.service-details-inline .table td:first-child {
+				font-weight: 600;
+				color: #495057;
+				width: 50%;
+				background: #f8f9fa;
+			}
+			
+			.service-details-inline .table td:last-child {
+				background: white;
+				color: #1f6a4a;
+				font-weight: 600;
+				font-size: 1rem;
+			}
+			
+			.service-details-inline .alert {
+				margin-bottom: 0;
+				border-radius: 8px;
+				font-size: 0.9rem;
+				padding: 12px 16px;
+			}
+			
+			/* Ensure dropdown stays within data tab boundaries */
+			.tab-pane {
+				position: relative;
+				overflow: visible;
+			}
+			
+			.table-responsive {
+				position: relative;
+			}
+			
+			/* Responsive design for smaller screens */
+			@media (max-width: 768px) {
+				.service-details-inline {
+					min-width: 90vw;
+					padding: 16px;
+					left: -10px;
+					right: -10px;
+					max-width: calc(100vw - 20px);
+				}
+				
+				.service-details-inline .card {
+					min-width: 100%;
+					max-width: 100%;
+					margin-right: 0;
+				}
+			}
+			
+			@media (max-width: 1200px) {
+				.service-details-inline {
+					min-width: 70vw;
+					max-width: calc(100vw - 50px);
+				}
+			}
+
+			/* Specific column widths */
+			#submissionsTable th:nth-child(1) { width: 150px; min-width: 150px; } /* Created At */
+			#submissionsTable th:nth-child(2) { width: 120px; min-width: 120px; } /* Company */
+			#submissionsTable th:nth-child(3) { width: 120px; min-width: 120px; } /* Service Type */
+			#submissionsTable th:nth-child(4) { width: 120px; min-width: 120px; } /* Weekly Shipments */
+			#submissionsTable th:nth-child(5) { width: 120px; min-width: 120px; } /* Weekly Outbound */
+			#submissionsTable th:nth-child(6) { width: 120px; min-width: 120px; } /* Weekly Inbound */
+			#submissionsTable th:nth-child(7) { width: 120px; min-width: 120px; } /* Forecast Start */
+			#submissionsTable th:nth-child(8) { width: 120px; min-width: 120px; } /* Forecast End */
+			#submissionsTable th:nth-child(9) { width: 100px; min-width: 100px; } /* Inbound Freq */
+			#submissionsTable th:nth-child(10) { width: 120px; min-width: 120px; } /* Avg Units/Ship */
+			#submissionsTable th:nth-child(11) { width: 200px; min-width: 180px; } /* Service Mix */
+			#submissionsTable th:nth-child(12) { width: 200px; min-width: 180px; } /* Special Bundles & Notes */
+			#submissionsTable th:nth-child(13) { width: 140px; min-width: 140px; } /* SKU Notes */
+			#submissionsTable th:nth-child(14) { width: 150px; min-width: 150px; } /* Customer */
+			#submissionsTable th:nth-child(15) { width: 140px; min-width: 140px; } /* Actions */
+
+			/* Status color coding */
+			.status-select {
+				width: 100% !important;
+				min-width: 120px;
+				font-weight: 500;
+				border: 2px solid transparent;
+				transition: all 0.3s ease;
+			}
+			
+			.status-select option[value="active"] {
+				background-color: #d4edda;
+				color: #155724;
+			}
+			
+			.status-select option[value="on_hold"] {
+				background-color: #fff3cd;
+				color: #856404;
+			}
+			
+			.status-select option[value="inactive"] {
+				background-color: #f8d7da;
+				color: #721c24;
+			}
+			
+			/* Status select styling based on selected value */
+			.status-select:has(option[value="active"]:checked) {
+				background-color: #d4edda;
+				border-color: #28a745;
+				color: #155724;
+			}
+			
+			.status-select:has(option[value="on_hold"]:checked) {
+				background-color: #fff3cd;
+				border-color: #ffc107;
+				color: #856404;
+			}
+			
+			.status-select:has(option[value="inactive"]:checked) {
+				background-color: #f8d7da;
+				border-color: #dc3545;
+				color: #721c24;
+			}
+
+			/* Make service details more readable */
+			.service-details {
+				font-size: 0.85em;
+				margin-top: 5px;
+				padding-left: 5px;
+				border-left: 2px solid #e9ecef;
+			}
+
+			/* Service details row styling */
+			.service-details-row td {
+				background-color: #f8f9fa;
+				padding: 0.5rem !important;
+				border-bottom: 2px solid #dee2e6;
+			}
+			
+			.toggle-service-details {
+				background: none;
+				border: none;
+				color: #0d6efd;
+				cursor: pointer;
+				padding: 0;
+				margin-left: 0.5rem;
+			}
+			
+			.service-details-row .card {
+				box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+			}
+
+			/* Make sure the table is scrollable */
+			.table-responsive {
+				max-width: 100%;
+				overflow-x: auto;
+			}
+
 			/* Scrollbar styling */
 			.table-responsive::-webkit-scrollbar {
 				height: 8px;
@@ -100,23 +305,392 @@
 
 			/* Modal styling */
 			.modal-xl {
-				max-width: 90%;
+				max-width: 95%;
 			}
 
 			.modal-body {
-				max-height: 70vh;
+				max-height: 80vh;
 				overflow-y: auto;
+				padding: 2rem;
+			}
+			
+			.modal-header {
+				padding: 1.5rem 2rem 1rem;
+				border-bottom: 2px solid #e9ecef;
+			}
+			
+			.modal-footer {
+				padding: 1rem 2rem 1.5rem;
+				border-top: 2px solid #e9ecef;
 			}
 
 			/* Form validation styling */
 			.is-invalid {
 				border-color: #dc3545;
 			}
+			
+			/* Enhanced form styling */
+			.form-label {
+				font-weight: 600;
+				color: #495057;
+				margin-bottom: 0.5rem;
+			}
+			
+			.form-control, .form-select {
+				border: 2px solid #e9ecef;
+				border-radius: 8px;
+				padding: 0.75rem 1rem;
+				font-size: 0.95rem;
+				transition: all 0.3s ease;
+			}
+			
+			.form-control:focus, .form-select:focus {
+				border-color: #1f6a4a;
+				box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.15);
+			}
+			
+			/* Section headers */
+			.section-header {
+				font-size: 1.1rem;
+				font-weight: 700;
+				color: #1f6a4a;
+				margin-bottom: 1.5rem;
+				padding-bottom: 0.5rem;
+				border-bottom: 3px solid #1f6a4a;
+			}
 
 			.invalid-feedback {
 				display: block;
 				color: #dc3545;
 				font-size: 0.875em;
+			}
+			
+			/* Custom Toast Styles */
+			.custom-toast {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				z-index: 9999;
+				background: white;
+				border-radius: 8px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				min-width: 300px;
+				max-width: 400px;
+				transform: translateX(100%);
+				opacity: 0;
+				transition: all 0.3s ease;
+				border-left: 4px solid #6c757d;
+			}
+
+			.custom-toast.show {
+				transform: translateX(0);
+				opacity: 1;
+			}
+
+			.custom-toast.toast-success {
+				border-left-color: #28a745;
+			}
+
+			.custom-toast.toast-warning {
+				border-left-color: #ffc107;
+			}
+
+			.custom-toast.toast-error {
+				border-left-color: #dc3545;
+			}
+
+			.custom-toast.toast-info {
+				border-left-color: #17a2b8;
+			}
+
+			.toast-content {
+				display: flex;
+				align-items: flex-start;
+				padding: 16px;
+				gap: 12px;
+			}
+
+			.toast-icon {
+				font-size: 20px;
+				margin-top: 2px;
+			}
+
+			.toast-success .toast-icon {
+				color: #28a745;
+			}
+
+			.toast-warning .toast-icon {
+				color: #ffc107;
+			}
+
+			.toast-error .toast-icon {
+				color: #dc3545;
+			}
+
+			.toast-info .toast-icon {
+				color: #17a2b8;
+			}
+
+			.toast-message {
+				flex: 1;
+				font-size: 14px;
+				line-height: 1.4;
+				color: #333;
+				font-weight: 500;
+			}
+
+			.toast-close {
+				background: none;
+				border: none;
+				font-size: 16px;
+				color: #6c757d;
+				cursor: pointer;
+				padding: 4px;
+				border-radius: 4px;
+				width: 24px;
+				height: 24px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: background-color 0.2s ease;
+			}
+
+			.toast-close:hover {
+				background-color: #f8f9fa;
+				color: #495057;
+			}
+
+			/* Enhanced Chart Styles */
+			.chart-card {
+				border: none;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				border-radius: 12px;
+				transition: all 0.3s ease;
+				background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+			}
+
+			.chart-card:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+			}
+
+			.chart-card .card-header {
+				background: linear-gradient(135deg, #1f6a4a 0%, #2e9e6e 100%);
+				color: white;
+				border: none;
+				border-radius: 12px 12px 0 0;
+				padding: 1rem 1.25rem;
+				font-weight: 600;
+			}
+
+			.chart-card .card-body {
+				padding: 1.5rem;
+				background: white;
+				border-radius: 0 0 12px 12px;
+			}
+
+			.badge {
+				font-size: 0.75rem;
+				padding: 0.5rem 0.75rem;
+				border-radius: 20px;
+			}
+
+			.btn-group .btn.active {
+				background: linear-gradient(135deg, #1f6a4a 0%, #2e9e6e 100%);
+				border-color: #1f6a4a;
+				color: white;
+			}
+
+			.chart-section {
+				animation: fadeIn 0.5s ease-in-out;
+			}
+
+			@keyframes fadeIn {
+				from { opacity: 0; transform: translateY(20px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+
+			/* Chart loading state */
+			.chart-loading {
+				position: relative;
+			}
+
+			.chart-loading::after {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 40px;
+				height: 40px;
+				margin: -20px 0 0 -20px;
+				border: 4px solid #f3f3f3;
+				border-top: 4px solid #1f6a4a;
+				border-radius: 50%;
+				animation: spin 1s linear infinite;
+			}
+
+			@keyframes spin {
+				0% { transform: rotate(0deg); }
+				100% { transform: rotate(360deg); }
+			}
+
+			/* Service Mix Styles */
+			.service-mix-container {
+				display: block;
+				margin-top: 0.5rem;
+			}
+			
+			.service-option {
+				position: relative;
+				margin-bottom: 1.5rem;
+			}
+			
+			.service-option-with-details {
+				width: 100%;
+				margin-bottom: 2rem;
+				border: 2px solid #e9ecef;
+				border-radius: 16px;
+				background: white;
+				transition: all 0.3s ease;
+				overflow: hidden;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+			}
+			
+			.service-option-with-details:hover {
+				border-color: #1f6a4a;
+				box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+			}
+			
+			.service-option-with-details.active {
+				border-color: #1f6a4a;
+				box-shadow: 0 8px 25px rgba(0, 123, 255, 0.25);
+			}
+			
+			.service-details {
+				margin: 0;
+				padding: 2rem;
+				border: none;
+				border-radius: 0;
+				background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+				transition: all 0.3s ease;
+			}
+			
+			.service-option input[type="checkbox"] {
+				position: absolute;
+				opacity: 0;
+				width: 0;
+				height: 0;
+			}
+			
+			.service-option-label {
+				display: flex;
+				align-items: center;
+				padding: 1.5rem 2rem;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				background: white;
+				border: none;
+				width: 100%;
+			}
+			
+			.service-option-label:hover {
+				background: #f8f9fa;
+			}
+			
+			.service-option input:checked + .service-option-label {
+				background: #1f6a4a;
+				color: white;
+			}
+			
+			.service-section-header {
+				background: #1f6a4a;
+				color: white;
+				padding: 12px 16px;
+				margin: -1rem -1rem 1rem -1rem;
+				border-radius: 8px 8px 0 0;
+				font-weight: 600;
+			}
+			
+			.service-section-header h6 {
+				color: white;
+				margin: 0;
+				font-size: 1rem;
+				font-weight: 600;
+			}
+			
+			.service-icon {
+				font-size: 2rem;
+				margin-right: 1rem;
+				opacity: 0.8;
+				transition: all 0.3s ease;
+			}
+			
+			.service-option input:checked + .service-option-label .service-icon {
+				opacity: 1;
+				transform: scale(1.1);
+			}
+			
+			.service-text {
+				font-weight: 700;
+				font-size: 1.1rem;
+				flex: 1;
+			}
+			
+			.service-checkbox {
+				width: 20px;
+				height: 20px;
+				border: 2px solid #dee2e6;
+				border-radius: 4px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: all 0.3s ease;
+				margin-left: 1rem;
+			}
+			
+			.service-option input:checked + .service-option-label .service-checkbox {
+				background: white;
+				border-color: white;
+			}
+			
+			.service-option input:checked + .service-option-label .service-checkbox::after {
+				content: '✓';
+				color: #1f6a4a;
+				font-weight: bold;
+				font-size: 14px;
+			}
+			
+			@media (max-width: 768px) {
+				.modal-xl {
+					max-width: 98%;
+					margin: 0.5rem;
+				}
+				
+				.modal-body {
+					padding: 1rem;
+				}
+				
+				.service-option-label {
+					padding: 1rem;
+				}
+				
+				.service-icon {
+					font-size: 1.5rem;
+					margin-right: 0.75rem;
+				}
+				
+				.service-text {
+					font-size: 1rem;
+				}
+				
+				.service-details {
+					padding: 1.5rem;
+				}
+				
+				.section-header {
+					font-size: 1rem;
+					margin-bottom: 1rem;
+				}
 			}
 		</style>
 	</head>
@@ -127,7 +701,10 @@
 				<h1 class="h4 page-header" id="dashboardTitle">Global Forecast Dashboard</h1>
 				<div class="d-flex gap-2">
 					<select id="customerFilter" class="form-select" style="min-width:260px;"></select>
-					<button class="btn btn-outline-primary" id="downloadPdfBtn">Download PDF</button>
+					<button class="btn btn-success" id="downloadExcelBtn">
+						<i class="bi bi-file-earmark-excel me-1"></i>
+						Download Excel
+					</button>
 				</div>
 			</div>
 
@@ -142,42 +719,175 @@
 				</ul>
 				<div class="tab-content" id="dashTabsContent">
 					<div class="tab-pane fade show active" id="charts" role="tabpanel">
-						<div class="row g-3">
-							<div class="col-md-6">
-								<div class="card"><div class="card-body"><h6>Total Expected Monthly Shipments</h6><canvas id="chartShipments"></canvas></div></div>
+						<!-- Chart Controls -->
+						<div class="row mb-3">
+							<div class="col-12 text-end">
+								<div class="btn-group btn-group-sm" role="group">
+									<button type="button" class="btn btn-outline-primary active" data-chart-view="overview">Overview</button>
+									<button type="button" class="btn btn-outline-primary" data-chart-view="analytics">Analytics</button>
+									<button type="button" class="btn btn-outline-primary" data-chart-view="status">Status</button>
+								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="card"><div class="card-body"><h6>Total Expected Monthly Invoice Value</h6><canvas id="chartInvoice"></canvas></div></div>
+						</div>
+
+						<!-- Overview Charts -->
+						<div id="overview-charts" class="chart-section">
+							<div class="row g-3">
+								<div class="col-md-6">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Total Expected Monthly Shipments</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartShipments"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Total Expected Monthly Invoice Value</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartInvoice"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Average Service Mix</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartService"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Average COD/PPD Split</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartCod"></canvas>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="card"><div class="card-body"><h6>Average Service Mix</h6><canvas id="chartService"></canvas></div></div>
+						</div>
+
+						<!-- Analytics Charts -->
+						<div id="analytics-charts" class="chart-section d-none">
+							<div class="row g-3">
+								<div class="col-md-8">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Shipments Trend Over Time</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartTrend"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Top Customer by Invoice</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartTopCustomersByInvoice"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Revenue by Service Type</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartRevenueByService"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Service Type Distribution</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartServiceTypeDistribution"></canvas>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="card"><div class="card-body"><h6>Average COD/PPD Split</h6><canvas id="chartCod"></canvas></div></div>
+						</div>
+
+						<!-- Status Charts -->
+						<div id="status-charts" class="chart-section d-none">
+							<div class="row g-3">
+								<div class="col-md-4">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Submission Status Distribution</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartStatus"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-8">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Status Trends Over Time</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartStatusTrend"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Active vs Inactive Revenue</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartStatusRevenue"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card chart-card">
+										<div class="card-header">
+											<h6 class="mb-0">Status by Service Type</h6>
+										</div>
+										<div class="card-body">
+											<canvas id="chartStatusByService"></canvas>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="tab-pane fade" id="data" role="tabpanel">
 						<div class="table-responsive" style="max-height: 70vh; overflow-x: auto; overflow-y: auto;">
-							<table class="table table-sm align-middle table-striped" id="submissionsTable" style="min-width: 1640px;">
-								<thead>
+							<table class="table table-sm align-middle table-striped" id="submissionsTable" style="min-width: 1740px;">
+								<thead class="table-light">
 									<tr>
-										<th>Forecast Logged Date</th>
-										<th>Week Calendar</th>
-										<th>Company</th>
-										<th>Service Type</th>
-										<th>Weekly Ship</th>
-										<th>Fulfilment Outbound (Units)</th>
-										<th>Fulfilment Inbound (Units)</th>
-										<th>Inbound Freq</th>
-										<th>Avg Units/Ship</th>
-										<th>COD %</th>
-										<th>PPD %</th>
-										<th>Service Mix</th>
-										<th>Forecast Period</th>
-										<th>SKU Notes</th>
-										<th>Bundles</th>
-										<th>Actions</th>
+										<th data-translate="forecastLoggedDate">Created At</th>
+										<th data-translate="company">Company</th>
+										<th data-translate="serviceType">Service Type</th>
+										<th data-translate="weeklyShipments">Weekly Shipments</th>
+										<th data-translate="weeklyOutbound">Weekly Outbound</th>
+										<th data-translate="weeklyInbound">Weekly Inbound</th>
+										<th data-translate="forecastStart">Forecast Start</th>
+										<th data-translate="forecastEnd">Forecast End</th>
+										<th data-translate="inboundFreq">Inbound Freq</th>
+										<th data-translate="avgUnits">Avg Units/Ship</th>
+										<th data-translate="serviceMix">Service Mix</th>
+										<th data-translate="bundles">Special Bundles & Notes</th>
+										<th data-translate="skuNotes">SKU Notes</th>
+										<th data-translate="customer">Customer</th>
+										<th data-translate="actions">Actions</th>
 									</tr>
 								</thead>
 								<tbody></tbody>
@@ -201,24 +911,25 @@
 							<div class="row g-3">
 								<!-- Company Information -->
 								<div class="col-12">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Company Information</h6>
+									<h6 class="section-header">Company Information</h6>
 								</div>
 								<div class="col-md-6">
 									<label class="form-label">Company Name</label>
 									<input type="text" class="form-control" id="edit_company_name" required>
 								</div>
 								<div class="col-md-6">
-									<label class="form-label">Service Type</label>
+									<label class="form-label">Product Type</label>
 									<select class="form-select" id="edit_service_type" required>
-										<option value="">Select Service Type</option>
+										<option value="">Select Product Type</option>
 										<option value="fulfillment">Fulfillment</option>
 										<option value="last-mile">Last Mile</option>
+										<option value="fulfillment-and-last-mile">Fulfillment and Last Mile</option>
 									</select>
 								</div>
 
 								<!-- Volume Information -->
 								<div class="col-12 mt-4">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Volume Information</h6>
+									<h6 class="section-header">Volume Information</h6>
 								</div>
 								<div class="col-md-6">
 									<label class="form-label">Weekly Shipments</label>
@@ -235,7 +946,7 @@
 
 								<!-- Frequency & Units -->
 								<div class="col-12 mt-4">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Frequency & Units</h6>
+									<h6 class="section-header">Frequency & Units</h6>
 								</div>
 								<div class="col-md-6">
 									<label class="form-label">Inbound Frequency</label>
@@ -253,7 +964,7 @@
 
 								<!-- SKUs Section -->
 								<div class="col-12 mt-4" id="edit_skus_container">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Special SKUs for Seasonality</h6>
+									<h6 class="section-header">Special SKUs for Seasonality</h6>
 									<div class="form-group">
 										<label class="form-label">SKU Notes</label>
 										<textarea class="form-control" id="edit_seasonality_skus_notes" rows="3" placeholder="Enter SKU details here"></textarea>
@@ -262,7 +973,7 @@
 
 								<!-- Bundles Section -->
 								<div class="col-12 mt-4" id="edit_bundles_container">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Special Bundles</h6>
+									<h6 class="section-header">Special Bundles</h6>
 									<div class="mt-3">
 										<label class="form-label">Bundle Items</label>
 										<div id="edit_bundles_list" class="mb-3">
@@ -279,46 +990,213 @@
 									</div>
 								</div>
 
-								<!-- Payment Information -->
-								<div class="col-12 mt-4">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Payment Information</h6>
-								</div>
-								<div class="col-md-6">
-									<label class="form-label">COD Percentage (%)</label>
-									<input type="number" class="form-control" id="edit_cod_percent" min="0" max="100" step="0.01" required>
-								</div>
-								<div class="col-md-6">
-									<label class="form-label">PPD Percentage (%)</label>
-									<input type="number" class="form-control" id="edit_ppd_percent" min="0" max="100" step="0.01" required>
-									<div class="form-text">COD + PPD must equal 100%</div>
-								</div>
 
 								<!-- Service Mix -->
 								<div class="col-12 mt-4">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Service Mix</h6>
+									<h6 class="section-header">Service Mix</h6>
 								</div>
-								<div class="col-md-4">
-									<div class="form-check">
+								
+								<!-- Heavy & Bulky Service Option with Details -->
+								<div class="col-12 mb-3">
+									<div class="service-option service-option-with-details">
 										<input class="form-check-input" type="checkbox" value="hb" id="edit_service_hb" name="edit_service_mix">
-										<label class="form-check-label" for="edit_service_hb">Heavy & Bulky</label>
+										<label class="service-option-label" for="edit_service_hb">
+											<div class="service-icon">📦</div>
+											<div class="service-text">Heavy & Bulky</div>
+											<div class="service-checkbox"></div>
+										</label>
+										
+										<!-- Heavy & Bulky Service Details Section -->
+										<div class="service-details d-none" id="edit_hb_service_section">
+											<div class="service-section-header">
+												<h6 class="mb-3">Heavy & Bulky Service Details</h6>
+											</div>
+											<div class="row g-3">
+												<div class="col-md-6">
+													<label class="form-label">Pickup Frequency</label>
+													<select class="form-select" id="edit_hb_pickup_frequency">
+														<option value="">Select frequency</option>
+														<option value="once">Once a Day</option>
+														<option value="twice">Twice a Day</option>
+													</select>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Time Slot(s)</label>
+													<div class="row g-2" id="edit_hb_time_slot_container">
+														<!-- Dynamic time slots will be generated here -->
+													</div>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">City</label>
+													<select class="form-select" id="edit_hb_city">
+														<option value="">Select city</option>
+														<option value="dammam">Dammam</option>
+														<option value="riyadh">Riyadh</option>
+														<option value="jeddah">Jeddah</option>
+													</select>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">District</label>
+													<input type="text" class="form-control" id="edit_hb_district" placeholder="Enter district">
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Weekly Shipments</label>
+													<input type="number" min="0" class="form-control" id="edit_hb_weekly_shipments">
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">COD %</label>
+													<div class="input-group">
+														<input type="number" min="0" max="100" class="form-control" id="edit_hb_cod_percent">
+														<span class="input-group-text">%</span>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">PPD %</label>
+													<div class="input-group">
+														<input type="number" min="0" max="100" class="form-control" id="edit_hb_ppd_percent">
+														<span class="input-group-text">%</span>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="col-md-4">
-									<div class="form-check">
+								
+								<!-- International Service Option with Details -->
+								<div class="col-12 mb-3">
+									<div class="service-option service-option-with-details">
 										<input class="form-check-input" type="checkbox" value="international" id="edit_service_int" name="edit_service_mix">
-										<label class="form-check-label" for="edit_service_int">International</label>
+										<label class="service-option-label" for="edit_service_int">
+											<div class="service-icon">🌍</div>
+											<div class="service-text">International</div>
+											<div class="service-checkbox"></div>
+										</label>
+										
+										<!-- International Service Details Section -->
+										<div class="service-details d-none" id="edit_international_service_section">
+											<div class="service-section-header">
+												<h6 class="mb-3">International Service Details</h6>
+											</div>
+											<div class="row g-3">
+												<div class="col-md-6">
+													<label class="form-label">Pickup Frequency</label>
+													<select class="form-select" id="edit_international_pickup_frequency">
+														<option value="">Select frequency</option>
+														<option value="once">Once a Day</option>
+														<option value="twice">Twice a Day</option>
+													</select>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Time Slot(s)</label>
+													<div class="row g-2" id="edit_international_time_slot_container">
+														<!-- Dynamic time slots will be generated here -->
+													</div>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">City</label>
+													<select class="form-select" id="edit_international_city">
+														<option value="">Select city</option>
+														<option value="dammam">Dammam</option>
+														<option value="riyadh">Riyadh</option>
+														<option value="jeddah">Jeddah</option>
+													</select>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">District</label>
+													<input type="text" class="form-control" id="edit_international_district" placeholder="Enter district">
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Weekly Shipments</label>
+													<input type="number" min="0" class="form-control" id="edit_international_weekly_shipments">
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">COD %</label>
+													<div class="input-group">
+														<input type="number" min="0" max="100" class="form-control" id="edit_international_cod_percent">
+														<span class="input-group-text">%</span>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">PPD %</label>
+													<div class="input-group">
+														<input type="number" min="0" max="100" class="form-control" id="edit_international_ppd_percent">
+														<span class="input-group-text">%</span>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="col-md-4">
-									<div class="form-check">
+								
+								<!-- Parcel Service Option with Details -->
+								<div class="col-12 mb-3">
+									<div class="service-option service-option-with-details">
 										<input class="form-check-input" type="checkbox" value="parcel" id="edit_service_parcel" name="edit_service_mix">
-										<label class="form-check-label" for="edit_service_parcel">Parcel</label>
+										<label class="service-option-label" for="edit_service_parcel">
+											<div class="service-icon">📬</div>
+											<div class="service-text">Parcel</div>
+											<div class="service-checkbox"></div>
+										</label>
+										
+										<!-- Parcel Service Details Section -->
+										<div class="service-details d-none" id="edit_parcel_service_section">
+											<div class="service-section-header">
+												<h6 class="mb-3">Parcel Service Details</h6>
+											</div>
+											<div class="row g-3">
+												<div class="col-md-6">
+													<label class="form-label">Pickup Frequency</label>
+													<select class="form-select" id="edit_parcel_pickup_frequency">
+														<option value="">Select frequency</option>
+														<option value="once">Once a Day</option>
+														<option value="twice">Twice a Day</option>
+													</select>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Time Slot(s)</label>
+													<div class="row g-2" id="edit_parcel_time_slot_container">
+														<!-- Dynamic time slots will be generated here -->
+													</div>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">City</label>
+													<select class="form-select" id="edit_parcel_city">
+														<option value="">Select city</option>
+														<option value="dammam">Dammam</option>
+														<option value="riyadh">Riyadh</option>
+														<option value="jeddah">Jeddah</option>
+													</select>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">District</label>
+													<input type="text" class="form-control" id="edit_parcel_district" placeholder="Enter district">
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Weekly Shipments</label>
+													<input type="number" min="0" class="form-control" id="edit_parcel_weekly_shipments">
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">COD %</label>
+													<div class="input-group">
+														<input type="number" min="0" max="100" class="form-control" id="edit_parcel_cod_percent">
+														<span class="input-group-text">%</span>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<label class="form-label">PPD %</label>
+													<div class="input-group">
+														<input type="number" min="0" max="100" class="form-control" id="edit_parcel_ppd_percent">
+														<span class="input-group-text">%</span>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 
 								<!-- Forecast Period -->
 								<div class="col-12 mt-4">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Forecast Period</h6>
+									<h6 class="section-header">Forecast Period</h6>
 								</div>
 								<div class="col-md-6">
 									<label class="form-label">Start Date</label>
@@ -329,14 +1207,6 @@
 									<input type="date" class="form-control" id="edit_forecast_end_date" required>
 								</div>
 
-								<!-- Notes -->
-								<div class="col-12 mt-4">
-									<h6 class="text-primary border-bottom pb-2 mb-3">Additional Information</h6>
-								</div>
-								<div class="col-12">
-									<label class="form-label">Notes</label>
-									<textarea class="form-control" id="edit_notes" rows="3" placeholder="Additional notes or comments"></textarea>
-								</div>
 							</div>
 						</form>
 					</div>
@@ -348,15 +1218,57 @@
 			</div>
 		</div>
 
+		<!-- Service Mix Details Modal -->
+		<div class="modal fade" id="serviceMixModal" tabindex="-1" aria-labelledby="serviceMixModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="serviceMixModalLabel">Service Mix Details</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="serviceMixDetails">
+							<!-- Service mix details will be populated here -->
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Load Supabase client first -->
 		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+		<script src="assets/js/supabaseClient.js"></script>
+		
+		<!-- Then load other dependencies -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-		<script src="assets/js/supabaseClient.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+		
+		<!-- Load custom scripts -->
 		<script src="assets/js/navbar.js"></script>
 		<script src="assets/js/dashboard.js"></script>
+		
+		<!-- 
+		IMPORTANT: Add status column to database:
+		ALTER TABLE public.submissions ADD COLUMN status text DEFAULT 'active';
+		-->
+		
+		<!-- Initialize navbar -->
 		<script>
-			mountNavbar('dashboard');
+			document.addEventListener('DOMContentLoaded', () => {
+				try {
+					if (typeof mountNavbar === 'function') {
+						mountNavbar('dashboard');
+					} else {
+						console.error('mountNavbar function not found. Make sure navbar.js is loaded correctly.');
+					}
+				} catch (error) {
+					console.error('Error initializing navbar:', error);
+				}
+			});
 		</script>
 	</body>
 </html>

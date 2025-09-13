@@ -5,7 +5,7 @@ A customer expectations preparation questionnaire with multilingual support (Eng
 ## Features
 
 - Bilingual form (English/Arabic)
-- Service type selection (Fulfillment/Last Mile)
+- Product type selection (Fulfillment/Last Mile)
 - Real-time form validation
 - Date range validation
 - Supabase integration for data storage
