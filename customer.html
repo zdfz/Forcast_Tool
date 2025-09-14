@@ -62,6 +62,7 @@
 			text-align: center;
 		}
 
+
 		/* Service Mix Styles */
 		.service-mix-container {
 			display: block;
@@ -312,6 +313,74 @@
 						</div>
 					</div>
 
+					<!-- Company Information -->
+					<div class="form-section">
+						<button class="btn btn-link p-0 text-decoration-none section-title collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#secCompany" aria-expanded="false"
+							data-translate="sectionCompany">Company Information</button>
+						<div class="collapse" id="secCompany">
+							<div class="row g-3 pt-2">
+								<div class="col-md-6">
+									<label class="form-label" data-translate="companyLabel">Customer Company Name <span
+											class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="company_name" required
+										placeholder="Enter company name" data-translate-placeholder="enterCompanyName"
+										title="Enter the official company or trade name">
+									<div class="invalid-feedback" id="company-name-error"></div>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" data-translate="employeeNameLabel">Employee Name <span
+											class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="employee_name" required
+										placeholder="Enter employee name" data-translate-placeholder="enterEmployeeName"
+										title="Enter the name of the employee submitting this forecast">
+									<div class="invalid-feedback" id="employee-name-error" data-translate="employeeNameError">Please enter the employee name.</div>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" data-translate="employeeEmailLabel">Employee Email <span
+											class="text-danger">*</span></label>
+									<input type="email" class="form-control" id="employee_email" required
+										placeholder="Enter employee email" data-translate-placeholder="enterEmployeeEmail"
+										title="Enter the email address of the employee submitting this forecast">
+									<div class="invalid-feedback" id="employee-email-error" data-translate="employeeEmailError">Please enter a valid employee email address.</div>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" data-translate="forecastingPeriodLabel">
+										<i class="bi bi-calendar me-2"></i>
+										Forecasting Period <span class="text-danger">*</span>
+									</label>
+									<div class="row g-2">
+										<div class="col-6">
+											<label class="form-label small text-muted" data-translate="startDate">Start
+												Date</label>
+											<input type="date" class="form-control" id="forecast_start_date" required>
+										</div>
+										<div class="col-6">
+											<label class="form-label small text-muted" data-translate="endDate">End
+												Date</label>
+											<input type="date" class="form-control" id="forecast_end_date" required>
+										</div>
+									</div>
+									<div class="form-text" data-translate="selectDateRange">Select the date range for
+										your forecast</div>
+									<div class="form-text error d-none" id="err_forecast_dates"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Volume Information -->
+					<div class="form-section">
+						<button class="btn btn-link p-0 text-decoration-none section-title collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#secVolume" aria-expanded="false"
+							data-translate="sectionVolume">Volume Information</button>
+						<div class="collapse" id="secVolume">
+							<div class="row g-3 pt-2" id="volumeFields">
+								<!-- Volume fields will be populated dynamically based on product type -->
+							</div>
+						</div>
+					</div>
+
 					<!-- Last Mile Service Structure -->
 					<div class="form-section">
 						<button class="btn btn-link p-0 text-decoration-none section-title collapsed" type="button"
@@ -529,117 +598,6 @@
 						</div>
 					</div>
 
-					<!-- Company & Volumes -->
-					<div class="form-section">
-						<button class="btn btn-link p-0 text-decoration-none section-title collapsed" type="button"
-							data-bs-toggle="collapse" data-bs-target="#secCompany" aria-expanded="false"
-							data-translate="sectionCompany">Company & Volumes</button>
-						<div class="collapse" id="secCompany">
-							<div class="row g-3 pt-2">
-								<div class="col-md-6">
-									<label class="form-label" data-translate="companyLabel">Customer Company Name <span
-											class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="company_name" required
-										placeholder="Enter company name" data-translate-placeholder="enterCompanyName"
-										title="Enter the official company or trade name">
-									<div class="invalid-feedback" id="company-name-error"></div>
-								</div>
-								<div class="col-md-6">
-									<label class="form-label" data-translate="weeklyVolumeLabel">Weekly Orders <span class="text-danger">*</span></label>
-									<input type="number" min="0" class="form-control" id="weekly_shipments" required
-										placeholder="e.g. 5" data-translate-placeholder="exampleShipments" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
-									<div class="invalid-feedback" id="weekly-shipments-error"></div>
-								</div>
-								<div class="col-md-6">
-									<label class="form-label" data-translate="weeklyOutboundLabel">Fulfilment Outbound (Unit of Measure: Units)
-									<span class="text-danger">*</span></label>
-									<input type="number" min="0" class="form-control" id="weekly_units_outbound"
-										required placeholder="e.g. 10" data-translate-placeholder="exampleOutbound" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
-									<div class="invalid-feedback" id="weekly-outbound-error"></div>
-								</div>
-								<div class="col-md-6">
-									<label class="form-label" data-translate="weeklyInboundLabel">Fulfilment Inbound (Unit of Measure: Units)
-									<span class="text-danger">*</span></label>
-									<input type="number" min="0" class="form-control" id="weekly_units_inbound" required
-										placeholder="e.g. 8" data-translate-placeholder="exampleInbound" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
-									<div class="invalid-feedback" id="weekly-inbound-error"></div>
-								</div>
-								<div class="col-md-6 mb-3">
-									<label for="inbound-frequency" class="form-label" data-translate="inboundFrequencyLabel">Frequency of the Inbound</label>
-									<select class="form-select" id="inbound-frequency" name="inbound-frequency" required>
-										<option value="" data-translate="selectFrequency">Select frequency</option>
-										<option value="daily" data-translate="dailyOption">Daily</option>
-										<option value="weekly" data-translate="weeklyOption">Weekly</option>
-										<option value="biweekly" data-translate="biweeklyOption">Biweekly</option>
-									</select>
-									<div class="invalid-feedback" id="inbound-frequency-error">
-										Please select a frequency.
-									</div>
-								</div>
-								<div class="col-md-6 mb-3">
-									<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
-									<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" data-translate="avgUnits" required placeholder="e.g. 3" data-translate-placeholder="exampleAvgUnits" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
-									<div class="invalid-feedback" id="avg-units-error">
-										Must be a number ≥ 0.
-									</div>
-								</div>
-								<div class="col-md-6">
-									<label class="form-label" data-translate="forecastingPeriodLabel">
-										<i class="bi bi-calendar me-2"></i>
-										Forecasting Period <span class="text-danger">*</span>
-									</label>
-									<div class="row g-2">
-										<div class="col-6">
-											<label class="form-label small text-muted" data-translate="startDate">Start
-												Date</label>
-											<input type="date" class="form-control" id="forecast_start_date" required>
-										</div>
-										<div class="col-6">
-											<label class="form-label small text-muted" data-translate="endDate">End
-												Date</label>
-											<input type="date" class="form-control" id="forecast_end_date" required>
-										</div>
-									</div>
-									<div class="form-text" data-translate="selectDateRange">Select the date range for
-										your forecast</div>
-									<div class="form-text error d-none" id="err_forecast_dates"></div>
-								</div>
-								<div class="col-md-6" id="seasonality_skus_container">
-									<label class="form-label" data-translate="skusLabel">Special SKUs for Seasonality
-										<small class="text-muted"><em
-												data-translate="optionalNote">(optional)</em></small></label>
-									<textarea class="form-control" id="seasonality_skus_notes" rows="2"
-										placeholder="Optional notes about seasonal SKUs" data-translate-placeholder="optionalSeasonalNotes"></textarea>
-								</div>
-								<div class="col-md-6" id="special_bundles_container">
-									<label class="form-label" data-translate="bundlesLabel">Special Bundles
-										<small class="text-muted"><em
-												data-translate="optionalNote">(optional)</em></small></label>
-									<div id="bundles-container">
-										<div class="bundle-item mb-2">
-											<div class="row g-2">
-												<div class="col-5">
-													<input type="text" class="form-control bundle-name" data-translate-placeholder="bundleName" placeholder="Bundle Name">
-												</div>
-												<div class="col-5">
-													<input type="text" class="form-control bundle-details" data-translate-placeholder="bundleDetails" placeholder="Bundle Details">
-												</div>
-												<div class="col-2 d-flex">
-													<button type="button" class="btn btn-outline-danger btn-sm remove-bundle" onclick="removeBundle(this)" style="display: none;">
-														<i class="bi bi-trash"></i>
-													</button>
-													<button type="button" class="btn btn-outline-success btn-sm add-bundle" onclick="addBundle()">
-														<i class="bi bi-plus"></i>
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
 					<!-- Submit -->
 					<div class="form-section">
 						<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between">
@@ -659,6 +617,18 @@
 	<script src="assets/js/supabaseClient.js"></script>
 	<script>
 		async function main() {
+			// Setup employee field listeners first
+			setupEmployeeFieldListeners();
+			
+			// Initialize volume fields based on default selection
+			populateVolumeFields();
+			
+			// Hide Last Mile section initially since no product type is selected
+			const lastMileSection = document.getElementById('secPayments');
+			if (lastMileSection) {
+				lastMileSection.style.display = 'none';
+			}
+			
 			// Check if Supabase client is available
 			if (!window.supa) {
 				console.error('Supabase client not found!');
@@ -681,8 +651,14 @@
 			// Language translations
 			const translations = {
 				en: {
-					pageTitle: 'Customer\'s forecast questionnaire',
+					pageTitle: 'Customer\'s forecast tool',
 					companyLabel: 'Customer Company Name',
+					employeeNameLabel: 'Employee Name',
+					employeeEmailLabel: 'Employee Email',
+					enterEmployeeName: 'Enter employee name',
+					enterEmployeeEmail: 'Enter employee email',
+					employeeNameError: 'Please enter the employee name.',
+					employeeEmailError: 'Please enter a valid employee email address.',
 					weeklyVolumeLabel: 'Weekly Orders',
 					weeklyOutboundLabel: 'Fulfillment Outbound (Unit of Measure: Units)',
 					weeklyInboundLabel: 'Fulfillment Inbound (Unit of Measure: Units)',
@@ -699,7 +675,8 @@
 					requiredNote: 'Required fields',
 					optionalNote: '(optional)',
 					sectionServiceType: 'Product Type',
-					sectionCompany: 'Company & Volume',
+					sectionCompany: 'Company Information',
+					sectionVolume: 'Volume Information',
 					sectionPayments: 'Last Mile Service Structure',
 					serviceTypeLabel: 'Select Product Type',
 					fulfillmentOption: 'Fulfillment',
@@ -752,7 +729,7 @@
 					}
 				},
 				ar: {
-					pageTitle: 'استبيان توقعات العملاء',
+					pageTitle: 'استبيان  توقعات العملاء',
 					companyLabel: 'اسم شركة العميل',
 					weeklyVolumeLabel: 'الطلبات الأسبوعية',
 					weeklyOutboundLabel: 'الوفاء الصادر (وحدة القياس: وحدات)',
@@ -770,7 +747,8 @@
 					requiredNote: 'الحقول المطلوبة',
 					optionalNote: '(اختياري)',
 					sectionServiceType: 'نوع المنتج',
-					sectionCompany: 'الشركة والحجم',
+					sectionCompany: 'معلومات الشركة',
+					sectionVolume: 'معلومات الحجم',
 					sectionPayments: 'هيكل خدمة الميل الأخير',
 					serviceTypeLabel: 'اختر نوع المنتج',
 					fulfillmentOption: 'تخزين',
@@ -858,6 +836,13 @@
 					enterDistrict: 'أدخل الحي',
 					selectFrequency: 'اختر التكرار',
 					enterCompanyName: 'أدخل اسم الشركة',
+					enterEmployeeName: 'أدخل اسم الموظف',
+					enterEmployeeEmail: 'أدخل بريد الموظف الإلكتروني',
+					employeeNameError: 'يرجى إدخال اسم الموظف.',
+					employeeEmailError: 'يرجى إدخال عنوان بريد إلكتروني صحيح للموظف.',
+					weeklyVolumeLabel: 'الطلبات الأسبوعية',
+					weeklyOutboundLabel: 'الصادرات الأسبوعية (وحدة القياس: الوحدات)',
+					weeklyInboundLabel: 'الواردات الأسبوعية (وحدة القياس: الوحدات)',
 					exampleShipments: 'مثال: 5',
 					exampleOutbound: 'مثال: 10',
 					exampleInbound: 'مثال: 8',
@@ -865,6 +850,191 @@
 					optionalSeasonalNotes: 'ملاحظات اختيارية حول وحدة حفظ المخزون الموسمية'
 				}
 			};
+
+			// Function to populate volume fields based on product type
+			function populateVolumeFields() {
+				const productType = document.querySelector('input[name="service-type"]:checked')?.value;
+				const volumeFields = document.getElementById('volumeFields');
+				const lastMileSection = document.getElementById('secPayments');
+				
+				if (!productType || !volumeFields) return;
+				
+				// Show/hide Last Mile section based on product type
+				if (lastMileSection) {
+					if (productType === 'fulfillment') {
+						lastMileSection.style.display = 'none';
+					} else {
+						lastMileSection.style.display = 'block';
+					}
+				}
+				
+				// Clear existing fields
+				volumeFields.innerHTML = '';
+				
+				let fieldsHTML = '';
+				
+				if (productType === 'fulfillment') {
+					// Fulfillment only fields
+					fieldsHTML = `
+						<div class="col-md-6">
+							<label class="form-label" data-translate="weeklyVolumeLabel">Weekly Shipments <span class="text-danger">*</span></label>
+							<input type="number" min="0" class="form-control" id="weekly_shipments" required
+								placeholder="e.g. 100" data-translate-placeholder="exampleShipments" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="weekly-shipments-error"></div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label" data-translate="weeklyOutboundLabel">Fulfilment Outbound (Unit of Measure: Units) <span class="text-danger">*</span></label>
+							<input type="number" min="0" class="form-control" id="weekly_units_outbound" required
+								placeholder="e.g. 10" data-translate-placeholder="exampleOutbound" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="weekly-outbound-error"></div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label" data-translate="weeklyInboundLabel">Fulfilment Inbound (Unit of Measure: Units) <span class="text-danger">*</span></label>
+							<input type="number" min="0" class="form-control" id="weekly_units_inbound" required
+								placeholder="e.g. 8" data-translate-placeholder="exampleInbound" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="weekly-inbound-error"></div>
+						</div>
+						<div class="col-md-6">
+							<label for="inbound-frequency" class="form-label" data-translate="inboundFrequencyLabel">Frequency of the Inbound</label>
+							<select class="form-select" id="inbound-frequency" name="inbound-frequency" required>
+								<option value="" data-translate="selectFrequency">Select frequency</option>
+								<option value="daily" data-translate="dailyOption">Daily</option>
+								<option value="weekly" data-translate="weeklyOption">Weekly</option>
+								<option value="biweekly" data-translate="biweeklyOption">Biweekly</option>
+							</select>
+							<div class="invalid-feedback" id="inbound-frequency-error">Please select a frequency.</div>
+						</div>
+						<div class="col-md-6">
+							<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
+							<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" required 
+								placeholder="e.g. 3" data-translate-placeholder="exampleAvgUnits" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="avg-units-error">Must be a number ≥ 0.</div>
+						</div>
+						<div class="col-md-6" id="seasonality_skus_container">
+							<label class="form-label" data-translate="skusLabel">Special SKUs for Seasonality
+								<small class="text-muted"><em data-translate="optionalNote">(optional)</em></small></label>
+							<textarea class="form-control" id="seasonality_skus_notes" rows="2"
+								placeholder="Optional notes about seasonal SKUs" data-translate-placeholder="optionalSeasonalNotes"></textarea>
+						</div>
+						<div class="col-md-6" id="special_bundles_container">
+							<label class="form-label" data-translate="bundlesLabel">Special Bundles
+								<small class="text-muted"><em data-translate="optionalNote">(optional)</em></small></label>
+							<div id="bundles-container">
+								<div class="bundle-item mb-2">
+									<div class="row g-2">
+										<div class="col-5">
+											<input type="text" class="form-control bundle-name" data-translate-placeholder="bundleName" placeholder="Bundle Name">
+										</div>
+										<div class="col-5">
+											<input type="text" class="form-control bundle-details" data-translate-placeholder="bundleDetails" placeholder="Bundle Details">
+										</div>
+										<div class="col-2 d-flex">
+											<button type="button" class="btn btn-outline-danger btn-sm remove-bundle" onclick="removeBundle(this)" style="display: none;">
+												<i class="bi bi-trash"></i>
+											</button>
+											<button type="button" class="btn btn-outline-success btn-sm add-bundle" onclick="addBundle()">
+												<i class="bi bi-plus"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					`;
+				} else if (productType === 'last-mile') {
+					// Last Mile only fields (no Inbound Frequency)
+					fieldsHTML = `
+						<div class="col-md-6">
+							<label class="form-label" data-translate="weeklyVolumeLabel">Weekly Shipments <span class="text-danger">*</span></label>
+							<input type="number" min="0" class="form-control" id="weekly_shipments" required
+								placeholder="e.g. 100" data-translate-placeholder="exampleShipments" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="weekly-shipments-error"></div>
+						</div>
+						<div class="col-md-6">
+							<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
+							<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" required 
+								placeholder="e.g. 3" data-translate-placeholder="exampleAvgUnits" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="avg-units-error">Must be a number ≥ 0.</div>
+						</div>
+					`;
+				} else if (productType === 'fulfillment-and-last-mile') {
+					// Both fulfillment and last mile fields
+					fieldsHTML = `
+						<div class="col-md-6">
+							<label class="form-label" data-translate="weeklyVolumeLabel">Weekly Shipments <span class="text-danger">*</span></label>
+							<input type="number" min="0" class="form-control" id="weekly_shipments" required
+								placeholder="e.g. 100" data-translate-placeholder="exampleShipments" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="weekly-shipments-error"></div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label" data-translate="weeklyOutboundLabel">Fulfilment Outbound (Unit of Measure: Units) <span class="text-danger">*</span></label>
+							<input type="number" min="0" class="form-control" id="weekly_units_outbound" required
+								placeholder="e.g. 10" data-translate-placeholder="exampleOutbound" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="weekly-outbound-error"></div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label" data-translate="weeklyInboundLabel">Fulfilment Inbound (Unit of Measure: Units) <span class="text-danger">*</span></label>
+							<input type="number" min="0" class="form-control" id="weekly_units_inbound" required
+								placeholder="e.g. 8" data-translate-placeholder="exampleInbound" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="weekly-inbound-error"></div>
+						</div>
+						<div class="col-md-6">
+							<label for="inbound-frequency" class="form-label" data-translate="inboundFrequencyLabel">Frequency of the Inbound</label>
+							<select class="form-select" id="inbound-frequency" name="inbound-frequency" required>
+								<option value="" data-translate="selectFrequency">Select frequency</option>
+								<option value="daily" data-translate="dailyOption">Daily</option>
+								<option value="weekly" data-translate="weeklyOption">Weekly</option>
+								<option value="biweekly" data-translate="biweeklyOption">Biweekly</option>
+							</select>
+							<div class="invalid-feedback" id="inbound-frequency-error">Please select a frequency.</div>
+						</div>
+						<div class="col-md-6">
+							<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
+							<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" required 
+								placeholder="e.g. 3" data-translate-placeholder="exampleAvgUnits" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
+							<div class="invalid-feedback" id="avg-units-error">Must be a number ≥ 0.</div>
+						</div>
+						<div class="col-md-6" id="seasonality_skus_container">
+							<label class="form-label" data-translate="skusLabel">Special SKUs for Seasonality
+								<small class="text-muted"><em data-translate="optionalNote">(optional)</em></small></label>
+							<textarea class="form-control" id="seasonality_skus_notes" rows="2"
+								placeholder="Optional notes about seasonal SKUs" data-translate-placeholder="optionalSeasonalNotes"></textarea>
+						</div>
+						<div class="col-md-6" id="special_bundles_container">
+							<label class="form-label" data-translate="bundlesLabel">Special Bundles
+								<small class="text-muted"><em data-translate="optionalNote">(optional)</em></small></label>
+							<div id="bundles-container">
+								<div class="bundle-item mb-2">
+									<div class="row g-2">
+										<div class="col-5">
+											<input type="text" class="form-control bundle-name" data-translate-placeholder="bundleName" placeholder="Bundle Name">
+										</div>
+										<div class="col-5">
+											<input type="text" class="form-control bundle-details" data-translate-placeholder="bundleDetails" placeholder="Bundle Details">
+										</div>
+										<div class="col-2 d-flex">
+											<button type="button" class="btn btn-outline-danger btn-sm remove-bundle" onclick="removeBundle(this)" style="display: none;">
+												<i class="bi bi-trash"></i>
+											</button>
+											<button type="button" class="btn btn-outline-success btn-sm add-bundle" onclick="addBundle()">
+												<i class="bi bi-plus"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					`;
+				}
+				
+				volumeFields.innerHTML = fieldsHTML;
+				
+				// Update language for new fields
+				updateFormLanguage();
+				
+				// Setup event listeners for volume fields
+				setupVolumeFieldListeners();
+			}
 
 			// Function to update form language
 			function updateFormLanguage() {
@@ -1077,6 +1247,7 @@
 							radio.addEventListener('change', function() {
 								console.log('Radio changed:', this.value);
 								updateSections(this.value);
+								populateVolumeFields();
 							});
 						} else {
 							console.warn(`Radio at index ${index} is null or undefined`);
@@ -1330,43 +1501,6 @@ if (cod && ppd) {
 				});
 				});
 			}
-			const weeklyShipmentsInput = document.getElementById('weekly_shipments');
-			const weeklyOutboundInput = document.getElementById('weekly_units_outbound');
-			const weeklyInboundInput = document.getElementById('weekly_units_inbound');
-			const inboundFrequencySelect = document.getElementById('inbound-frequency');
-			const avgUnitsInput = document.getElementById('avg-units');
-
-			// Add debugging for avg units field
-			avgUnitsInput.addEventListener('input', (e) => {
-				console.log('🔧 avgUnits input event - Value:', e.target.value, 'Type:', typeof e.target.value);
-			});
-			
-			avgUnitsInput.addEventListener('change', (e) => {
-				console.log('🔧 avgUnits change event - Value:', e.target.value, 'Type:', typeof e.target.value);
-			});
-
-			weeklyShipmentsInput.addEventListener('input', () => {
-				// Prevent negative values
-				if (weeklyShipmentsInput.value < 0) weeklyShipmentsInput.value = 0;
-				validateNumericInput(weeklyShipmentsInput, document.getElementById('weekly-shipments-error'));
-			});
-			weeklyOutboundInput.addEventListener('input', () => {
-				// Prevent negative values
-				if (weeklyOutboundInput.value < 0) weeklyOutboundInput.value = 0;
-				validateNumericInput(weeklyOutboundInput, document.getElementById('weekly-outbound-error'));
-			});
-			weeklyInboundInput.addEventListener('input', () => {
-				// Prevent negative values
-				if (weeklyInboundInput.value < 0) weeklyInboundInput.value = 0;
-				validateNumericInput(weeklyInboundInput, document.getElementById('weekly-inbound-error'));
-			});
-
-			inboundFrequencySelect.addEventListener('change', validateInboundFrequency);
-			avgUnitsInput.addEventListener('input', () => {
-				// Prevent negative values
-				if (avgUnitsInput.value < 0) avgUnitsInput.value = 0;
-				validateAvgUnits();
-			});
 
 			function validateServiceType() {
 				const selectedServiceType = document.querySelector('input[name="service-type"]:checked');
@@ -1387,10 +1521,127 @@ if (cod && ppd) {
 				}
 			}
 
+			function validateEmployeeName() {
+				const input = document.getElementById('employee_name');
+				const errorElement = document.getElementById('employee-name-error');
+				
+				if (!input || !errorElement) return false;
+				
+				const value = input.value.trim();
+				if (!value) {
+					input.classList.add('is-invalid');
+					errorElement.textContent = translations[currentLanguage].employeeNameError;
+					return false;
+				}
+				
+				input.classList.remove('is-invalid');
+				return true;
+			}
+
+			function validateEmployeeEmail() {
+				const input = document.getElementById('employee_email');
+				const errorElement = document.getElementById('employee-email-error');
+				
+				if (!input || !errorElement) return false;
+				
+				const value = input.value.trim();
+				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				
+				if (!value) {
+					input.classList.add('is-invalid');
+					errorElement.textContent = translations[currentLanguage].employeeEmailError;
+					return false;
+				}
+				
+				if (!emailRegex.test(value)) {
+					input.classList.add('is-invalid');
+					errorElement.textContent = translations[currentLanguage].employeeEmailError;
+					return false;
+				}
+				
+				input.classList.remove('is-invalid');
+				return true;
+			}
+
 			// Add event listeners for service type radio buttons
 			document.querySelectorAll('input[name="service-type"]').forEach(radio => {
-				radio.addEventListener('change', validateServiceType);
+				radio.addEventListener('change', function() {
+					validateServiceType();
+					populateVolumeFields();
+				});
 			});
+
+			// Function to setup employee field event listeners
+			function setupEmployeeFieldListeners() {
+				const employeeNameInput = document.getElementById('employee_name');
+				const employeeEmailInput = document.getElementById('employee_email');
+				
+				if (employeeNameInput) {
+					employeeNameInput.addEventListener('input', validateEmployeeName);
+					employeeNameInput.addEventListener('blur', validateEmployeeName);
+				}
+				
+				if (employeeEmailInput) {
+					employeeEmailInput.addEventListener('input', validateEmployeeEmail);
+					employeeEmailInput.addEventListener('blur', validateEmployeeEmail);
+				}
+			}
+
+			// Function to setup volume field event listeners
+			function setupVolumeFieldListeners() {
+				const weeklyShipmentsInput = document.getElementById('weekly_shipments');
+				const weeklyOutboundInput = document.getElementById('weekly_units_outbound');
+				const weeklyInboundInput = document.getElementById('weekly_units_inbound');
+				const inboundFrequencySelect = document.getElementById('inbound-frequency');
+				const avgUnitsInput = document.getElementById('avg-units');
+
+				// Add debugging for avg units field
+				if (avgUnitsInput) {
+					avgUnitsInput.addEventListener('input', (e) => {
+						console.log('🔧 avgUnits input event - Value:', e.target.value, 'Type:', typeof e.target.value);
+					});
+					
+					avgUnitsInput.addEventListener('change', (e) => {
+						console.log('🔧 avgUnits change event - Value:', e.target.value, 'Type:', typeof e.target.value);
+					});
+				}
+
+				if (weeklyShipmentsInput) {
+					weeklyShipmentsInput.addEventListener('input', () => {
+						// Prevent negative values
+						if (weeklyShipmentsInput.value < 0) weeklyShipmentsInput.value = 0;
+						validateNumericInput(weeklyShipmentsInput, document.getElementById('weekly-shipments-error'));
+					});
+				}
+
+				if (weeklyOutboundInput) {
+					weeklyOutboundInput.addEventListener('input', () => {
+						// Prevent negative values
+						if (weeklyOutboundInput.value < 0) weeklyOutboundInput.value = 0;
+						validateNumericInput(weeklyOutboundInput, document.getElementById('weekly-outbound-error'));
+					});
+				}
+
+				if (weeklyInboundInput) {
+					weeklyInboundInput.addEventListener('input', () => {
+						// Prevent negative values
+						if (weeklyInboundInput.value < 0) weeklyInboundInput.value = 0;
+						validateNumericInput(weeklyInboundInput, document.getElementById('weekly-inbound-error'));
+					});
+				}
+
+				if (inboundFrequencySelect) {
+					inboundFrequencySelect.addEventListener('change', validateInboundFrequency);
+				}
+
+				if (avgUnitsInput) {
+					avgUnitsInput.addEventListener('input', () => {
+						// Prevent negative values
+						if (avgUnitsInput.value < 0) avgUnitsInput.value = 0;
+						validateAvgUnits();
+					});
+				}
+			}
 
 			// Enhanced input sanitization for company name
 			const companyNameInput = document.getElementById('company_name');
@@ -1982,10 +2233,12 @@ if (cod && ppd) {
 				console.log('COD/PPD validation:', validateCodPpd());
 
 				const isValidCompany = company.value.trim().length > 0;
+				const isValidEmployeeName = validateEmployeeName();
+				const isValidEmployeeEmail = validateEmployeeEmail();
 				const isValidShipments = weeklyShip.value && !isNaN(weeklyShip.value) && Number(weeklyShip.value) >= 0;
 				const isValidOutbound = weeklyOut.value && !isNaN(weeklyOut.value) && Number(weeklyOut.value) >= 0;
 				const isValidInbound = weeklyIn.value && !isNaN(weeklyIn.value) && Number(weeklyIn.value) >= 0;
-				const isValidInboundFreq = inboundFreq.value;
+				const isValidInboundFreq = !inboundFreq || inboundFreq.value; // Handle case where inboundFreq doesn't exist for Last Mile only
 				const isValidAvgUnits = validateAvgUnits();
 				const isValidServiceType = validateServiceType();
 				const isValidCodPpd = validateCodPpd();
@@ -1993,7 +2246,7 @@ if (cod && ppd) {
 				const isValidServiceMix = validateLastMileServiceMix();
 				const isValidDates = validateForecastDates();
 
-				const valid = (isValidCompany && isValidShipments && isValidOutbound && isValidInbound && isValidInboundFreq && isValidAvgUnits && isValidServiceType && isValidCodPpd && isValidServiceMix && isValidDates);
+				const valid = (isValidCompany && isValidEmployeeName && isValidEmployeeEmail && isValidShipments && isValidOutbound && isValidInbound && isValidInboundFreq && isValidAvgUnits && isValidServiceType && isValidCodPpd && isValidServiceMix && isValidDates);
 				
 				if (!valid) {
 					console.log('Form validation failed, cannot submit');
@@ -2060,6 +2313,8 @@ if (cod && ppd) {
 				
 				const newSubmission = {
 					company_name: company.value.trim(),
+					employee_name: document.getElementById('employee_name').value.trim(),
+					employee_email: document.getElementById('employee_email').value.trim(),
 					service_type: selectedServiceType ? selectedServiceType.value : null,
 					weekly_shipments: Number(weeklyShip.value),
 					weekly_units_outbound: Number(weeklyOut.value),
@@ -2069,7 +2324,7 @@ if (cod && ppd) {
 					seasonality_skus_notes: notes.value.trim(),
 					special_bundles: JSON.stringify(collectBundleData()),
 					special_bundles_notes: bundlesNotes ? bundlesNotes.value.trim() : '',
-					inbound_frequency: inboundFreq.value,
+					inbound_frequency: inboundFreq ? inboundFreq.value : null,
 					avg_units_per_shipment: Number(avgUnits.value),
 					cod_percent: cod ? Number(cod.value) : 0,
 					ppd_percent: ppd ? Number(ppd.value) : 0,
