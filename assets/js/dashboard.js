@@ -737,6 +737,8 @@ function renderTable() {
         tr.innerHTML = `
             <td>${createdAt}</td>
             <td>${row.company_name || 'N/A'}</td>
+            <td>${row.employee_name || 'N/A'}</td>
+            <td>${row.employee_email || 'N/A'}</td>
             <td>${productType}</td>
             <td>${row.weekly_shipments ?? 'N/A'}</td>
             <td>${row.weekly_units_outbound ?? 'N/A'}</td>
@@ -2352,6 +2354,8 @@ function openEditModal(row) {
 
 	// Set form field values
 	setValue('edit_company_name', row.company_name);
+	setValue('edit_employee_name', row.employee_name);
+	setValue('edit_employee_email', row.employee_email);
 	setValue('edit_service_type', row.service_type);
 	setValue('edit_weekly_shipments', row.weekly_shipments);
 	setValue('edit_weekly_units_outbound', row.weekly_units_outbound);
@@ -2600,6 +2604,8 @@ async function saveCustomerChanges() {
 	// Prepare update data - only include columns that exist in the submissions table
 	const updated = {
 		company_name: getElementValue('edit_company_name'),
+		employee_name: getElementValue('edit_employee_name'),
+		employee_email: getElementValue('edit_employee_email'),
 		service_type: getElementValue('edit_service_type'),
 		inbound_frequency: getElementValue('edit_inbound_frequency'),
 		weekly_shipments: parseFloat(getElementValue('edit_weekly_shipments')) || 0,

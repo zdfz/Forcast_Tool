@@ -192,19 +192,21 @@
 			/* Specific column widths */
 			#submissionsTable th:nth-child(1) { width: 150px; min-width: 150px; } /* Created At */
 			#submissionsTable th:nth-child(2) { width: 120px; min-width: 120px; } /* Company */
-			#submissionsTable th:nth-child(3) { width: 120px; min-width: 120px; } /* Service Type */
-			#submissionsTable th:nth-child(4) { width: 120px; min-width: 120px; } /* Weekly Shipments */
-			#submissionsTable th:nth-child(5) { width: 120px; min-width: 120px; } /* Weekly Outbound */
-			#submissionsTable th:nth-child(6) { width: 120px; min-width: 120px; } /* Weekly Inbound */
-			#submissionsTable th:nth-child(7) { width: 120px; min-width: 120px; } /* Forecast Start */
-			#submissionsTable th:nth-child(8) { width: 120px; min-width: 120px; } /* Forecast End */
-			#submissionsTable th:nth-child(9) { width: 100px; min-width: 100px; } /* Inbound Freq */
-			#submissionsTable th:nth-child(10) { width: 120px; min-width: 120px; } /* Avg Units/Ship */
-			#submissionsTable th:nth-child(11) { width: 200px; min-width: 180px; } /* Service Mix */
-			#submissionsTable th:nth-child(12) { width: 200px; min-width: 180px; } /* Special Bundles & Notes */
-			#submissionsTable th:nth-child(13) { width: 140px; min-width: 140px; } /* SKU Notes */
-			#submissionsTable th:nth-child(14) { width: 150px; min-width: 150px; } /* Customer */
-			#submissionsTable th:nth-child(15) { width: 140px; min-width: 140px; } /* Actions */
+			#submissionsTable th:nth-child(3) { width: 120px; min-width: 120px; } /* Employee Name */
+			#submissionsTable th:nth-child(4) { width: 150px; min-width: 150px; } /* Employee Email */
+			#submissionsTable th:nth-child(5) { width: 120px; min-width: 120px; } /* Service Type */
+			#submissionsTable th:nth-child(6) { width: 120px; min-width: 120px; } /* Weekly Shipments */
+			#submissionsTable th:nth-child(7) { width: 120px; min-width: 120px; } /* Weekly Outbound */
+			#submissionsTable th:nth-child(8) { width: 120px; min-width: 120px; } /* Weekly Inbound */
+			#submissionsTable th:nth-child(9) { width: 120px; min-width: 120px; } /* Forecast Start */
+			#submissionsTable th:nth-child(10) { width: 120px; min-width: 120px; } /* Forecast End */
+			#submissionsTable th:nth-child(11) { width: 100px; min-width: 100px; } /* Inbound Freq */
+			#submissionsTable th:nth-child(12) { width: 120px; min-width: 120px; } /* Avg Units/Ship */
+			#submissionsTable th:nth-child(13) { width: 200px; min-width: 180px; } /* Service Mix */
+			#submissionsTable th:nth-child(14) { width: 200px; min-width: 180px; } /* Special Bundles & Notes */
+			#submissionsTable th:nth-child(15) { width: 140px; min-width: 140px; } /* SKU Notes */
+			#submissionsTable th:nth-child(16) { width: 150px; min-width: 150px; } /* Customer */
+			#submissionsTable th:nth-child(17) { width: 140px; min-width: 140px; } /* Actions */
 
 			/* Status color coding */
 			.status-select {
@@ -870,11 +872,13 @@
 					</div>
 					<div class="tab-pane fade" id="data" role="tabpanel">
 						<div class="table-responsive" style="max-height: 70vh; overflow-x: auto; overflow-y: auto;">
-							<table class="table table-sm align-middle table-striped" id="submissionsTable" style="min-width: 1740px;">
+							<table class="table table-sm align-middle table-striped" id="submissionsTable" style="min-width: 1980px;">
 								<thead class="table-light">
 									<tr>
 										<th data-translate="forecastLoggedDate">Created At</th>
-										<th data-translate="company">Company</th>
+										<th data-translate="company">Customer</th>
+										<th data-translate="employeeName">Employee Name</th>
+										<th data-translate="employeeEmail">Employee Email</th>
 										<th data-translate="serviceType">Service Type</th>
 										<th data-translate="weeklyShipments">Weekly Shipments</th>
 										<th data-translate="weeklyOutbound">Weekly Outbound</th>
@@ -914,8 +918,16 @@
 									<h6 class="section-header">Company Information</h6>
 								</div>
 								<div class="col-md-6">
-									<label class="form-label">Company Name</label>
+									<label class="form-label">Customer Name</label>
 									<input type="text" class="form-control" id="edit_company_name" required>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label">Employee Name</label>
+									<input type="text" class="form-control" id="edit_employee_name" required>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label">Employee Email</label>
+									<input type="email" class="form-control" id="edit_employee_email" required>
 								</div>
 								<div class="col-md-6">
 									<label class="form-label">Product Type</label>

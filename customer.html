@@ -1303,11 +1303,6 @@
 
 			const form = document.getElementById('customerForm');
 			const company = document.getElementById('company_name');
-			const weeklyShip = document.getElementById('weekly_shipments');
-			const weeklyOut = document.getElementById('weekly_units_outbound');
-			const weeklyIn = document.getElementById('weekly_units_inbound');
-			const inboundFreq = document.getElementById('inbound-frequency');
-			const avgUnits = document.getElementById('avg-units');
 			const notes = document.getElementById('seasonality_skus_notes');
 			const bundlesNotes = document.getElementById('special_bundles_notes');
 			const serviceType = document.querySelector('input[name="service-type"]:checked');
@@ -1589,11 +1584,11 @@ if (cod && ppd) {
 
 			// Function to setup volume field event listeners
 			function setupVolumeFieldListeners() {
-				const weeklyShipmentsInput = document.getElementById('weekly_shipments');
-				const weeklyOutboundInput = document.getElementById('weekly_units_outbound');
-				const weeklyInboundInput = document.getElementById('weekly_units_inbound');
-				const inboundFrequencySelect = document.getElementById('inbound-frequency');
-				const avgUnitsInput = document.getElementById('avg-units');
+			const weeklyShipmentsInput = document.getElementById('weekly_shipments');
+			const weeklyOutboundInput = document.getElementById('weekly_units_outbound');
+			const weeklyInboundInput = document.getElementById('weekly_units_inbound');
+			const inboundFrequencySelect = document.getElementById('inbound-frequency');
+			const avgUnitsInput = document.getElementById('avg-units');
 
 				// Add debugging for avg units field
 				if (avgUnitsInput) {
@@ -1607,39 +1602,39 @@ if (cod && ppd) {
 				}
 
 				if (weeklyShipmentsInput) {
-					weeklyShipmentsInput.addEventListener('input', () => {
-						// Prevent negative values
-						if (weeklyShipmentsInput.value < 0) weeklyShipmentsInput.value = 0;
-						validateNumericInput(weeklyShipmentsInput, document.getElementById('weekly-shipments-error'));
-					});
+			weeklyShipmentsInput.addEventListener('input', () => {
+				// Prevent negative values
+				if (weeklyShipmentsInput.value < 0) weeklyShipmentsInput.value = 0;
+				validateNumericInput(weeklyShipmentsInput, document.getElementById('weekly-shipments-error'));
+			});
 				}
 
 				if (weeklyOutboundInput) {
-					weeklyOutboundInput.addEventListener('input', () => {
-						// Prevent negative values
-						if (weeklyOutboundInput.value < 0) weeklyOutboundInput.value = 0;
-						validateNumericInput(weeklyOutboundInput, document.getElementById('weekly-outbound-error'));
-					});
+			weeklyOutboundInput.addEventListener('input', () => {
+				// Prevent negative values
+				if (weeklyOutboundInput.value < 0) weeklyOutboundInput.value = 0;
+				validateNumericInput(weeklyOutboundInput, document.getElementById('weekly-outbound-error'));
+			});
 				}
 
 				if (weeklyInboundInput) {
-					weeklyInboundInput.addEventListener('input', () => {
-						// Prevent negative values
-						if (weeklyInboundInput.value < 0) weeklyInboundInput.value = 0;
-						validateNumericInput(weeklyInboundInput, document.getElementById('weekly-inbound-error'));
-					});
+			weeklyInboundInput.addEventListener('input', () => {
+				// Prevent negative values
+				if (weeklyInboundInput.value < 0) weeklyInboundInput.value = 0;
+				validateNumericInput(weeklyInboundInput, document.getElementById('weekly-inbound-error'));
+			});
 				}
 
 				if (inboundFrequencySelect) {
-					inboundFrequencySelect.addEventListener('change', validateInboundFrequency);
+			inboundFrequencySelect.addEventListener('change', validateInboundFrequency);
 				}
 
 				if (avgUnitsInput) {
-					avgUnitsInput.addEventListener('input', () => {
-						// Prevent negative values
-						if (avgUnitsInput.value < 0) avgUnitsInput.value = 0;
-						validateAvgUnits();
-					});
+			avgUnitsInput.addEventListener('input', () => {
+				// Prevent negative values
+				if (avgUnitsInput.value < 0) avgUnitsInput.value = 0;
+				validateAvgUnits();
+			});
 				}
 			}
 
@@ -2215,6 +2210,12 @@ if (cod && ppd) {
 				e.preventDefault();
 				console.log('Form submitted, starting validation...');
 
+				// Get dynamic elements at submission time
+				const weeklyShip = document.getElementById('weekly_shipments');
+				const weeklyOut = document.getElementById('weekly_units_outbound');
+				const weeklyIn = document.getElementById('weekly_units_inbound');
+				const inboundFreq = document.getElementById('inbound-frequency');
+				const avgUnits = document.getElementById('avg-units');
 			
 				// Date validation
 				if (!validateForecastDates()) {
@@ -2225,19 +2226,19 @@ if (cod && ppd) {
 
 				// Check each validation step
 				console.log('Company name:', company.value.trim().length > 0);
-				console.log('Weekly shipments:', weeklyShip.value && !isNaN(weeklyShip.value) && Number(weeklyShip.value) >= 0);
-				console.log('Weekly outbound:', weeklyOut.value && !isNaN(weeklyOut.value) && Number(weeklyOut.value) >= 0);
-				console.log('Weekly inbound:', weeklyIn.value && !isNaN(weeklyIn.value) && Number(weeklyIn.value) >= 0);
-				console.log('Inbound frequency:', inboundFreq.value);
+				console.log('Weekly shipments:', weeklyShip && weeklyShip.value && !isNaN(weeklyShip.value) && Number(weeklyShip.value) >= 0);
+				console.log('Weekly outbound:', weeklyOut && weeklyOut.value && !isNaN(weeklyOut.value) && Number(weeklyOut.value) >= 0);
+				console.log('Weekly inbound:', weeklyIn && weeklyIn.value && !isNaN(weeklyIn.value) && Number(weeklyIn.value) >= 0);
+				console.log('Inbound frequency:', inboundFreq ? inboundFreq.value : 'N/A');
 				console.log('Date validation:', validateForecastDates());
 				console.log('COD/PPD validation:', validateCodPpd());
 
 				const isValidCompany = company.value.trim().length > 0;
 				const isValidEmployeeName = validateEmployeeName();
 				const isValidEmployeeEmail = validateEmployeeEmail();
-				const isValidShipments = weeklyShip.value && !isNaN(weeklyShip.value) && Number(weeklyShip.value) >= 0;
-				const isValidOutbound = weeklyOut.value && !isNaN(weeklyOut.value) && Number(weeklyOut.value) >= 0;
-				const isValidInbound = weeklyIn.value && !isNaN(weeklyIn.value) && Number(weeklyIn.value) >= 0;
+				const isValidShipments = weeklyShip && weeklyShip.value && !isNaN(weeklyShip.value) && Number(weeklyShip.value) >= 0;
+				const isValidOutbound = !weeklyOut || (weeklyOut.value && !isNaN(weeklyOut.value) && Number(weeklyOut.value) >= 0);
+				const isValidInbound = !weeklyIn || (weeklyIn.value && !isNaN(weeklyIn.value) && Number(weeklyIn.value) >= 0);
 				const isValidInboundFreq = !inboundFreq || inboundFreq.value; // Handle case where inboundFreq doesn't exist for Last Mile only
 				const isValidAvgUnits = validateAvgUnits();
 				const isValidServiceType = validateServiceType();
@@ -2308,7 +2309,7 @@ if (cod && ppd) {
 					};
 				};
 				
-				console.log('🔧 Form submission - avgUnits.value:', avgUnits.value, 'Type:', typeof avgUnits.value);
+				console.log('🔧 Form submission - avgUnits.value:', avgUnits ? avgUnits.value : 'N/A', 'Type:', avgUnits ? typeof avgUnits.value : 'N/A');
 				console.log('🔧 Form submission - avgUnits element:', avgUnits);
 				
 				const newSubmission = {
@@ -2316,16 +2317,16 @@ if (cod && ppd) {
 					employee_name: document.getElementById('employee_name').value.trim(),
 					employee_email: document.getElementById('employee_email').value.trim(),
 					service_type: selectedServiceType ? selectedServiceType.value : null,
-					weekly_shipments: Number(weeklyShip.value),
-					weekly_units_outbound: Number(weeklyOut.value),
-					weekly_units_inbound: Number(weeklyIn.value),
+					weekly_shipments: weeklyShip ? Number(weeklyShip.value) : 0,
+					weekly_units_outbound: weeklyOut ? Number(weeklyOut.value) : 0,
+					weekly_units_inbound: weeklyIn ? Number(weeklyIn.value) : 0,
 					forecast_start_date: forecastStartDate.value,
 					forecast_end_date: forecastEndDate.value,
-					seasonality_skus_notes: notes.value.trim(),
+					seasonality_skus_notes: notes ? notes.value.trim() : '',
 					special_bundles: JSON.stringify(collectBundleData()),
 					special_bundles_notes: bundlesNotes ? bundlesNotes.value.trim() : '',
 					inbound_frequency: inboundFreq ? inboundFreq.value : null,
-					avg_units_per_shipment: Number(avgUnits.value),
+					avg_units_per_shipment: avgUnits ? Number(avgUnits.value) : 0,
 					cod_percent: cod ? Number(cod.value) : 0,
 					ppd_percent: ppd ? Number(ppd.value) : 0,
 					service_mix: getSelectedLastMileServiceMix(),
