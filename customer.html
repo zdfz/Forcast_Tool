@@ -2358,10 +2358,10 @@ if (cod && ppd) {
 					// Even if database submission fails, redirect to thank you page
 					// This ensures users don't get stuck on the form
 					console.log('Database submission failed, but redirecting to thank you page...');
+					const thankYouUrl = currentLanguage === 'ar' ? 'thank-you.html?lang=ar' : 'thank-you.html?lang=en';
 					setTimeout(() => {
-						window.location.href = 'thank-you.html';
+						window.location.href = thankYouUrl;
 					}, 2000);
-					window.location.href = thankYouUrl;
 				}
 			});
 		}
