@@ -907,10 +907,10 @@
 							<div class="invalid-feedback" id="inbound-frequency-error">Please select a frequency.</div>
 						</div>
 						<div class="col-md-6">
-							<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
-							<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" required 
+							<label for="avg-units-fulfillment" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
+							<input type="number" class="form-control" id="avg-units-fulfillment" name="avg-units" min="0" step="0.1" required 
 								placeholder="e.g. 3" data-translate-placeholder="exampleAvgUnits" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
-							<div class="invalid-feedback" id="avg-units-error">Must be a number ≥ 0.</div>
+							<div class="invalid-feedback" id="avg-units-error-fulfillment">Must be a number ≥ 0.</div>
 						</div>
 						<div class="col-md-6" id="seasonality_skus_container">
 							<label class="form-label" data-translate="skusLabel">Special SKUs for Seasonality
@@ -953,10 +953,10 @@
 							<div class="invalid-feedback" id="weekly-shipments-error"></div>
 						</div>
 						<div class="col-md-6">
-							<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
-							<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" required 
+							<label for="avg-units-lastmile" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
+							<input type="number" class="form-control" id="avg-units-lastmile" name="avg-units" min="0" step="0.1" required 
 								placeholder="e.g. 3" data-translate-placeholder="exampleAvgUnits" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
-							<div class="invalid-feedback" id="avg-units-error">Must be a number ≥ 0.</div>
+							<div class="invalid-feedback" id="avg-units-error-lastmile">Must be a number ≥ 0.</div>
 						</div>
 					`;
 				} else if (productType === 'fulfillment-and-last-mile') {
@@ -991,10 +991,10 @@
 							<div class="invalid-feedback" id="inbound-frequency-error">Please select a frequency.</div>
 						</div>
 						<div class="col-md-6">
-							<label for="avg-units" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
-							<input type="number" class="form-control" id="avg-units" name="avg-units" min="0" step="0.1" required 
+							<label for="avg-units-both" class="form-label" data-translate="avgUnitsLabel">Average Unit per Order</label>
+							<input type="number" class="form-control" id="avg-units-both" name="avg-units" min="0" step="0.1" required 
 								placeholder="e.g. 3" data-translate-placeholder="exampleAvgUnits" onkeydown="return event.keyCode !== 189 && event.keyCode !== 109">
-							<div class="invalid-feedback" id="avg-units-error">Must be a number ≥ 0.</div>
+							<div class="invalid-feedback" id="avg-units-error-both">Must be a number ≥ 0.</div>
 						</div>
 						<div class="col-md-6" id="seasonality_skus_container">
 							<label class="form-label" data-translate="skusLabel">Special SKUs for Seasonality
@@ -1352,8 +1352,24 @@
 			}
 
 			function validateAvgUnits() {
-				const input = document.getElementById('avg-units');
-				const errorElement = document.getElementById('avg-units-error');
+				// Try to find the avg-units input element (could be one of several IDs)
+				const possibleIds = ['avg-units-fulfillment', 'avg-units-lastmile', 'avg-units-both', 'avg-units'];
+				let input = null;
+				let errorElement = null;
+				
+				for (const id of possibleIds) {
+					input = document.getElementById(id);
+					if (input) {
+						errorElement = document.getElementById(id.replace('avg-units', 'avg-units-error'));
+						break;
+					}
+				}
+				
+				// Handle case where element doesn't exist
+				if (!input) {
+					console.log('🔧 validateAvgUnits - Input element not found, skipping validation');
+					return true; // Skip validation if element doesn't exist
+				}
 				
 				console.log('🔧 validateAvgUnits - Input value:', input.value, 'Type:', typeof input.value);
 				
@@ -1361,12 +1377,17 @@
 				if (isNaN(value) || value < 0) {
 					console.log('🔧 validateAvgUnits - Validation failed:', { value, isNaN: isNaN(value), lessThanZero: value < 0 });
 					input.classList.add('is-invalid');
-					errorElement.textContent = translations[currentLanguage].errAvgUnits;
+					if (errorElement) {
+						errorElement.textContent = translations[currentLanguage].errAvgUnits;
+					}
 					return false;
 				}
 				
 				console.log('🔧 validateAvgUnits - Validation passed:', value);
 				input.classList.remove('is-invalid');
+				if (errorElement) {
+					errorElement.textContent = '';
+				}
 				return true;
 			}
 
@@ -2217,7 +2238,14 @@ if (cod && ppd) {
 				const weeklyOut = document.getElementById('weekly_units_outbound');
 				const weeklyIn = document.getElementById('weekly_units_inbound');
 				const inboundFreq = document.getElementById('inbound-frequency');
-				const avgUnits = document.getElementById('avg-units');
+				
+				// Get avg-units element (could be one of several IDs)
+				const possibleAvgIds = ['avg-units-fulfillment', 'avg-units-lastmile', 'avg-units-both', 'avg-units'];
+				let avgUnits = null;
+				for (const id of possibleAvgIds) {
+					avgUnits = document.getElementById(id);
+					if (avgUnits) break;
+				}
 			
 				// Date validation
 				if (!validateForecastDates()) {
@@ -2332,10 +2360,10 @@ if (cod && ppd) {
 					cod_percent: cod ? Number(cod.value) : 0,
 					ppd_percent: ppd ? Number(ppd.value) : 0,
 					service_mix: getSelectedLastMileServiceMix(),
-					// Add service details
-					hb_details: JSON.stringify(collectServiceDetails('hb')),
-					international_details: JSON.stringify(collectServiceDetails('international')),
-					parcel_details: JSON.stringify(collectServiceDetails('parcel'))
+					// Add service details as text (not JSON)
+					hb_details: collectServiceDetails('hb') ? JSON.stringify(collectServiceDetails('hb')) : null,
+					international_details: collectServiceDetails('international') ? JSON.stringify(collectServiceDetails('international')) : null,
+					parcel_details: collectServiceDetails('parcel') ? JSON.stringify(collectServiceDetails('parcel')) : null
 				};
 				try {
 					console.log('Submitting to Supabase:', newSubmission);
@@ -2345,22 +2373,17 @@ if (cod && ppd) {
 					
 					// Pass language preference to thank you page
 					const thankYouUrl = currentLanguage === 'ar' ? 'thank-you.html?lang=ar' : 'thank-you.html?lang=en';
-					const lang = translations[currentLanguage];
-					showToast(lang.toastFormSuccess, 'success');
-					setTimeout(() => {
-						window.location.href = 'thank-you.html';
-					}, 2000);
+					// Redirect immediately without notification
+					window.location.href = thankYouUrl;
 				} catch (err) {
 					console.error('Error submitting data:', err);
 					const lang = translations[currentLanguage];
-					showToast(lang.toastFormError + err.message, 'error');
 					
 					// Even if database submission fails, redirect to thank you page
 					// This ensures users don't get stuck on the form
 					console.log('Database submission failed, but redirecting to thank you page...');
-					setTimeout(() => {
-						window.location.href = 'thank-you.html';
-					}, 2000);
+					const thankYouUrl = currentLanguage === 'ar' ? 'thank-you.html?lang=ar' : 'thank-you.html?lang=en';
+					// Redirect immediately without notification
 					window.location.href = thankYouUrl;
 				}
 			});
