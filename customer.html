@@ -2314,6 +2314,29 @@ if (cod && ppd) {
 				console.log('🔧 Form submission - avgUnits.value:', avgUnits ? avgUnits.value : 'N/A', 'Type:', avgUnits ? typeof avgUnits.value : 'N/A');
 				console.log('🔧 Form submission - avgUnits element:', avgUnits);
 				
+				// Validate dates before submission
+				if (!forecastStartDate.value || !forecastEndDate.value) {
+					const lang = translations[currentLanguage];
+					showToast('Please select both forecast start and end dates', 'error');
+					return;
+				}
+				
+				// Validate date format
+				const startDate = new Date(forecastStartDate.value);
+				const endDate = new Date(forecastEndDate.value);
+				
+				if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+					const lang = translations[currentLanguage];
+					showToast('Please enter valid dates', 'error');
+					return;
+				}
+				
+				if (endDate <= startDate) {
+					const lang = translations[currentLanguage];
+					showToast('End date must be after start date', 'error');
+					return;
+				}
+				
 				const newSubmission = {
 					company_name: company.value.trim(),
 					employee_name: document.getElementById('employee_name').value.trim(),
@@ -2322,8 +2345,8 @@ if (cod && ppd) {
 					weekly_shipments: weeklyShip ? Number(weeklyShip.value) : 0,
 					weekly_units_outbound: weeklyOut ? Number(weeklyOut.value) : 0,
 					weekly_units_inbound: weeklyIn ? Number(weeklyIn.value) : 0,
-					forecast_start_date: forecastStartDate.value,
-					forecast_end_date: forecastEndDate.value,
+					forecast_start_date: forecastStartDate.value || null,
+					forecast_end_date: forecastEndDate.value || null,
 					seasonality_skus_notes: notes ? notes.value.trim() : '',
 					special_bundles: JSON.stringify(collectBundleData()),
 					special_bundles_notes: bundlesNotes ? bundlesNotes.value.trim() : '',
