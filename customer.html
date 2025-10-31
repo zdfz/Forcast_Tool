@@ -48,16 +48,16 @@
 		[dir="rtl"] {
 			text-align: right;
 		}
-		
+
 		[dir="rtl"] .form-control,
 		[dir="rtl"] .form-select {
 			text-align: right;
 		}
-		
+
 		[dir="rtl"] .service-option-label {
 			text-align: center;
 		}
-		
+
 		[dir="rtl"] .service-section-header h6 {
 			text-align: center;
 		}
@@ -68,22 +68,22 @@
 			display: block;
 			margin-top: 0.5rem;
 		}
-		
+
 		.service-option {
 			position: relative;
 			margin-bottom: 15px;
 		}
-		
+
 		.service-option-with-details {
 			width: 100%;
 			margin-bottom: 25px;
 		}
-		
+
 		.service-option-with-details.active {
 			border-color: #1f6a4a;
 			box-shadow: 0 0 0 0.25rem rgba(31, 106, 74, 0.25);
 		}
-		
+
 		.service-details {
 			margin-top: 15px;
 			padding: 20px;
@@ -93,14 +93,14 @@
 			margin-left: 20px;
 			margin-right: 20px;
 		}
-		
+
 		.service-option input[type="checkbox"] {
 			position: absolute;
 			opacity: 0;
 			width: 0;
 			height: 0;
 		}
-		
+
 		.service-option-label {
 			display: flex;
 			flex-direction: column;
@@ -112,53 +112,53 @@
 			cursor: pointer;
 			transition: all 0.3s ease;
 			text-align: center;
-			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 		}
-		
+
 		.service-option-label:hover {
 			border-color: #1f6a4a;
 			box-shadow: 0 4px 12px rgba(31, 106, 74, 0.15);
 			transform: translateY(-2px);
 		}
-		
-		.service-option input:checked + .service-option-label {
+
+		.service-option input:checked+.service-option-label {
 			border-color: #1f6a4a;
 			background: #1f6a4a;
 			color: white;
 			box-shadow: 0 6px 20px rgba(31, 106, 74, 0.3);
 			transform: translateY(-3px);
 		}
-		
+
 		.service-icon {
 			font-size: 2rem;
 			margin-bottom: 0.5rem;
 			opacity: 0.8;
 		}
-		
-		.service-option input:checked + .service-option-label .service-icon {
+
+		.service-option input:checked+.service-option-label .service-icon {
 			opacity: 1;
 			transform: scale(1.1);
 		}
-		
+
 		.service-text {
 			font-weight: 500;
 			font-size: 0.95rem;
 			line-height: 1.3;
 		}
-		
+
 		@media (max-width: 768px) {
 			.service-option-label {
 				flex-direction: row;
 				text-align: left;
 				padding: 1rem;
 			}
-			
+
 			.service-icon {
 				margin-bottom: 0;
 				margin-right: 0.75rem;
 				font-size: 1.5rem;
 			}
-			
+
 			.service-details {
 				margin-left: 0;
 				margin-right: 0;
@@ -266,6 +266,61 @@
 			font-size: 0.875rem;
 			margin-bottom: 0.25rem;
 		}
+
+		/* Excel Upload Styling */
+		.upload-container {
+			position: relative;
+		}
+
+		.upload-container input[type="file"] {
+			border: 2px dashed #e0e0e0;
+			border-radius: 8px;
+			padding: 1rem;
+			background-color: #fafafa;
+			transition: all 0.3s ease;
+			cursor: pointer;
+		}
+
+		.upload-container input[type="file"]:hover {
+			border-color: #1f6a4a;
+			background-color: #f8fff8;
+		}
+
+		.upload-container input[type="file"]:focus {
+			border-color: #1f6a4a;
+			box-shadow: 0 0 0 0.2rem rgba(31, 106, 74, 0.25);
+			outline: none;
+		}
+
+		.upload-status {
+			margin-top: 0.75rem;
+			padding: 0.75rem;
+			background-color: #f8f9fa;
+			border: 1px solid #dee2e6;
+			border-radius: 6px;
+		}
+
+		.upload-status .file-name {
+			font-weight: 500;
+			flex-grow: 1;
+		}
+
+		/* File input custom styling */
+		.upload-container input[type="file"]::file-selector-button {
+			background-color: #1f6a4a;
+			color: white;
+			border: none;
+			padding: 0.5rem 1rem;
+			border-radius: 4px;
+			margin-right: 1rem;
+			cursor: pointer;
+			font-weight: 500;
+			transition: background-color 0.3s ease;
+		}
+
+		.upload-container input[type="file"]::file-selector-button:hover {
+			background-color: #1a5a3f;
+		}
 	</style>
 </head>
 
@@ -291,19 +346,24 @@
 						<div class="collapse show" id="secServiceType">
 							<div class="row g-3 pt-2">
 								<div class="col-md-12">
-									<label class="form-label" data-translate="serviceTypeLabel">Choose your product type <span class="text-danger">*</span></label>
+									<label class="form-label" data-translate="serviceTypeLabel">Choose your product type
+										<span class="text-danger">*</span></label>
 									<div class="d-flex gap-3">
 										<label class="form-check-label">
-											<input type="radio" class="form-check-input me-2" name="service-type" value="fulfillment" required>
+											<input type="radio" class="form-check-input me-2" name="service-type"
+												value="fulfillment" required>
 											<span data-translate="fulfillmentOption">Fulfillment</span>
 										</label>
 										<label class="form-check-label">
-											<input type="radio" class="form-check-input me-2" name="service-type" value="last-mile" required>
+											<input type="radio" class="form-check-input me-2" name="service-type"
+												value="last-mile" required>
 											<span data-translate="lastMileOption">Last Mile</span>
 										</label>
 										<label class="form-check-label">
-											<input type="radio" class="form-check-input me-2" name="service-type" value="fulfillment-and-last-mile" required>
-											<span data-translate="fulfillmentAndLastMileOption">Fulfillment and Last Mile</span>
+											<input type="radio" class="form-check-input me-2" name="service-type"
+												value="fulfillment-and-last-mile" required>
+											<span data-translate="fulfillmentAndLastMileOption">Fulfillment and Last
+												Mile</span>
 										</label>
 									</div>
 									<div class="form-text error d-none" id="err_service_type"
@@ -334,15 +394,19 @@
 									<input type="text" class="form-control" id="employee_name" required
 										placeholder="Enter employee name" data-translate-placeholder="enterEmployeeName"
 										title="Enter the name of the employee submitting this forecast">
-									<div class="invalid-feedback" id="employee-name-error" data-translate="employeeNameError">Please enter the employee name.</div>
+									<div class="invalid-feedback" id="employee-name-error"
+										data-translate="employeeNameError">Please enter the employee name.</div>
 								</div>
 								<div class="col-md-6">
 									<label class="form-label" data-translate="employeeEmailLabel">Employee Email <span
 											class="text-danger">*</span></label>
 									<input type="email" class="form-control" id="employee_email" required
-										placeholder="Enter employee email" data-translate-placeholder="enterEmployeeEmail"
+										placeholder="Enter employee email"
+										data-translate-placeholder="enterEmployeeEmail"
 										title="Enter the email address of the employee submitting this forecast">
-									<div class="invalid-feedback" id="employee-email-error" data-translate="employeeEmailError">Please enter a valid employee email address.</div>
+									<div class="invalid-feedback" id="employee-email-error"
+										data-translate="employeeEmailError">Please enter a valid employee email address.
+									</div>
 								</div>
 								<div class="col-md-6">
 									<label class="form-label" data-translate="forecastingPeriodLabel">
@@ -364,6 +428,33 @@
 									<div class="form-text" data-translate="selectDateRange">Select the date range for
 										your forecast</div>
 									<div class="form-text error d-none" id="err_forecast_dates"></div>
+								</div>
+
+								<!-- Upload Forecast Data Section -->
+								<div class="col-md-12">
+									<label class="form-label" data-translate="uploadForecastLabel">
+										<i class="bi bi-file-earmark-excel me-2"></i>
+										Upload Forecast Data
+									</label>
+									<div class="upload-container">
+										<input type="file" class="form-control" id="forecast_excel_file" accept=".xlsx"
+											title="Upload your daily forecast shipment data in Excel format">
+										<div class="form-text" data-translate="uploadForecastHelp">
+											<i class="bi bi-info-circle me-1"></i>
+											Upload your daily forecast shipment data as an Excel (.xlsx) file
+										</div>
+										<div class="upload-status d-none" id="upload_status">
+											<div class="d-flex align-items-center">
+												<i class="bi bi-check-circle-fill text-success me-2"></i>
+												<span class="file-name text-success"></span>
+												<button type="button" class="btn btn-sm btn-outline-danger ms-auto"
+													id="remove_file">
+													<i class="bi bi-x"></i> Remove
+												</button>
+											</div>
+										</div>
+										<div class="invalid-feedback" id="excel-file-error"></div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -390,199 +481,278 @@
 							<div class="row g-3 pt-2">
 								<!-- Service Mix Selection with Nested Service Details -->
 								<div class="col-md-12">
-									<label class="form-label" data-translate="lastMileServiceMixLabel">Last Mile Service Mix <span class="text-danger">*</span></label>
+									<label class="form-label" data-translate="lastMileServiceMixLabel">Last Mile Service
+										Mix <span class="text-danger">*</span></label>
 									<div class="service-mix-container">
 										<!-- Parcel Service Option with Details -->
 										<div class="service-option service-option-with-details">
-											<input class="form-check-input" type="checkbox" value="parcel" id="service_parcel" name="lastmile_service_mix">
+											<input class="form-check-input" type="checkbox" value="parcel"
+												id="service_parcel" name="lastmile_service_mix">
 											<label class="service-option-label" for="service_parcel">
 												<div class="service-icon">📦</div>
 												<div class="service-text" data-translate="parcelOption">Parcels</div>
 											</label>
-											
+
 											<!-- Parcel Service Details Section -->
 											<div class="service-details d-none" id="parcel_service_section">
 												<div class="service-section-header">
-													<h6 class="mb-3" data-translate="parcelServiceTitle">Parcel Service Details</h6>
+													<h6 class="mb-3" data-translate="parcelServiceTitle">Parcel Service
+														Details</h6>
 												</div>
 												<div class="row g-3">
 													<div class="col-md-6">
-														<label class="form-label" data-translate="pickupFrequencyLabel">Pickup Frequency <span class="text-danger">*</span></label>
+														<label class="form-label"
+															data-translate="pickupFrequencyLabel">Pickup Frequency <span
+																class="text-danger">*</span></label>
 														<select class="form-select" id="parcel_pickup_frequency">
-															<option value="" data-translate="selectFrequency">Select frequency</option>
-															<option value="once" data-translate="onceDaily">Once a Day</option>
-															<option value="twice" data-translate="twiceDaily">Twice a Day</option>
+															<option value="" data-translate="selectFrequency">Select
+																frequency</option>
+															<option value="once" data-translate="onceDaily">Once a Day
+															</option>
+															<option value="twice" data-translate="twiceDaily">Twice a
+																Day</option>
 														</select>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="timeSlotLabel">Time Slot(s) <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="timeSlotLabel">Time
+															Slot(s) <span class="text-danger">*</span></label>
 														<div class="row g-2" id="parcel_time_slot_container">
 															<!-- Dynamic time slots will be generated here -->
 														</div>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="cityLabel">City <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="cityLabel">City <span
+																class="text-danger">*</span></label>
 														<select class="form-select" id="parcel_city">
-															<option value="" data-translate="selectCity">Select city</option>
-															<option value="dammam" data-translate="dammamOption">Dammam</option>
-															<option value="riyadh" data-translate="riyadhOption">Riyadh</option>
-															<option value="jeddah" data-translate="jeddahOption">Jeddah</option>
+															<option value="" data-translate="selectCity">Select city
+															</option>
+															<option value="dammam" data-translate="dammamOption">Dammam
+															</option>
+															<option value="riyadh" data-translate="riyadhOption">Riyadh
+															</option>
+															<option value="jeddah" data-translate="jeddahOption">Jeddah
+															</option>
 														</select>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="districtLabel">District <span class="text-danger">*</span></label>
-														<input type="text" class="form-control" id="parcel_district" placeholder="Enter district" data-translate-placeholder="enterDistrict">
+														<label class="form-label"
+															data-translate="districtLabel">District <span
+																class="text-danger">*</span></label>
+														<input type="text" class="form-control" id="parcel_district"
+															placeholder="Enter district"
+															data-translate-placeholder="enterDistrict">
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="weeklyShipmentsLabel">Weekly Shipments <span class="text-danger">*</span></label>
-														<input type="number" min="0" class="form-control" id="parcel_weekly_shipments" placeholder="e.g. 100" data-translate-placeholder="exampleShipments">
+														<label class="form-label"
+															data-translate="weeklyShipmentsLabel">Weekly Shipments <span
+																class="text-danger">*</span></label>
+														<input type="number" min="0" class="form-control"
+															id="parcel_weekly_shipments" placeholder="e.g. 100"
+															data-translate-placeholder="exampleShipments">
 													</div>
 													<div class="col-md-3">
-														<label class="form-label" data-translate="codLabel">Cash on Delivery % <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="codLabel">Cash on
+															Delivery % <span class="text-danger">*</span></label>
 														<div class="input-group">
-															<input type="number" min="0" max="100" class="form-control" id="parcel_cod_percent">
+															<input type="number" min="0" max="100" class="form-control"
+																id="parcel_cod_percent">
 															<span class="input-group-text">%</span>
 														</div>
 													</div>
 													<div class="col-md-3">
-														<label class="form-label" data-translate="ppdLabel">Pre Paid % <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="ppdLabel">Pre Paid %
+															<span class="text-danger">*</span></label>
 														<div class="input-group">
-															<input type="number" min="0" max="100" class="form-control" id="parcel_ppd_percent">
+															<input type="number" min="0" max="100" class="form-control"
+																id="parcel_ppd_percent">
 															<span class="input-group-text">%</span>
 														</div>
-														<div class="form-text error d-none" id="err_parcel_payment" data-translate="codPpdSum">
+														<div class="form-text error d-none" id="err_parcel_payment"
+															data-translate="codPpdSum">
 															COD + PPD must equal 100%.
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										
+
 										<!-- Heavy & Bulky Service Option with Details -->
 										<div class="service-option service-option-with-details">
-											<input class="form-check-input" type="checkbox" value="hb" id="service_hb" name="lastmile_service_mix">
+											<input class="form-check-input" type="checkbox" value="hb" id="service_hb"
+												name="lastmile_service_mix">
 											<label class="service-option-label" for="service_hb">
 												<div class="service-icon">🚛</div>
 												<div class="service-text" data-translate="hbOption">Heavy & Bulky</div>
 											</label>
-											
+
 											<!-- Heavy & Bulky Service Details Section -->
 											<div class="service-details d-none" id="hb_service_section">
 												<div class="service-section-header">
-													<h6 class="mb-3" data-translate="hbServiceTitle">Heavy & Bulky Service Details</h6>
+													<h6 class="mb-3" data-translate="hbServiceTitle">Heavy & Bulky
+														Service Details</h6>
 												</div>
 												<div class="row g-3">
 													<div class="col-md-6">
-														<label class="form-label" data-translate="pickupFrequencyLabel">Pickup Frequency <span class="text-danger">*</span></label>
+														<label class="form-label"
+															data-translate="pickupFrequencyLabel">Pickup Frequency <span
+																class="text-danger">*</span></label>
 														<select class="form-select" id="hb_pickup_frequency">
-															<option value="" data-translate="selectFrequency">Select frequency</option>
-															<option value="once" data-translate="onceDaily">Once a Day</option>
-															<option value="twice" data-translate="twiceDaily">Twice a Day</option>
+															<option value="" data-translate="selectFrequency">Select
+																frequency</option>
+															<option value="once" data-translate="onceDaily">Once a Day
+															</option>
+															<option value="twice" data-translate="twiceDaily">Twice a
+																Day</option>
 														</select>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="timeSlotLabel">Time Slot(s) <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="timeSlotLabel">Time
+															Slot(s) <span class="text-danger">*</span></label>
 														<div class="row g-2" id="hb_time_slot_container">
 															<!-- Dynamic time slots will be generated here -->
 														</div>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="cityLabel">City <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="cityLabel">City <span
+																class="text-danger">*</span></label>
 														<select class="form-select" id="hb_city">
-															<option value="" data-translate="selectCity">Select city</option>
-															<option value="dammam" data-translate="dammamOption">Dammam</option>
-															<option value="riyadh" data-translate="riyadhOption">Riyadh</option>
-															<option value="jeddah" data-translate="jeddahOption">Jeddah</option>
+															<option value="" data-translate="selectCity">Select city
+															</option>
+															<option value="dammam" data-translate="dammamOption">Dammam
+															</option>
+															<option value="riyadh" data-translate="riyadhOption">Riyadh
+															</option>
+															<option value="jeddah" data-translate="jeddahOption">Jeddah
+															</option>
 														</select>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="districtLabel">District <span class="text-danger">*</span></label>
-														<input type="text" class="form-control" id="hb_district" placeholder="Enter district" data-translate-placeholder="enterDistrict">
+														<label class="form-label"
+															data-translate="districtLabel">District <span
+																class="text-danger">*</span></label>
+														<input type="text" class="form-control" id="hb_district"
+															placeholder="Enter district"
+															data-translate-placeholder="enterDistrict">
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="weeklyShipmentsLabel">Weekly Shipments <span class="text-danger">*</span></label>
-														<input type="number" min="0" class="form-control" id="hb_weekly_shipments" placeholder="e.g. 100" data-translate-placeholder="exampleShipments">
+														<label class="form-label"
+															data-translate="weeklyShipmentsLabel">Weekly Shipments <span
+																class="text-danger">*</span></label>
+														<input type="number" min="0" class="form-control"
+															id="hb_weekly_shipments" placeholder="e.g. 100"
+															data-translate-placeholder="exampleShipments">
 													</div>
 													<div class="col-md-3">
-														<label class="form-label" data-translate="codLabel">Cash on Delivery % <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="codLabel">Cash on
+															Delivery % <span class="text-danger">*</span></label>
 														<div class="input-group">
-															<input type="number" min="0" max="100" class="form-control" id="hb_cod_percent">
+															<input type="number" min="0" max="100" class="form-control"
+																id="hb_cod_percent">
 															<span class="input-group-text">%</span>
 														</div>
 													</div>
 													<div class="col-md-3">
-														<label class="form-label" data-translate="ppdLabel">Pre Paid % <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="ppdLabel">Pre Paid %
+															<span class="text-danger">*</span></label>
 														<div class="input-group">
-															<input type="number" min="0" max="100" class="form-control" id="hb_ppd_percent">
+															<input type="number" min="0" max="100" class="form-control"
+																id="hb_ppd_percent">
 															<span class="input-group-text">%</span>
 														</div>
-														<div class="form-text error d-none" id="err_hb_payment" data-translate="codPpdSum">
+														<div class="form-text error d-none" id="err_hb_payment"
+															data-translate="codPpdSum">
 															COD + PPD must equal 100%.
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										
+
 										<!-- International Service Option with Details -->
 										<div class="service-option service-option-with-details">
-											<input class="form-check-input" type="checkbox" value="international" id="service_international" name="lastmile_service_mix">
+											<input class="form-check-input" type="checkbox" value="international"
+												id="service_international" name="lastmile_service_mix">
 											<label class="service-option-label" for="service_international">
 												<div class="service-icon">🌍</div>
 												<div class="service-text" data-translate="intOption">International</div>
 											</label>
-											
+
 											<!-- International Service Details Section -->
 											<div class="service-details d-none" id="international_service_section">
 												<div class="service-section-header">
-													<h6 class="mb-3" data-translate="internationalServiceTitle">International Service Details</h6>
+													<h6 class="mb-3" data-translate="internationalServiceTitle">
+														International Service Details</h6>
 												</div>
 												<div class="row g-3">
 													<div class="col-md-6">
-														<label class="form-label" data-translate="pickupFrequencyLabel">Pickup Frequency <span class="text-danger">*</span></label>
+														<label class="form-label"
+															data-translate="pickupFrequencyLabel">Pickup Frequency <span
+																class="text-danger">*</span></label>
 														<select class="form-select" id="international_pickup_frequency">
-															<option value="" data-translate="selectFrequency">Select frequency</option>
-															<option value="once" data-translate="onceDaily">Once a Day</option>
-															<option value="twice" data-translate="twiceDaily">Twice a Day</option>
+															<option value="" data-translate="selectFrequency">Select
+																frequency</option>
+															<option value="once" data-translate="onceDaily">Once a Day
+															</option>
+															<option value="twice" data-translate="twiceDaily">Twice a
+																Day</option>
 														</select>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="timeSlotLabel">Time Slot(s) <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="timeSlotLabel">Time
+															Slot(s) <span class="text-danger">*</span></label>
 														<div class="row g-2" id="international_time_slot_container">
 															<!-- Dynamic time slots will be generated here -->
 														</div>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="cityLabel">City <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="cityLabel">City <span
+																class="text-danger">*</span></label>
 														<select class="form-select" id="international_city">
-															<option value="" data-translate="selectCity">Select city</option>
-															<option value="dammam" data-translate="dammamOption">Dammam</option>
-															<option value="riyadh" data-translate="riyadhOption">Riyadh</option>
-															<option value="jeddah" data-translate="jeddahOption">Jeddah</option>
+															<option value="" data-translate="selectCity">Select city
+															</option>
+															<option value="dammam" data-translate="dammamOption">Dammam
+															</option>
+															<option value="riyadh" data-translate="riyadhOption">Riyadh
+															</option>
+															<option value="jeddah" data-translate="jeddahOption">Jeddah
+															</option>
 														</select>
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="districtLabel">District <span class="text-danger">*</span></label>
-														<input type="text" class="form-control" id="international_district" placeholder="Enter district" data-translate-placeholder="enterDistrict">
+														<label class="form-label"
+															data-translate="districtLabel">District <span
+																class="text-danger">*</span></label>
+														<input type="text" class="form-control"
+															id="international_district" placeholder="Enter district"
+															data-translate-placeholder="enterDistrict">
 													</div>
 													<div class="col-md-6">
-														<label class="form-label" data-translate="weeklyShipmentsLabel">Weekly Shipments <span class="text-danger">*</span></label>
-														<input type="number" min="0" class="form-control" id="international_weekly_shipments" placeholder="e.g. 100" data-translate-placeholder="exampleShipments">
+														<label class="form-label"
+															data-translate="weeklyShipmentsLabel">Weekly Shipments <span
+																class="text-danger">*</span></label>
+														<input type="number" min="0" class="form-control"
+															id="international_weekly_shipments" placeholder="e.g. 100"
+															data-translate-placeholder="exampleShipments">
 													</div>
 													<div class="col-md-3">
-														<label class="form-label" data-translate="codLabel">Cash on Delivery % <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="codLabel">Cash on
+															Delivery % <span class="text-danger">*</span></label>
 														<div class="input-group">
-															<input type="number" min="0" max="100" class="form-control" id="international_cod_percent">
+															<input type="number" min="0" max="100" class="form-control"
+																id="international_cod_percent">
 															<span class="input-group-text">%</span>
 														</div>
 													</div>
 													<div class="col-md-3">
-														<label class="form-label" data-translate="ppdLabel">Pre Paid % <span class="text-danger">*</span></label>
+														<label class="form-label" data-translate="ppdLabel">Pre Paid %
+															<span class="text-danger">*</span></label>
 														<div class="input-group">
-															<input type="number" min="0" max="100" class="form-control" id="international_ppd_percent">
+															<input type="number" min="0" max="100" class="form-control"
+																id="international_ppd_percent">
 															<span class="input-group-text">%</span>
 														</div>
-														<div class="form-text error d-none" id="err_international_payment" data-translate="codPpdSum">
+														<div class="form-text error d-none"
+															id="err_international_payment" data-translate="codPpdSum">
 															COD + PPD must equal 100%.
 														</div>
 													</div>
@@ -590,7 +760,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="form-text error d-none" id="err_lastmile_service_mix" data-translate="errLastMileServiceMix">
+									<div class="form-text error d-none" id="err_lastmile_service_mix"
+										data-translate="errLastMileServiceMix">
 										Please select at least one Last Mile service.
 									</div>
 								</div>
@@ -619,16 +790,19 @@
 		async function main() {
 			// Setup employee field listeners first
 			setupEmployeeFieldListeners();
-			
+
+			// Setup file upload functionality
+			setupFileUpload();
+
 			// Initialize volume fields based on default selection
 			populateVolumeFields();
-			
+
 			// Hide Last Mile section initially since no product type is selected
 			const lastMileSection = document.getElementById('secPayments');
 			if (lastMileSection) {
 				lastMileSection.style.display = 'none';
 			}
-			
+
 			// Check if Supabase client is available
 			if (!window.supa) {
 				console.error('Supabase client not found!');
@@ -637,10 +811,10 @@
 				return;
 			}
 			console.log('Supabase client found:', window.supa);
-			
+
 			// Table structure is now known - no need for checking
 			console.log('Supabase client ready, table schema confirmed');
-			
+
 			// Removed auth guard - customer page is now accessible to everyone
 
 			// Language toggle functionality
@@ -701,6 +875,8 @@
 					errDatePast: 'Start date cannot be in the past',
 					errDateOrder: 'End date must be after start date',
 					errDateRange: 'Forecasting period cannot exceed 2 years',
+					uploadForecastLabel: 'Upload Forecast Data',
+					uploadForecastHelp: 'Upload your daily forecast shipment data as an Excel (.xlsx) file',
 					// Toast notification messages
 					toastBundleValidation: 'Please fill in both Bundle Name and Bundle Details before adding a new bundle.',
 					toastServiceTypeRequired: 'Please select a product type before submitting the form.',
@@ -775,6 +951,8 @@
 					errDatePast: 'لا يمكن أن يكون تاريخ البداية في الماضي',
 					errDateOrder: 'يجب أن يكون تاريخ النهاية بعد تاريخ البداية',
 					errDateRange: 'لا يمكن أن تتجاوز فترة التوقعات سنتين',
+					uploadForecastLabel: 'رفع بيانات التوقعات',
+					uploadForecastHelp: 'ارفع بيانات شحنات التوقعات اليومية كملف إكسل (.xlsx)',
 					// Toast notification messages
 					toastBundleValidation: 'يرجى ملء اسم الحزمة وتفاصيل الحزمة قبل إضافة حزمة جديدة.',
 					toastServiceTypeRequired: 'يرجى اختيار نوع المنتج قبل إرسال النموذج.',
@@ -806,7 +984,7 @@
 					intOption: 'دولي',
 					parcelOption: 'طرد',
 					fulfillmentAndLastMileOption: 'تخزين والميل الأخير',
-					
+
 					// Service details
 					parcelServiceTitle: 'تفاصيل خدمة الطرود',
 					hbServiceTitle: 'تفاصيل خدمة الثقيل والمتين',
@@ -822,14 +1000,14 @@
 					dammamOption: 'الدمام',
 					riyadhOption: 'الرياض',
 					jeddahOption: 'جدة',
-					
+
 					// Error messages
 					errServiceType: 'يرجى اختيار نوع المنتج.',
 					errLastMileServiceMix: 'يرجى اختيار خيار واحد على الأقل من مزيج خدمات الميل الأخير.',
-					
+
 					// Additional labels
 					avgUnits: 'متوسط الوحدات لكل طلب',
-					
+
 					// Time slot labels
 					firstPickup: 'الاستلام الأول',
 					secondPickup: 'الاستلام الثاني',
@@ -858,9 +1036,9 @@
 				const productType = document.querySelector('input[name="service-type"]:checked')?.value;
 				const volumeFields = document.getElementById('volumeFields');
 				const lastMileSection = document.getElementById('secPayments');
-				
+
 				if (!productType || !volumeFields) return;
-				
+
 				// Show/hide Last Mile section based on product type
 				if (lastMileSection) {
 					if (productType === 'fulfillment') {
@@ -869,12 +1047,12 @@
 						lastMileSection.style.display = 'block';
 					}
 				}
-				
+
 				// Clear existing fields
 				volumeFields.innerHTML = '';
-				
+
 				let fieldsHTML = '';
-				
+
 				if (productType === 'fulfillment') {
 					// Fulfillment only fields
 					fieldsHTML = `
@@ -1028,12 +1206,12 @@
 						</div>
 					`;
 				}
-				
+
 				volumeFields.innerHTML = fieldsHTML;
-				
+
 				// Update language for new fields
 				updateFormLanguage();
-				
+
 				// Setup event listeners for volume fields
 				setupVolumeFieldListeners();
 			}
@@ -1092,7 +1270,7 @@
 					if (!element.getAttribute('data-original-placeholder')) {
 						element.setAttribute('data-original-placeholder', element.placeholder);
 					}
-					
+
 					if (lang.placeholder && lang.placeholder[key]) {
 						element.placeholder = lang.placeholder[key];
 					} else if (lang[key]) {
@@ -1126,13 +1304,13 @@
 			}
 
 			// Add event listener for language toggle button
-			languageToggle.addEventListener('click', function() {
+			languageToggle.addEventListener('click', function () {
 				// Toggle between English and Arabic
 				currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
-				
+
 				// Save language preference
 				localStorage.setItem('customerFormLanguage', currentLanguage);
-				
+
 				// Clear any existing translations first
 				document.querySelectorAll('[data-translate]').forEach(element => {
 					const originalText = element.getAttribute('data-original-text');
@@ -1140,7 +1318,7 @@
 						element.textContent = originalText;
 					}
 				});
-				
+
 				// Reset placeholders to original
 				document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
 					const originalPlaceholder = element.getAttribute('data-original-placeholder');
@@ -1148,10 +1326,10 @@
 						element.placeholder = originalPlaceholder;
 					}
 				});
-				
+
 				// Update form language
 				updateFormLanguage();
-				
+
 				// Update button text
 				currentLangSpan.textContent = currentLanguage === 'en' ? 'English' : 'العربية';
 			});
@@ -1159,7 +1337,7 @@
 			// Function to handle service type changes
 			function handleServiceTypeChange() {
 				console.log('🔧 handleServiceTypeChange: Initializing...');
-				
+
 				// Get all service type radio buttons
 				const serviceTypeRadios = document.querySelectorAll('input[name="service-type"]');
 				const seasonalityContainer = document.getElementById('seasonality_skus_container');
@@ -1180,10 +1358,10 @@
 				// Function to handle section visibility
 				const updateSections = (type) => {
 					console.log('🔧 Updating sections for type:', type);
-					
+
 					const isFulfillment = type.includes('fulfillment');
 					const isLastMile = type.includes('last-mile');
-					
+
 					// Handle 'none' case - hide all sections
 					if (type === 'none') {
 						if (seasonalityContainer) seasonalityContainer.style.display = 'none';
@@ -1210,7 +1388,7 @@
 					if (lastMileSection) {
 						lastMileSection.style.display = isLastMile ? 'block' : 'none';
 						console.log('🔧 Last Mile section display:', lastMileSection.style.display);
-						
+
 						// Clear service mix errors when hiding the section
 						if (!isLastMile) {
 							const errorElement = document.getElementById('err_lastmile_service_mix');
@@ -1222,9 +1400,9 @@
 					// Handle Bootstrap collapse for Last Mile section
 					if (lastMileCollapse && typeof bootstrap !== 'undefined') {
 						try {
-							const bsCollapse = bootstrap.Collapse.getInstance(lastMileCollapse) || 
+							const bsCollapse = bootstrap.Collapse.getInstance(lastMileCollapse) ||
 								new bootstrap.Collapse(lastMileCollapse, { toggle: false });
-							
+
 							if (isLastMile) {
 								bsCollapse.show();
 								console.log('🔧 Last Mile section expanded');
@@ -1246,7 +1424,7 @@
 					serviceTypeRadios.forEach((radio, index) => {
 						console.log(`Radio ${index}:`, radio);
 						if (radio) {  // Additional null check just in case
-							radio.addEventListener('change', function() {
+							radio.addEventListener('change', function () {
 								console.log('Radio changed:', this.value);
 								updateSections(this.value);
 								populateVolumeFields();
@@ -1266,7 +1444,7 @@
 						console.log('🔧 No radio checked initially, hiding all sections');
 						updateSections('none');
 					}
-					
+
 					// Also hide any service mix errors initially
 					const errorElement = document.getElementById('err_lastmile_service_mix');
 					if (errorElement) {
@@ -1340,13 +1518,13 @@
 			function validateInboundFrequency() {
 				const select = document.getElementById('inbound-frequency');
 				const errorElement = document.getElementById('inbound-frequency-error');
-				
+
 				if (!select.value) {
 					select.classList.add('is-invalid');
 					errorElement.textContent = translations[currentLanguage].errInboundFrequency;
 					return false;
 				}
-				
+
 				select.classList.remove('is-invalid');
 				return true;
 			}
@@ -1372,7 +1550,7 @@
 				}
 				
 				console.log('🔧 validateAvgUnits - Input value:', input.value, 'Type:', typeof input.value);
-				
+
 				const value = parseFloat(input.value);
 				if (isNaN(value) || value < 0) {
 					console.log('🔧 validateAvgUnits - Validation failed:', { value, isNaN: isNaN(value), lessThanZero: value < 0 });
@@ -1382,7 +1560,7 @@
 					}
 					return false;
 				}
-				
+
 				console.log('🔧 validateAvgUnits - Validation passed:', value);
 				input.classList.remove('is-invalid');
 				if (errorElement) {
@@ -1397,13 +1575,13 @@
 					const value = parseFloat(input.value) || 0;
 					return total + value;
 				}, 0);
-				
+
 				if (Math.abs(sum - 100) > 0.01) { // Allow small floating point differences
 					inputs.forEach(input => input.classList.add('is-invalid'));
 					errorElement.classList.remove('d-none');
 					return false;
 				}
-				
+
 				inputs.forEach(input => input.classList.remove('is-invalid'));
 				errorElement.classList.add('d-none');
 				return true;
@@ -1419,21 +1597,21 @@
 				return false;
 			}
 			// Add null checks before adding event listeners
-if (cod && ppd) {
+			if (cod && ppd) {
 				['input', 'change'].forEach(evt => { cod.addEventListener(evt, validateCodPpd); ppd.addEventListener(evt, validateCodPpd); });
 			}
-			function validateCodPpd() { 
+			function validateCodPpd() {
 				// Add null checks for cod and ppd elements
 				if (!cod || !ppd) return true;
-				
-				const codValid = validateNumericInput(cod, document.getElementById('err_cod_percent'), 0, 100); 
-				const ppdValid = validateNumericInput(ppd, document.getElementById('err_ppd_percent'), 0, 100); 
-				
+
+				const codValid = validateNumericInput(cod, document.getElementById('err_cod_percent'), 0, 100);
+				const ppdValid = validateNumericInput(ppd, document.getElementById('err_ppd_percent'), 0, 100);
+
 				// Check if both values are present and valid numbers
 				const codValue = parseFloat(cod.value) || 0;
 				const ppdValue = parseFloat(ppd.value) || 0;
 				const sum = codValue + ppdValue;
-				
+
 				// Show/hide sum error message
 				const sumErrorElement = document.getElementById('err_cod_ppd_sum');
 				if (sumErrorElement) {
@@ -1445,9 +1623,9 @@ if (cod && ppd) {
 						sumErrorElement.classList.remove('d-block');
 					}
 				}
-				
+
 				const sumOk = sum === 100;
-				return codValid && ppdValid && sumOk; 
+				return codValid && ppdValid && sumOk;
 			}
 			function validateForecastDates() {
 				const startDate = new Date(forecastStartDate.value);
@@ -1511,12 +1689,12 @@ if (cod && ppd) {
 				validateCodPpd();
 				// Add event listeners for percentage inputs to prevent negative values and values over 100
 				[cod, ppd].forEach(input => {
-					input.addEventListener('input', function() {
-					// Prevent negative values
-					if (this.value < 0) this.value = 0;
-					// Prevent values over 100 for percentage fields
-					if (this.value > 100) this.value = 100;
-				});
+					input.addEventListener('input', function () {
+						// Prevent negative values
+						if (this.value < 0) this.value = 0;
+						// Prevent values over 100 for percentage fields
+						if (this.value > 100) this.value = 100;
+					});
 				});
 			}
 
@@ -1542,16 +1720,16 @@ if (cod && ppd) {
 			function validateEmployeeName() {
 				const input = document.getElementById('employee_name');
 				const errorElement = document.getElementById('employee-name-error');
-				
+
 				if (!input || !errorElement) return false;
-				
+
 				const value = input.value.trim();
 				if (!value) {
 					input.classList.add('is-invalid');
 					errorElement.textContent = translations[currentLanguage].employeeNameError;
 					return false;
 				}
-				
+
 				input.classList.remove('is-invalid');
 				return true;
 			}
@@ -1559,31 +1737,31 @@ if (cod && ppd) {
 			function validateEmployeeEmail() {
 				const input = document.getElementById('employee_email');
 				const errorElement = document.getElementById('employee-email-error');
-				
+
 				if (!input || !errorElement) return false;
-				
+
 				const value = input.value.trim();
 				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-				
+
 				if (!value) {
 					input.classList.add('is-invalid');
 					errorElement.textContent = translations[currentLanguage].employeeEmailError;
 					return false;
 				}
-				
+
 				if (!emailRegex.test(value)) {
 					input.classList.add('is-invalid');
 					errorElement.textContent = translations[currentLanguage].employeeEmailError;
 					return false;
 				}
-				
+
 				input.classList.remove('is-invalid');
 				return true;
 			}
 
 			// Add event listeners for service type radio buttons
 			document.querySelectorAll('input[name="service-type"]').forEach(radio => {
-				radio.addEventListener('change', function() {
+				radio.addEventListener('change', function () {
 					validateServiceType();
 					populateVolumeFields();
 				});
@@ -1593,88 +1771,162 @@ if (cod && ppd) {
 			function setupEmployeeFieldListeners() {
 				const employeeNameInput = document.getElementById('employee_name');
 				const employeeEmailInput = document.getElementById('employee_email');
-				
+
 				if (employeeNameInput) {
 					employeeNameInput.addEventListener('input', validateEmployeeName);
 					employeeNameInput.addEventListener('blur', validateEmployeeName);
 				}
-				
+
 				if (employeeEmailInput) {
 					employeeEmailInput.addEventListener('input', validateEmployeeEmail);
 					employeeEmailInput.addEventListener('blur', validateEmployeeEmail);
 				}
 			}
 
+			// Function to setup file upload functionality
+			function setupFileUpload() {
+				const fileInput = document.getElementById('forecast_excel_file');
+				const uploadStatus = document.getElementById('upload_status');
+				const removeButton = document.getElementById('remove_file');
+				const fileError = document.getElementById('excel-file-error');
+
+				if (!fileInput) return;
+
+				// Handle file selection
+				fileInput.addEventListener('change', function (e) {
+					const file = e.target.files[0];
+
+					if (file) {
+						// Validate file type
+						if (!file.name.toLowerCase().endsWith('.xlsx')) {
+							showFileError('Please select a valid Excel (.xlsx) file');
+							clearFile();
+							return;
+						}
+
+						// Show upload status
+						showUploadStatus(file.name);
+						clearFileError();
+					} else {
+						hideUploadStatus();
+					}
+				});
+
+				// Handle file removal
+				if (removeButton) {
+					removeButton.addEventListener('click', function () {
+						clearFile();
+						hideUploadStatus();
+					});
+				}
+
+				function showUploadStatus(fileName) {
+					if (uploadStatus) {
+						const fileNameSpan = uploadStatus.querySelector('.file-name');
+						if (fileNameSpan) {
+							fileNameSpan.textContent = fileName;
+						}
+						uploadStatus.classList.remove('d-none');
+					}
+				}
+
+				function hideUploadStatus() {
+					if (uploadStatus) {
+						uploadStatus.classList.add('d-none');
+					}
+				}
+
+				function clearFile() {
+					fileInput.value = '';
+				}
+
+				function showFileError(message) {
+					if (fileError) {
+						fileError.textContent = message;
+						fileError.style.display = 'block';
+						fileInput.classList.add('is-invalid');
+					}
+				}
+
+				function clearFileError() {
+					if (fileError) {
+						fileError.textContent = '';
+						fileError.style.display = 'none';
+						fileInput.classList.remove('is-invalid');
+					}
+				}
+			}
+
 			// Function to setup volume field event listeners
 			function setupVolumeFieldListeners() {
-			const weeklyShipmentsInput = document.getElementById('weekly_shipments');
-			const weeklyOutboundInput = document.getElementById('weekly_units_outbound');
-			const weeklyInboundInput = document.getElementById('weekly_units_inbound');
-			const inboundFrequencySelect = document.getElementById('inbound-frequency');
-			const avgUnitsInput = document.getElementById('avg-units');
+				const weeklyShipmentsInput = document.getElementById('weekly_shipments');
+				const weeklyOutboundInput = document.getElementById('weekly_units_outbound');
+				const weeklyInboundInput = document.getElementById('weekly_units_inbound');
+				const inboundFrequencySelect = document.getElementById('inbound-frequency');
+				const avgUnitsInput = document.getElementById('avg-units');
 
 				// Add debugging for avg units field
 				if (avgUnitsInput) {
 					avgUnitsInput.addEventListener('input', (e) => {
 						console.log('🔧 avgUnits input event - Value:', e.target.value, 'Type:', typeof e.target.value);
 					});
-					
+
 					avgUnitsInput.addEventListener('change', (e) => {
 						console.log('🔧 avgUnits change event - Value:', e.target.value, 'Type:', typeof e.target.value);
 					});
 				}
 
 				if (weeklyShipmentsInput) {
-			weeklyShipmentsInput.addEventListener('input', () => {
-				// Prevent negative values
-				if (weeklyShipmentsInput.value < 0) weeklyShipmentsInput.value = 0;
-				validateNumericInput(weeklyShipmentsInput, document.getElementById('weekly-shipments-error'));
-			});
+					weeklyShipmentsInput.addEventListener('input', () => {
+						// Prevent negative values
+						if (weeklyShipmentsInput.value < 0) weeklyShipmentsInput.value = 0;
+						validateNumericInput(weeklyShipmentsInput, document.getElementById('weekly-shipments-error'));
+					});
 				}
 
 				if (weeklyOutboundInput) {
-			weeklyOutboundInput.addEventListener('input', () => {
-				// Prevent negative values
-				if (weeklyOutboundInput.value < 0) weeklyOutboundInput.value = 0;
-				validateNumericInput(weeklyOutboundInput, document.getElementById('weekly-outbound-error'));
-			});
+					weeklyOutboundInput.addEventListener('input', () => {
+						// Prevent negative values
+						if (weeklyOutboundInput.value < 0) weeklyOutboundInput.value = 0;
+						validateNumericInput(weeklyOutboundInput, document.getElementById('weekly-outbound-error'));
+					});
 				}
 
 				if (weeklyInboundInput) {
-			weeklyInboundInput.addEventListener('input', () => {
-				// Prevent negative values
-				if (weeklyInboundInput.value < 0) weeklyInboundInput.value = 0;
-				validateNumericInput(weeklyInboundInput, document.getElementById('weekly-inbound-error'));
-			});
+					weeklyInboundInput.addEventListener('input', () => {
+						// Prevent negative values
+						if (weeklyInboundInput.value < 0) weeklyInboundInput.value = 0;
+						validateNumericInput(weeklyInboundInput, document.getElementById('weekly-inbound-error'));
+					});
 				}
 
 				if (inboundFrequencySelect) {
-			inboundFrequencySelect.addEventListener('change', validateInboundFrequency);
+					inboundFrequencySelect.addEventListener('change', validateInboundFrequency);
 				}
 
 				if (avgUnitsInput) {
-			avgUnitsInput.addEventListener('input', () => {
-				// Prevent negative values
-				if (avgUnitsInput.value < 0) avgUnitsInput.value = 0;
-				validateAvgUnits();
-			});
+					avgUnitsInput.addEventListener('input', () => {
+						// Prevent negative values
+						if (avgUnitsInput.value < 0) avgUnitsInput.value = 0;
+						validateAvgUnits();
+					});
 				}
 			}
 
 			// Enhanced input sanitization for company name
 			const companyNameInput = document.getElementById('company_name');
-			companyNameInput.addEventListener('input', function() {
+			companyNameInput.addEventListener('input', function () {
 				// Remove leading/trailing spaces and limit length
 				this.value = this.value.trim().substring(0, 100);
 			});
 
 			// Enhanced date validation with event listeners
 			function updateDateConstraints() {
-    if (forecastStartDate.value) {
-        // Set end date min to start date + 1 day
-        const startDate = new Date(forecastStartDate.value);
-        startDate.setDate(startDate.getDate() + 1);
-        forecastEndDate.min = formatDate(startDate);
+				if (forecastStartDate.value) {
+					// Set end date min to start date + 1 day
+					const startDate = new Date(forecastStartDate.value);
+					startDate.setDate(startDate.getDate() + 1);
+					forecastEndDate.min = formatDate(startDate);
 
 					// If end date is now invalid, suggest a new date
 					if (forecastEndDate.value && forecastEndDate.value <= forecastStartDate.value) {
@@ -1731,10 +1983,10 @@ if (cod && ppd) {
 					document.querySelectorAll('.service-option').forEach(option => option.classList.remove('border-danger'));
 					return true;
 				}
-				
+
 				const serviceMixCheckboxes = document.querySelectorAll('input[name="lastmile_service_mix"]:checked');
 				const errorElement = document.getElementById('err_lastmile_service_mix');
-				
+
 				if (serviceMixCheckboxes.length === 0) {
 					// Show error if no service mix is selected
 					if (errorElement) errorElement.classList.remove('d-none');
@@ -1745,7 +1997,7 @@ if (cod && ppd) {
 					// Hide error if at least one service mix is selected
 					if (errorElement) errorElement.classList.add('d-none');
 					document.querySelectorAll('.service-option').forEach(option => option.classList.remove('border-danger'));
-					
+
 					// Now validate that at least one service section is completely filled out
 					return validateLastMileServiceSections();
 				}
@@ -1756,55 +2008,55 @@ if (cod && ppd) {
 				// Return empty string if no checkboxes are selected to avoid null reference error
 				return serviceMixCheckboxes.length > 0 ? Array.from(serviceMixCheckboxes).map(cb => cb.value).join(',') : '';
 			}
-			
+
 			// Validate that at least one Last Mile service section is completely filled out
 			function validateLastMileServiceSections() {
 				const serviceType = document.querySelector('input[name="service-type"]:checked')?.value;
-				
+
 				// Only validate service sections if Last Mile is selected
 				if (!serviceType || !serviceType.includes('last-mile')) {
 					return true;
 				}
-				
+
 				// Get selected service mix options
 				const parcelSelected = document.getElementById('service_parcel')?.checked;
 				const hbSelected = document.getElementById('service_hb')?.checked;
 				const internationalSelected = document.getElementById('service_international')?.checked;
-				
+
 				// Check if at least one service has all required fields filled
 				let atLeastOneServiceComplete = false;
-				
+
 				// Validate Parcel section if selected
 				if (parcelSelected) {
 					atLeastOneServiceComplete = validateServiceSection('parcel_service_section') || atLeastOneServiceComplete;
 				}
-				
+
 				// Validate Heavy & Bulky section if selected
 				if (hbSelected) {
 					atLeastOneServiceComplete = validateServiceSection('hb_service_section') || atLeastOneServiceComplete;
 				}
-				
+
 				// Validate International section if selected
 				if (internationalSelected) {
 					atLeastOneServiceComplete = validateServiceSection('international_service_section') || atLeastOneServiceComplete;
 				}
-				
+
 				if (!atLeastOneServiceComplete) {
 					showToast('Please complete all fields for at least one service type', 'warning');
 					return false;
 				}
-				
+
 				return true;
 			}
-			
+
 			// Helper function to validate a single service section
 			function validateServiceSection(sectionId) {
 				const section = document.getElementById(sectionId);
 				if (!section) return false;
-				
+
 				// Check pickup frequency
 				const pickupFreq = section.querySelector('.pickup-frequency');
-				
+
 				// Check time slots based on pickup frequency
 				let timeSlotsFilled = false;
 				if (pickupFreq && pickupFreq.value === 'Once a Day') {
@@ -1813,30 +2065,30 @@ if (cod && ppd) {
 				} else if (pickupFreq && pickupFreq.value === 'Twice a Day') {
 					const morningSlot = section.querySelector('.morning-slot');
 					const afternoonSlot = section.querySelector('.afternoon-slot');
-					timeSlotsFilled = morningSlot && afternoonSlot && 
-						morningSlot.value && afternoonSlot.value && 
+					timeSlotsFilled = morningSlot && afternoonSlot &&
+						morningSlot.value && afternoonSlot.value &&
 						morningSlot.value !== afternoonSlot.value;
 				}
-				
+
 				// Check location fields
 				const city = section.querySelector('.city');
 				const district = section.querySelector('.district');
 				const locationValid = city && city.value && district && district.value;
-				
+
 				// Check weekly shipments
 				const weeklyShipments = section.querySelector('.weekly-shipments');
 				const shipmentsValid = weeklyShipments && weeklyShipments.value && !isNaN(weeklyShipments.value);
-				
+
 				// Check payment percentages
 				const cod = section.querySelector('.cod-percent');
 				const ppd = section.querySelector('.ppd-percent');
-				const paymentValid = cod && ppd && 
-					!isNaN(cod.value) && !isNaN(ppd.value) && 
-					Number(cod.value) >= 0 && Number(ppd.value) >= 0 && 
+				const paymentValid = cod && ppd &&
+					!isNaN(cod.value) && !isNaN(ppd.value) &&
+					Number(cod.value) >= 0 && Number(ppd.value) >= 0 &&
 					Number(cod.value) + Number(ppd.value) === 100;
-				
+
 				// Check if all required fields are filled
-				return pickupFreq && pickupFreq.value && timeSlotsFilled && 
+				return pickupFreq && pickupFreq.value && timeSlotsFilled &&
 					locationValid && shipmentsValid && paymentValid;
 			}
 
@@ -1852,7 +2104,7 @@ if (cod && ppd) {
 
 				// Show/hide sections based on checkbox selection
 				if (parcelCheckbox) {
-					parcelCheckbox.addEventListener('change', function() {
+					parcelCheckbox.addEventListener('change', function () {
 						if (this.checked) {
 							parcelSection.classList.remove('d-none');
 							// Make sure the parent service-option-with-details is visible
@@ -1874,7 +2126,7 @@ if (cod && ppd) {
 				}
 
 				if (hbCheckbox) {
-					hbCheckbox.addEventListener('change', function() {
+					hbCheckbox.addEventListener('change', function () {
 						if (this.checked) {
 							hbSection.classList.remove('d-none');
 							// Make sure the parent service-option-with-details is visible
@@ -1896,7 +2148,7 @@ if (cod && ppd) {
 				}
 
 				if (internationalCheckbox) {
-					internationalCheckbox.addEventListener('change', function() {
+					internationalCheckbox.addEventListener('change', function () {
 						if (this.checked) {
 							internationalSection.classList.remove('d-none');
 							// Make sure the parent service-option-with-details is visible
@@ -1946,24 +2198,24 @@ if (cod && ppd) {
 			// Helper function to clear inputs in a service section
 			function clearServiceSectionInputs(section) {
 				if (!section) return;
-				
+
 				// Clear text inputs and numbers
 				section.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
 					input.value = '';
 				});
-				
+
 				// Reset selects
 				section.querySelectorAll('select').forEach(select => {
 					select.selectedIndex = 0;
 				});
-				
+
 				// Hide time slot containers
 				const timeSlotContainer = section.querySelector('[id$="_time_slot_container"]');
 				if (timeSlotContainer) {
 					timeSlotContainer.innerHTML = '';
 				}
 			}
-			
+
 			// Setup pickup frequency handlers for all service types
 			function setupPickupFrequencyHandlers() {
 				// Define time slots (these would come from Ops in a real scenario)
@@ -1973,40 +2225,40 @@ if (cod && ppd) {
 					{ value: 'afternoon', label: '1:00 PM - 2:00 PM' },
 					{ value: 'evening', label: '2:00 PM - 4:00 PM' }
 				];
-				
+
 				// Setup handlers for each service type
 				setupPickupFrequencyHandler('parcel', timeSlots);
 				setupPickupFrequencyHandler('hb', timeSlots);
 				setupPickupFrequencyHandler('international', timeSlots);
 			}
-			
+
 			// Setup pickup frequency handler for a specific service type
 			function setupPickupFrequencyHandler(serviceType, timeSlots) {
 				const frequencySelect = document.getElementById(`${serviceType}_pickup_frequency`);
 				const timeSlotContainer = document.getElementById(`${serviceType}_time_slot_container`);
-				
+
 				if (!frequencySelect || !timeSlotContainer) return;
-				
-				frequencySelect.addEventListener('change', function() {
+
+				frequencySelect.addEventListener('change', function () {
 					// Clear existing time slots
 					timeSlotContainer.innerHTML = '';
-					
+
 					if (this.value === 'once') {
 						// Once a day - single time slot selection
 						const col = document.createElement('div');
 						col.className = 'col-12';
-						
+
 						const select = document.createElement('select');
 						select.className = 'form-select';
 						select.id = `${serviceType}_time_slot`;
 						select.name = `${serviceType}_time_slot`;
-						
+
 						// Add default option
 						const defaultOption = document.createElement('option');
 						defaultOption.value = '';
 						defaultOption.textContent = translations[currentLanguage].selectTimeSlot;
 						select.appendChild(defaultOption);
-						
+
 						// Add time slot options
 						timeSlots.forEach(slot => {
 							const option = document.createElement('option');
@@ -2014,30 +2266,30 @@ if (cod && ppd) {
 							option.textContent = slot.label;
 							select.appendChild(option);
 						});
-						
+
 						col.appendChild(select);
 						timeSlotContainer.appendChild(col);
 					} else if (this.value === 'twice') {
 						// Twice a day - two time slot selections
 						const morningCol = document.createElement('div');
 						morningCol.className = 'col-md-6';
-						
+
 						const morningLabel = document.createElement('label');
 						morningLabel.className = 'form-label small';
 						morningLabel.textContent = translations[currentLanguage].firstPickup;
 						morningCol.appendChild(morningLabel);
-						
+
 						const morningSelect = document.createElement('select');
 						morningSelect.className = 'form-select';
 						morningSelect.id = `${serviceType}_time_slot_1`;
 						morningSelect.name = `${serviceType}_time_slot_1`;
-						
+
 						// Add default option
 						const morningDefaultOption = document.createElement('option');
 						morningDefaultOption.value = '';
 						morningDefaultOption.textContent = translations[currentLanguage].selectTimeSlot;
 						morningSelect.appendChild(morningDefaultOption);
-						
+
 						// Add time slot options
 						timeSlots.forEach(slot => {
 							const option = document.createElement('option');
@@ -2045,29 +2297,29 @@ if (cod && ppd) {
 							option.textContent = slot.label;
 							morningSelect.appendChild(option);
 						});
-						
+
 						morningCol.appendChild(morningSelect);
 						timeSlotContainer.appendChild(morningCol);
-						
+
 						const afternoonCol = document.createElement('div');
 						afternoonCol.className = 'col-md-6';
-						
+
 						const afternoonLabel = document.createElement('label');
 						afternoonLabel.className = 'form-label small';
 						afternoonLabel.textContent = translations[currentLanguage].secondPickup;
 						afternoonCol.appendChild(afternoonLabel);
-						
+
 						const afternoonSelect = document.createElement('select');
 						afternoonSelect.className = 'form-select';
 						afternoonSelect.id = `${serviceType}_time_slot_2`;
 						afternoonSelect.name = `${serviceType}_time_slot_2`;
-						
+
 						// Add default option
 						const afternoonDefaultOption = document.createElement('option');
 						afternoonDefaultOption.value = '';
 						afternoonDefaultOption.textContent = translations[currentLanguage].selectTimeSlot;
 						afternoonSelect.appendChild(afternoonDefaultOption);
-						
+
 						// Add time slot options
 						timeSlots.forEach(slot => {
 							const option = document.createElement('option');
@@ -2075,22 +2327,22 @@ if (cod && ppd) {
 							option.textContent = slot.label;
 							afternoonSelect.appendChild(option);
 						});
-						
+
 						afternoonCol.appendChild(afternoonSelect);
 						timeSlotContainer.appendChild(afternoonCol);
-						
+
 						// Add validation to ensure different time slots are selected
-						morningSelect.addEventListener('change', function() {
+						morningSelect.addEventListener('change', function () {
 							validateTimeSlots(morningSelect, afternoonSelect);
 						});
-						
-						afternoonSelect.addEventListener('change', function() {
+
+						afternoonSelect.addEventListener('change', function () {
 							validateTimeSlots(morningSelect, afternoonSelect);
 						});
 					}
 				});
 			}
-			
+
 			// Validate that two different time slots are selected
 			function validateTimeSlots(slot1, slot2) {
 				if (slot1.value && slot2.value && slot1.value === slot2.value) {
@@ -2111,14 +2363,14 @@ if (cod && ppd) {
 					const lastBundle = bundleItems[bundleItems.length - 1];
 					const lastBundleName = lastBundle.querySelector('.bundle-name').value.trim();
 					const lastBundleDetails = lastBundle.querySelector('.bundle-details').value.trim();
-					
+
 					if (lastBundleName === '' || lastBundleDetails === '') {
 						const lang = translations[currentLanguage];
 						showToast(lang.toastBundleValidation, 'warning');
 						return;
 					}
 				}
-				
+
 				const container = document.getElementById('bundles-container');
 				const bundleItem = document.createElement('div');
 				bundleItem.className = 'bundle-item mb-2';
@@ -2143,29 +2395,29 @@ if (cod && ppd) {
 				container.appendChild(bundleItem);
 				updateBundleButtons();
 			}
-			
+
 			function removeBundle(button) {
 				const bundleItem = button.closest('.bundle-item');
 				bundleItem.remove();
 				updateBundleButtons();
 			}
-			
+
 			function updateBundleButtons() {
 				const bundleItems = document.querySelectorAll('.bundle-item');
 				const addButtons = document.querySelectorAll('.add-bundle');
 				const removeButtons = document.querySelectorAll('.remove-bundle');
-				
+
 				// Hide all add buttons except the last one
 				addButtons.forEach((btn, index) => {
 					btn.style.display = index === bundleItems.length - 1 ? 'block' : 'none';
 				});
-				
+
 				// Show remove buttons only if there's more than one bundle
 				removeButtons.forEach(btn => {
 					btn.style.display = bundleItems.length > 1 ? 'block' : 'none';
 				});
 			}
-			
+
 			// Toast notification function
 			function showToast(message, type = 'info') {
 				// Remove existing toast if any
@@ -2173,20 +2425,20 @@ if (cod && ppd) {
 				if (existingToast) {
 					existingToast.remove();
 				}
-				
+
 				// Create toast element
 				const toast = document.createElement('div');
 				toast.className = `custom-toast toast-${type}`;
-				
+
 				// Set icon based on type
 				let icon = '';
-				switch(type) {
+				switch (type) {
 					case 'success': icon = '<i class="bi bi-check-circle-fill"></i>'; break;
 					case 'warning': icon = '<i class="bi bi-exclamation-triangle-fill"></i>'; break;
 					case 'error': icon = '<i class="bi bi-x-circle-fill"></i>'; break;
 					default: icon = '<i class="bi bi-info-circle-fill"></i>'; break;
 				}
-				
+
 				toast.innerHTML = `
 					<div class="toast-content">
 						<div class="toast-icon">${icon}</div>
@@ -2196,13 +2448,13 @@ if (cod && ppd) {
 						</button>
 					</div>
 				`;
-				
+
 				// Add to page
 				document.body.appendChild(toast);
-				
+
 				// Show with animation
 				setTimeout(() => toast.classList.add('show'), 100);
-				
+
 				// Auto remove after 5 seconds
 				setTimeout(() => {
 					if (toast.parentElement) {
@@ -2211,24 +2463,24 @@ if (cod && ppd) {
 					}
 				}, 5000);
 			}
-			
+
 			// Make functions global
 			window.addBundle = addBundle;
 			window.removeBundle = removeBundle;
 			window.showToast = showToast;
-			
+
 			// Initialize bundle buttons
 			updateBundleButtons();
-			
+
 			// Initialize service type change handling
 			handleServiceTypeChange();
-			
+
 			// Initialize Last Mile service mix handling
 			handleLastMileServiceMixChange();
-			
+
 			// Setup pickup frequency change handlers
 			setupPickupFrequencyHandlers();
-			
+
 			form.addEventListener('submit', async (e) => {
 				e.preventDefault();
 				console.log('Form submitted, starting validation...');
@@ -2278,16 +2530,34 @@ if (cod && ppd) {
 				const isValidDates = validateForecastDates();
 
 				const valid = (isValidCompany && isValidEmployeeName && isValidEmployeeEmail && isValidShipments && isValidOutbound && isValidInbound && isValidInboundFreq && isValidAvgUnits && isValidServiceType && isValidCodPpd && isValidServiceMix && isValidDates);
-				
+
 				if (!valid) {
 					console.log('Form validation failed, cannot submit');
 					return;
 				}
 
 				console.log('All validations passed, submitting form...');
+
+				// DEBUG: Log validation results
+				console.log('🔍 DEBUG - Validation Results:', {
+					isValidCompany,
+					isValidEmployeeName,
+					isValidEmployeeEmail,
+					isValidShipments,
+					isValidOutbound,
+					isValidInbound,
+					isValidInboundFreq,
+					isValidAvgUnits,
+					isValidServiceType,
+					isValidCodPpd,
+					isValidServiceMix,
+					isValidDates
+				});
+
 				// Create submission matching the exact Supabase table schema
 				const selectedServiceType = document.querySelector('input[name="service-type"]:checked');
-				
+				console.log('🔍 DEBUG - Selected Service Type:', selectedServiceType?.value);
+
 				// Collect bundle data from the form
 				const collectBundleData = () => {
 					const bundleItems = document.querySelectorAll('.bundle-item');
@@ -2305,14 +2575,14 @@ if (cod && ppd) {
 					});
 					return bundles;
 				};
-				
+
 				// Collect service details data
 				const collectServiceDetails = (serviceType) => {
 					const prefix = serviceType;
 					const checkbox = document.getElementById(`service_${serviceType}`);
-					
+
 					if (!checkbox || !checkbox.checked) return null;
-					
+
 					// Collect time slots
 					const timeSlots = [];
 					const slotInputs = document.querySelectorAll(`[id^="${prefix}_time_slot"]`);
@@ -2321,13 +2591,13 @@ if (cod && ppd) {
 							timeSlots.push(input.value);
 						}
 					});
-					
+
 					// Helper function to safely get element value
 					const getElementValue = (id, defaultValue = '') => {
 						const element = document.getElementById(id);
 						return element ? element.value || defaultValue : defaultValue;
 					};
-					
+
 					return {
 						pickup_frequency: getElementValue(`${prefix}_pickup_frequency`, ''),
 						timeSlots: timeSlots,
@@ -2338,14 +2608,76 @@ if (cod && ppd) {
 						ppd_percent: getElementValue(`${prefix}_ppd_percent`, '')
 					};
 				};
-				
+
 				console.log('🔧 Form submission - avgUnits.value:', avgUnits ? avgUnits.value : 'N/A', 'Type:', avgUnits ? typeof avgUnits.value : 'N/A');
 				console.log('🔧 Form submission - avgUnits element:', avgUnits);
-				
+
+				// Get uploaded file information and upload to Supabase Storage
+				const fileInput = document.getElementById('forecast_excel_file');
+				const uploadedFile = fileInput && fileInput.files[0] ? fileInput.files[0] : null;
+				let fileStoragePath = null;
+				let filePublicUrl = null;
+
+				// Upload file to Supabase Storage if present
+				if (uploadedFile) {
+					try {
+						const companyName = company.value.trim().replace(/[^a-zA-Z0-9]/g, '_'); // Clean company name for folder
+						const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+						const fileName = `${timestamp}_${uploadedFile.name}`;
+						fileStoragePath = `${companyName}/${fileName}`;
+
+						console.log('Uploading file to storage:', fileStoragePath);
+
+						// Try upload with explicit options for anonymous users
+						const { data: uploadData, error: uploadError } = await window.supa.storage
+							.from('forecast-files')
+							.upload(fileStoragePath, uploadedFile, {
+								cacheControl: '3600',
+								upsert: false,
+								duplex: 'half'
+							});
+
+						if (uploadError) {
+							console.error('File upload error:', uploadError);
+
+							// Provide helpful error message for missing bucket
+							if (uploadError.message.includes('Bucket not found')) {
+								throw new Error('Storage bucket not found. Please contact your administrator to set up file storage.');
+							}
+
+							throw new Error(`File upload failed: ${uploadError.message}`);
+						}
+
+						// Get public URL for the uploaded file
+						const { data: urlData } = window.supa.storage
+							.from('forecast-files')
+							.getPublicUrl(fileStoragePath);
+
+						filePublicUrl = urlData.publicUrl;
+						console.log('🔍 DEBUG - File uploaded successfully:', {
+							uploadData,
+							fileStoragePath,
+							filePublicUrl,
+							fileSize: uploadedFile.size,
+							fileName: uploadedFile.name
+						});
+
+					} catch (error) {
+						console.error('File upload failed:', error);
+						const lang = translations[currentLanguage];
+						showToast(`File upload failed: ${error.message}`, 'error');
+						return; // Stop form submission if file upload fails
+					}
+				}
+
 				const newSubmission = {
 					company_name: company.value.trim(),
 					employee_name: document.getElementById('employee_name').value.trim(),
 					employee_email: document.getElementById('employee_email').value.trim(),
+					forecast_file_name: uploadedFile ? uploadedFile.name : null,
+					forecast_file_size: uploadedFile ? uploadedFile.size : null,
+					forecast_file_path: fileStoragePath,
+					forecast_file_url: filePublicUrl,
 					service_type: selectedServiceType ? selectedServiceType.value : null,
 					weekly_shipments: weeklyShip ? Number(weeklyShip.value) : 0,
 					weekly_units_outbound: weeklyOut ? Number(weeklyOut.value) : 0,
@@ -2366,17 +2698,40 @@ if (cod && ppd) {
 					parcel_details: collectServiceDetails('parcel') ? JSON.stringify(collectServiceDetails('parcel')) : null
 				};
 				try {
-					console.log('Submitting to Supabase:', newSubmission);
+					console.log('🔍 DEBUG - About to submit to Supabase...');
+					console.log('🔍 DEBUG - Submission Object:', JSON.stringify(newSubmission, null, 2));
+					console.log('🔍 DEBUG - Supabase client available:', !!window.supa);
+
 					const { data, error } = await window.supa.from('submissions').insert([newSubmission]);
-					if (error) throw error;
-					console.log('Data submitted successfully:', data);
-					
+
+					console.log('🔍 DEBUG - Supabase Response:', { data, error });
+
+					if (error) {
+						console.error('🚨 DEBUG - Database Error Details:', {
+							message: error.message,
+							details: error.details,
+							hint: error.hint,
+							code: error.code
+						});
+						throw error;
+					}
+
+					console.log('✅ DEBUG - Data submitted successfully:', data);
+
+					console.log('✅ Form submission completed successfully!');
+
 					// Pass language preference to thank you page
 					const thankYouUrl = currentLanguage === 'ar' ? 'thank-you.html?lang=ar' : 'thank-you.html?lang=en';
 					// Redirect immediately without notification
 					window.location.href = thankYouUrl;
 				} catch (err) {
-					console.error('Error submitting data:', err);
+					console.error('🚨 DEBUG - Error submitting data:', err);
+					console.error('🚨 DEBUG - Error details:', {
+						name: err.name,
+						message: err.message,
+						stack: err.stack
+					});
+
 					const lang = translations[currentLanguage];
 					
 					// Even if database submission fails, redirect to thank you page
